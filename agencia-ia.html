@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Babe - Agencia IA</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+      background:#0a0a0f; color:#f0f0f5; line-height:1.6; overflow-x:hidden;
+    }
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#0a0a0f; }
+    ::-webkit-scrollbar-thumb { background:#3b3b5c; border-radius:4px; }
+
+    nav {
+      position:fixed; top:0; width:100%; padding:1.2rem 2rem;
+      display:flex; justify-content:space-between; align-items:center;
+      z-index:1000; background:rgba(10,10,15,0.85); backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+    .logo {
+      font-size:1.6rem; font-weight:800; text-decoration:none;
+      background:linear-gradient(135deg,#a78bfa,#60a5fa);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .nav-links { display:flex; gap:2rem; list-style:none; align-items:center; }
+    .nav-links a {
+      color:#b0b0c8; text-decoration:none; font-size:0.9rem; font-weight:500;
+      transition:color 0.3s;
+    }
+    .nav-links a:hover { color:#fff; }
+    .nav-back {
+      color:#a78bfa !important; font-weight:600 !important;
+    }
+
+    .hero {
+      min-height:100vh; display:flex; flex-direction:column;
+      justify-content:center; align-items:center; text-align:center;
+      padding:6rem 2rem 2rem;
+      position:relative;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(167,139,250,0.1), transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(96,165,250,0.08), transparent 60%);
+    }
+    .hero::before {
+      content:''; position:absolute; inset:0;
+      background:url('https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1400&q=80') center/cover;
+      opacity:0.06; z-index:0;
+    }
+    .hero>* { position:relative; z-index:1; }
+    .hero-badge {
+      display:inline-block; background:rgba(167,139,250,0.12);
+      border:1px solid rgba(167,139,250,0.2); padding:0.4rem 1.2rem;
+      border-radius:50px; font-size:0.8rem; color:#a78bfa;
+      margin-bottom:1.5rem; letter-spacing:1px;
+    }
+    .hero h1 {
+      font-size:clamp(2.5rem,7vw,5rem); font-weight:800;
+      line-height:1.1; margin-bottom:1.2rem;
+    }
+    .hero h1 span {
+      background:linear-gradient(135deg,#a78bfa,#60a5fa);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .hero p { font-size:1.15rem; color:#9090aa; max-width:600px; margin-bottom:2rem; }
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; }
+    .btn {
+      padding:0.85rem 2.2rem; border-radius:50px; text-decoration:none;
+      font-weight:600; font-size:0.95rem; transition:all 0.3s;
+      display:inline-flex; align-items:center; gap:0.5rem;
+    }
+    .btn-primary {
+      background:linear-gradient(135deg,#a78bfa,#60a5fa); color:#fff;
+      box-shadow:0 4px 25px rgba(167,139,250,0.3);
+    }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 35px rgba(167,139,250,0.45); }
+    .btn-outline { border:1.5px solid rgba(255,255,255,0.15); color:#f0f0f5; }
+    .btn-outline:hover { border-color:#a78bfa; background:rgba(167,139,250,0.08); }
+    .btn-wa { background:#25d366; color:#fff; }
+    .btn-wa:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(37,211,102,0.35); }
+
+    section { padding:6rem 2rem; max-width:1200px; margin:0 auto; }
+    .section-tag {
+      display:inline-block; font-size:0.75rem; text-transform:uppercase;
+      letter-spacing:2px; color:#a78bfa; margin-bottom:0.6rem; font-weight:600;
+    }
+    .section-title { font-size:clamp(2rem,4vw,3rem); font-weight:700; margin-bottom:1rem; }
+    .section-desc { color:#9090aa; max-width:600px; margin-bottom:3rem; }
+
+    .services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
+    .service-item {
+      background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05);
+      border-radius:18px; padding:2rem 1.8rem; transition:all 0.3s;
+    }
+    .service-item:hover {
+      background:rgba(255,255,255,0.04);
+      border-color:rgba(167,139,250,0.2); transform:translateY(-3px);
+    }
+    .service-item .icon { font-size:2rem; margin-bottom:1rem; }
+    .service-item h4 { font-size:1.1rem; margin-bottom:0.5rem; }
+    .service-item p { font-size:0.85rem; color:#8080a0; }
+
+    .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; }
+    .project-card {
+      background:linear-gradient(145deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.06); border-radius:20px;
+      padding:2rem 1.8rem; transition:all 0.3s;
+    }
+    .project-card:hover { border-color:rgba(255,255,255,0.12); transform:translateY(-4px); }
+    .project-card .icon { font-size:2.4rem; margin-bottom:0.8rem; }
+    .project-card h4 { font-size:1.1rem; margin-bottom:0.5rem; }
+    .project-card p { font-size:0.85rem; color:#8080a0; margin-bottom:1rem; }
+    .project-badge {
+      display:inline-block; font-size:0.7rem; font-weight:600; text-transform:uppercase;
+      letter-spacing:1px; padding:0.25rem 0.8rem; border-radius:50px; margin-bottom:1rem;
+      background:rgba(167,139,250,0.12); color:#a78bfa; border:1px solid rgba(167,139,250,0.2);
+    }
+    .project-status { font-size:0.75rem; display:flex; align-items:center; gap:0.4rem; }
+    .project-status .dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
+    .project-status .dot.completed { background:#34d399; }
+    .project-status .dot.progress { background:#a78bfa; }
+
+    .cta-section {
+      text-align:center;
+      background:radial-gradient(ellipse at center,rgba(167,139,250,0.06),transparent);
+      padding:6rem 2rem; border-radius:32px;
+      border:1px solid rgba(255,255,255,0.05); max-width:900px; margin:0 auto 2rem;
+    }
+    .cta-section h2 { font-size:clamp(1.8rem,3vw,2.6rem); margin-bottom:1rem; }
+    .cta-section p { color:#9090aa; margin-bottom:2rem; }
+
+    footer { text-align:center; padding:2rem; color:#505070; font-size:0.8rem; border-top:1px solid rgba(255,255,255,0.04); }
+    footer a { color:#505070; text-decoration:none; }
+
+    .chat-btn {
+      position:fixed; bottom:1.8rem; right:1.8rem; width:58px; height:58px;
+      border-radius:50%; background:linear-gradient(135deg,#a78bfa,#60a5fa);
+      border:none; color:#fff; font-size:1.5rem; cursor:pointer; z-index:999;
+      box-shadow:0 6px 30px rgba(167,139,250,0.4);
+      transition:all 0.3s; display:flex; align-items:center; justify-content:center;
+    }
+    .chat-btn:hover { transform:scale(1.1); box-shadow:0 8px 40px rgba(167,139,250,0.55); }
+    .chat-btn svg { width:26px; height:26px; fill:currentColor; }
+
+    .chat-box {
+      position:fixed; bottom:5.5rem; right:1.8rem; width:360px;
+      max-width:calc(100vw - 3.6rem); max-height:520px;
+      background:#12121c; border:1px solid rgba(255,255,255,0.08);
+      border-radius:20px; display:none; flex-direction:column; z-index:998;
+      box-shadow:0 20px 60px rgba(0,0,0,0.6); overflow:hidden;
+      animation:slideUp 0.35s ease;
+    }
+    .chat-box.open { display:flex; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .chat-header { padding:1rem 1.2rem; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:space-between; }
+    .chat-header-info { display:flex; align-items:center; gap:0.7rem; }
+    .chat-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#a78bfa,#60a5fa); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem; }
+    .chat-header h4 { font-size:0.95rem; font-weight:600; }
+    .chat-header .status { font-size:0.7rem; color:#25d366; }
+    .chat-close { background:none; border:none; color:#606080; font-size:1.3rem; cursor:pointer; }
+    .chat-close:hover { color:#fff; }
+    .chat-messages { flex:1; padding:1rem 1.2rem; overflow-y:auto; display:flex; flex-direction:column; gap:0.6rem; min-height:200px; max-height:320px; }
+    .msg { max-width:85%; padding:0.7rem 1rem; border-radius:14px; font-size:0.88rem; line-height:1.4; animation:msgIn 0.3s ease; }
+    @keyframes msgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .msg.bot { background:rgba(167,139,250,0.1); border:1px solid rgba(167,139,250,0.15); align-self:flex-start; border-bottom-left-radius:4px; }
+    .msg.user { background:rgba(96,165,250,0.15); border:1px solid rgba(96,165,250,0.15); align-self:flex-end; border-bottom-right-radius:4px; }
+    .chat-input-area { display:flex; gap:0.5rem; padding:0.8rem 1rem; border-top:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); }
+    .chat-input-area input { flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:0.7rem 1rem; color:#f0f0f5; font-size:0.9rem; outline:none; }
+    .chat-input-area input:focus { border-color:#a78bfa; }
+    .chat-input-area input::placeholder { color:#505070; }
+    .chat-send { width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg,#a78bfa,#60a5fa); border:none; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s; flex-shrink:0; }
+    .chat-send:hover { transform:scale(1.06); box-shadow:0 4px 20px rgba(167,139,250,0.35); }
+    .chat-send svg { width:18px; height:18px; fill:currentColor; }
+    .typing { display:flex; gap:4px; padding:0.7rem 1rem; background:rgba(167,139,250,0.08); border:1px solid rgba(167,139,250,0.12); border-radius:14px; align-self:flex-start; border-bottom-left-radius:4px; }
+    .typing span { width:7px; height:7px; background:#a78bfa; border-radius:50%; animation:typingBounce 1.2s infinite; }
+    .typing span:nth-child(2) { animation-delay:0.2s; }
+    .typing span:nth-child(3) { animation-delay:0.4s; }
+    @keyframes typingBounce { 0%,60%,100%{transform:translateY(0);opacity:0.4} 30%{transform:translateY(-6px);opacity:1} }
+    .toast { position:fixed; bottom:6rem; right:6rem; background:#12121c; border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:0.8rem 1.2rem; font-size:0.85rem; color:#f0f0f5; box-shadow:0 10px 40px rgba(0,0,0,0.5); opacity:0; transform:translateY(10px); transition:all 0.35s; z-index:997; pointer-events:none; }
+    .toast.show { opacity:1; transform:translateY(0); }
+
+    .quote-form { max-width:680px; margin:0 auto; background:#12121c; border:1px solid rgba(255,255,255,0.06); border-radius:24px; padding:2.5rem; }
+    .quote-form .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .quote-form .field { margin-bottom:1.2rem; }
+    .quote-form label { display:block; font-size:0.8rem; font-weight:600; color:#a0a0b8; margin-bottom:0.4rem; }
+    .quote-form input, .quote-form select, .quote-form textarea { width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:0.8rem 1rem; color:#f0f0f5; font-size:0.9rem; font-family:inherit; outline:none; transition:border-color 0.3s; }
+    .quote-form input:focus, .quote-form select:focus, .quote-form textarea:focus { border-color:#a78bfa; }
+    .quote-form select option { background:#12121c; color:#f0f0f5; }
+    .quote-form textarea { min-height:100px; resize:vertical; }
+    .quote-form .btn-submit { width:100%; padding:0.9rem; border:none; border-radius:12px; background:linear-gradient(135deg,#a78bfa,#60a5fa); color:#fff; font-weight:700; font-size:1rem; cursor:pointer; transition:all 0.3s; }
+    .quote-form .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(167,139,250,0.35); }
+    .quote-form .btn-submit:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+    .quote-success { display:none; text-align:center; padding:2rem; color:#34d399; }
+    .quote-success.show { display:block; }
+
+    @media (max-width:768px) {
+      nav { padding:1rem 1.2rem; }
+      .nav-links { gap:1rem; }
+      .nav-links a { font-size:0.8rem; }
+      .chat-box { right:1rem; bottom:5rem; width:calc(100vw - 2rem); }
+      .toast { right:1rem; bottom:5.5rem; }
+      .quote-form .form-row { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo">BABE</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-back">← Inicio</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#cotizacion">Cotización</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+      <li><a class="btn-wa" style="padding:0.4rem 1rem;border-radius:50px;font-weight:600;color:#fff;" href="https://wa.me/521234567890?text=Hola!%20Quiero%20información%20sobre%20desarrollo%20con%20IA" target="_blank">WhatsApp</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <span class="hero-badge">✦ Inteligencia artificial aplicada</span>
+    <h1>Transformamos tu negocio <span>con IA</span></h1>
+    <p>Creamos aplicaciones web, chatbots inteligentes y sistemas de automatización que potencian la productividad y la experiencia de tus clientes.</p>
+    <div class="hero-btns">
+      <a href="#servicios" class="btn btn-primary">Ver servicios</a>
+      <a href="https://wa.me/521234567890?text=Hola!%20Quiero%20una%20cotización%20para%20desarrollo%20con%20IA" target="_blank" class="btn btn-wa">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Cotizar ahora
+      </a>
+    </div>
+  </section>
+
+  <section id="servicios">
+    <span class="section-tag">Servicios</span>
+    <h2 class="section-title">Desarrollo inteligente</h2>
+    <p class="section-desc">Integramos IA en cada capa de tu producto digital: desde asistentes conversacionales hasta sistemas de análisis predictivo.</p>
+    <div class="services-grid">
+      <div class="service-item"><div class="icon">🤖</div><h4>Chatbots & Asistentes IA</h4><p>Agentes conversacionales con GPT, Claude y modelos custom. Atención 24/7 con lenguaje natural.</p></div>
+      <div class="service-item"><div class="icon">🌐</div><h4>Apps Web Progresivas</h4><p>Plataformas web modernas con React, Next.js y backend serverless. Experiencias rápidas y escalables.</p></div>
+      <div class="service-item"><div class="icon">📱</div><h4>Apps Móviles</h4><p>Desarrollo iOS y Android con Flutter y React Native. Apps nativas con inteligencia embebida.</p></div>
+      <div class="service-item"><div class="icon">⚡</div><h4>Automatización inteligente</h4><p>Workflows, RPA y procesos automatizados con toma de decisiones basada en IA.</p></div>
+      <div class="service-item"><div class="icon">📊</div><h4>Análisis de datos & BI</h4><p>Dashboards dinámicos, predicciones, segmentación de clientes y detección de patrones.</p></div>
+      <div class="service-item"><div class="icon">🔌</div><h4>Integración de APIs</h4><p>Conexión con OpenAI, Stripe, WhatsApp Business API, Google Cloud y más.</p></div>
+    </div>
+  </section>
+
+  <section id="proyectos">
+    <span class="section-tag">Portafolio</span>
+    <h2 class="section-title">Proyectos IA</h2>
+    <p class="section-desc">Soluciones digitales que hemos construido para impulsar negocios.</p>
+    <div class="projects-grid">
+      <div class="project-card"><div class="icon">💬</div><span class="project-badge">IA / Chatbot</span><h4>Asistente comercial</h4><p>Chatbot con IA generativa para atención al cliente, agendamiento y ventas automatizadas.</p><div class="project-status"><span class="dot completed"></span> Completado</div></div>
+      <div class="project-card"><div class="icon">📊</div><span class="project-badge">IA / Dashboard</span><h4>Analytics predictivo</h4><p>Tablero de inteligencia de negocio con predicción de ventas y alertas automáticas.</p><div class="project-status"><span class="dot featured" style="background:#a78bfa;"></span> Destacado</div></div>
+      <div class="project-card"><div class="icon">🛒</div><span class="project-badge">IA / Web App</span><h4>E-commerce inteligente</h4><p>Plataforma de comercio electrónico con recomendaciones personalizadas y búsqueda semántica.</p><div class="project-status"><span class="dot completed"></span> Completado</div></div>
+      <div class="project-card"><div class="icon">⚙️</div><span class="project-badge">IA / Automatización</span><h4>Pipeline de documentos</h4><p>Sistema de procesamiento automático de facturas con extracción de datos por IA.</p><div class="project-status"><span class="dot progress"></span> En progreso</div></div>
+    </div>
+  </section>
+
+  <section id="cotizacion">
+    <span class="section-tag">Cotización</span>
+    <h2 class="section-title">Solicita tu cotización</h2>
+    <p class="section-desc">Cuéntanos qué proyecto digital tienes en mente y te daremos una propuesta en menos de 48 horas.</p>
+    <div class="quote-form">
+      <div class="form-row">
+        <div class="field"><label>Nombre completo</label><input type="text" id="qf_name" placeholder="Tu nombre" /></div>
+        <div class="field"><label>Correo electrónico</label><input type="email" id="qf_email" placeholder="tu@correo.com" /></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Teléfono / WhatsApp</label><input type="text" id="qf_phone" placeholder="+52 123 456 7890" /></div>
+        <div class="field"><label>Tipo de servicio</label>
+          <select id="qf_service">
+            <option value="chatbot">Chatbot / Asistente IA</option>
+            <option value="web">App web / PWA</option>
+            <option value="mobile">App móvil</option>
+            <option value="automation">Automatización / RPA</option>
+            <option value="analytics">Analytics / BI</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Descripción del proyecto</label><textarea id="qf_desc" placeholder="Objetivos, funcionalidades clave, plazo estimado, presupuesto..."></textarea></div>
+      <button class="btn-submit" id="qf_submit">Enviar solicitud</button>
+      <div class="quote-success" id="qf_success"><div style="font-size:3rem;margin-bottom:1rem;">✓</div><strong>¡Solicitud enviada!</strong><br />Te contactaremos en menos de 48 horas.</div>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <div class="cta-section">
+      <span class="section-tag">Contacto</span>
+      <h2>¿Listo para dar el salto digital?</h2>
+      <p>Conversemos sobre tu proyecto y descubre cómo la inteligencia artificial puede transformar tu negocio.</p>
+      <div class="hero-btns">
+        <a href="https://wa.me/521234567890?text=Hola!%20Quiero%20una%20cotización%20para%20desarrollo%20con%20IA" target="_blank" class="btn btn-wa">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Cotiza por WhatsApp
+        </a>
+        <a href="mailto:hola@babe.com" class="btn btn-outline">hola@babe.com</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>&copy; 2026 Babe &mdash; Agencia IA. Todos los derechos reservados.<br /><span style="font-size:0.7rem;opacity:0.3;"><a href="admin.html">⚙️</a></span></footer>
+
+  <button class="chat-btn" id="chatBtn" aria-label="Abrir chat">
+    <svg id="chatIcon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+  </button>
+  <div class="chat-box" id="chatBox">
+    <div class="chat-header">
+      <div class="chat-header-info"><div class="chat-avatar">A</div><div><h4>Asistente IA</h4><span class="status">● Online</span></div></div>
+      <button class="chat-close" id="chatClose">&times;</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">¡Hola! Soy el asistente de <strong>Agencia IA</strong> de Babe. 🚀<br />¿Qué proyecto digital o solución con IA necesitas?</div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." autocomplete="off" />
+      <button class="chat-send" id="chatSend"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const chatBtn = document.getElementById('chatBtn');
+    const chatBox = document.getElementById('chatBox');
+    const chatClose = document.getElementById('chatClose');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+    const chatIcon = document.getElementById('chatIcon');
+    const toast = document.getElementById('toast');
+    let chatOpen = false;
+
+    function toggleChat(open) {
+      chatOpen = open !== undefined ? open : !chatOpen;
+      chatBox.classList.toggle('open', chatOpen);
+      if (chatOpen) { chatInput.focus(); chatIcon.innerHTML = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>'; }
+      else { chatIcon.innerHTML = '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>'; }
+    }
+    chatBtn.addEventListener('click', () => toggleChat());
+    chatClose.addEventListener('click', () => toggleChat(false));
+
+    function showToast(text, duration) { toast.textContent = text; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(() => toast.classList.remove('show'), duration || 3000); }
+    function addMessage(text, type) { const div = document.createElement('div'); div.className = 'msg ' + type; div.innerHTML = text; chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; }
+    function showTyping() { const div = document.createElement('div'); div.className = 'typing'; div.id = 'typingIndicator'; div.innerHTML = '<span></span><span></span><span></span>'; chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; }
+    function hideTyping() { const el = document.getElementById('typingIndicator'); if (el) el.remove(); }
+
+    function getBotResponse(msg) {
+      const l = msg.toLowerCase();
+      if (l.includes('precio')||l.includes('costo')||l.includes('cotizar')) return 'Los costos dependen del alcance del proyecto. Trabajamos desde $500 USD para chatbots hasta soluciones enterprise. Cuéntanos qué necesitas y te damos una cotización personalizada.';
+      if (l.includes('chatbot')||l.includes('asistente')||l.includes('bot')) return 'Creamos chatbots inteligentes con GPT, Claude y modelos custom. Integramos WhatsApp, web y apps. ¿Qué canal necesitas?';
+      if (l.includes('web')||l.includes('app')||l.includes('página')) return 'Desarrollamos apps web progresivas con React, Next.js y backend serverless. También apps móviles nativas con Flutter. ¿Tienes una idea en mente?';
+      if (l.includes('automatizacion')||l.includes('automatización')||l.includes('workflow')||l.includes('rpa')) return 'Automatizamos procesos repetitivos con IA: facturación, atención al cliente, análisis de datos. Cuéntanos qué proceso quieres optimizar.';
+      if (l.includes('whatsapp')||l.includes('contacto')) return 'Puedes escribirnos directo por WhatsApp. 👉 <a href="https://wa.me/521234567890" target="_blank" style="color:#a78bfa;">Abrir WhatsApp</a>';
+      if (l.includes('gracias')||l.includes('bye')) return '¡Un placer! Quedamos atentos a cualquier duda. Escríbenos cuando gustes. 🚀';
+      if (l.includes('hola')||l.includes('buenas')) return '¡Hola de nuevo! 😊 Cuéntame, ¿qué proyecto digital o solución con IA necesitas? ¿Un chatbot, una app web, automatización?';
+      return 'Gracias por tu interés. ¿Podrías contarme más sobre tu proyecto? Puedo ayudarte con chatbots, apps web, automatización o análisis de datos. O si prefieres, ¡escríbenos por WhatsApp!';
+    }
+
+    function handleSend() {
+      const text = chatInput.value.trim(); if (!text) return;
+      addMessage(text, 'user'); chatInput.value = ''; showTyping();
+      setTimeout(() => { hideTyping(); addMessage(getBotResponse(text), 'bot'); }, Math.min(600 + text.length * 20, 1800));
+    }
+    chatSend.addEventListener('click', handleSend);
+    chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleSend(); });
+
+    // Quote form
+    document.getElementById('qf_submit').addEventListener('click', function() {
+      const name = document.getElementById('qf_name').value.trim();
+      const email = document.getElementById('qf_email').value.trim();
+      const desc = document.getElementById('qf_desc').value.trim();
+      if (!name || !email || !desc) { alert('Completa nombre, correo y descripción.'); return; }
+      const quote = { id: Date.now(), name, email, phone: document.getElementById('qf_phone').value.trim(), service: 'ia', desc, date: new Date().toISOString(), status: 'new' };
+      const existing = JSON.parse(localStorage.getItem('babe_quotes') || '[]');
+      existing.unshift(quote);
+      localStorage.setItem('babe_quotes', JSON.stringify(existing));
+      localStorage.setItem('babe_quotes_updated', Date.now().toString());
+      document.getElementById('qf_submit').style.display = 'none';
+      document.getElementById('qf_success').classList.add('show');
+    });
+
+    // Toast
+    let toastShown = false; let awayTimer = null;
+    function resetAwayTimer() {
+      if (toastShown) return; clearTimeout(awayTimer);
+      awayTimer = setTimeout(function() { if (!chatOpen) { showToast('💬 ¿Necesitas ayuda con tu proyecto IA?'); toastShown = true; } }, 30000);
+    }
+    document.addEventListener('mousemove', resetAwayTimer); document.addEventListener('keydown', resetAwayTimer); resetAwayTimer();
+    chatBtn.addEventListener('click', function() { toastShown = false; });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+      a.addEventListener('click', function(e) { const t = document.querySelector(this.getAttribute('href')); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
+    });
+  </script>
+</body>
+</html>

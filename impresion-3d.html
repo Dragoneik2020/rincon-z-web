@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Babe - Impresión 3D</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+      background:#0a0a0f; color:#f0f0f5; line-height:1.6; overflow-x:hidden;
+    }
+    ::-webkit-scrollbar { width:8px; }
+    ::-webkit-scrollbar-track { background:#0a0a0f; }
+    ::-webkit-scrollbar-thumb { background:#3b3b5c; border-radius:4px; }
+
+    nav {
+      position:fixed; top:0; width:100%; padding:1.2rem 2rem;
+      display:flex; justify-content:space-between; align-items:center;
+      z-index:1000; background:rgba(10,10,15,0.85); backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+    .logo {
+      font-size:1.6rem; font-weight:800; text-decoration:none;
+      background:linear-gradient(135deg,#f59e0b,#f97316);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .nav-links { display:flex; gap:2rem; list-style:none; align-items:center; }
+    .nav-links a {
+      color:#b0b0c8; text-decoration:none; font-size:0.9rem; font-weight:500;
+      transition:color 0.3s;
+    }
+    .nav-links a:hover { color:#fff; }
+    .nav-back {
+      color:#f59e0b !important; font-weight:600 !important;
+    }
+
+    .hero {
+      min-height:100vh; display:flex; flex-direction:column;
+      justify-content:center; align-items:center; text-align:center;
+      padding:6rem 2rem 2rem;
+      position:relative;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(245,158,11,0.1), transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(249,115,22,0.08), transparent 60%);
+    }
+    .hero::before {
+      content:''; position:absolute; inset:0;
+      background:url('https://images.unsplash.com/photo-1615996001375-c7ef13294436?w=1400&q=80') center/cover;
+      opacity:0.08; z-index:0;
+    }
+    .hero>* { position:relative; z-index:1; }
+    .hero-badge {
+      display:inline-block; background:rgba(245,158,11,0.12);
+      border:1px solid rgba(245,158,11,0.2); padding:0.4rem 1.2rem;
+      border-radius:50px; font-size:0.8rem; color:#f59e0b;
+      margin-bottom:1.5rem; letter-spacing:1px;
+    }
+    .hero h1 {
+      font-size:clamp(2.5rem,7vw,5rem); font-weight:800;
+      line-height:1.1; margin-bottom:1.2rem;
+    }
+    .hero h1 span {
+      background:linear-gradient(135deg,#f59e0b,#f97316);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .hero p { font-size:1.15rem; color:#9090aa; max-width:600px; margin-bottom:2rem; }
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; }
+    .btn {
+      padding:0.85rem 2.2rem; border-radius:50px; text-decoration:none;
+      font-weight:600; font-size:0.95rem; transition:all 0.3s;
+      display:inline-flex; align-items:center; gap:0.5rem;
+    }
+    .btn-primary {
+      background:linear-gradient(135deg,#f59e0b,#f97316); color:#fff;
+      box-shadow:0 4px 25px rgba(245,158,11,0.3);
+    }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 35px rgba(245,158,11,0.45); }
+    .btn-outline { border:1.5px solid rgba(255,255,255,0.15); color:#f0f0f5; }
+    .btn-outline:hover { border-color:#f59e0b; background:rgba(245,158,11,0.08); }
+    .btn-wa { background:#25d366; color:#fff; }
+    .btn-wa:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(37,211,102,0.35); }
+
+    section { padding:6rem 2rem; max-width:1200px; margin:0 auto; }
+    .section-tag {
+      display:inline-block; font-size:0.75rem; text-transform:uppercase;
+      letter-spacing:2px; color:#f59e0b; margin-bottom:0.6rem; font-weight:600;
+    }
+    .section-title { font-size:clamp(2rem,4vw,3rem); font-weight:700; margin-bottom:1rem; }
+    .section-desc { color:#9090aa; max-width:600px; margin-bottom:3rem; }
+
+    .services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
+    .service-item {
+      background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05);
+      border-radius:18px; padding:2rem 1.8rem; transition:all 0.3s;
+    }
+    .service-item:hover {
+      background:rgba(255,255,255,0.04);
+      border-color:rgba(245,158,11,0.2); transform:translateY(-3px);
+    }
+    .service-item .icon { font-size:2rem; margin-bottom:1rem; }
+    .service-item h4 { font-size:1.1rem; margin-bottom:0.5rem; }
+    .service-item p { font-size:0.85rem; color:#8080a0; }
+
+    .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; }
+    .project-card {
+      background:linear-gradient(145deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.06); border-radius:20px;
+      padding:2rem 1.8rem; transition:all 0.3s;
+    }
+    .project-card:hover { border-color:rgba(255,255,255,0.12); transform:translateY(-4px); }
+    .project-card .icon { font-size:2.4rem; margin-bottom:0.8rem; }
+    .project-card h4 { font-size:1.1rem; margin-bottom:0.5rem; }
+    .project-card p { font-size:0.85rem; color:#8080a0; margin-bottom:1rem; }
+    .project-badge {
+      display:inline-block; font-size:0.7rem; font-weight:600; text-transform:uppercase;
+      letter-spacing:1px; padding:0.25rem 0.8rem; border-radius:50px; margin-bottom:1rem;
+      background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.2);
+    }
+    .project-status { font-size:0.75rem; display:flex; align-items:center; gap:0.4rem; }
+    .project-status .dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
+    .project-status .dot.completed { background:#34d399; }
+    .project-status .dot.progress { background:#f59e0b; }
+
+    .cta-section {
+      text-align:center;
+      background:radial-gradient(ellipse at center,rgba(245,158,11,0.06),transparent);
+      padding:6rem 2rem; border-radius:32px;
+      border:1px solid rgba(255,255,255,0.05); max-width:900px; margin:0 auto 2rem;
+    }
+    .cta-section h2 { font-size:clamp(1.8rem,3vw,2.6rem); margin-bottom:1rem; }
+    .cta-section p { color:#9090aa; margin-bottom:2rem; }
+
+    footer { text-align:center; padding:2rem; color:#505070; font-size:0.8rem; border-top:1px solid rgba(255,255,255,0.04); }
+    footer a { color:#505070; text-decoration:none; }
+
+    .chat-btn {
+      position:fixed; bottom:1.8rem; right:1.8rem; width:58px; height:58px;
+      border-radius:50%; background:linear-gradient(135deg,#f59e0b,#f97316);
+      border:none; color:#fff; font-size:1.5rem; cursor:pointer; z-index:999;
+      box-shadow:0 6px 30px rgba(245,158,11,0.4);
+      transition:all 0.3s; display:flex; align-items:center; justify-content:center;
+    }
+    .chat-btn:hover { transform:scale(1.1); box-shadow:0 8px 40px rgba(245,158,11,0.55); }
+    .chat-btn svg { width:26px; height:26px; fill:currentColor; }
+
+    .chat-box {
+      position:fixed; bottom:5.5rem; right:1.8rem; width:360px;
+      max-width:calc(100vw - 3.6rem); max-height:520px;
+      background:#12121c; border:1px solid rgba(255,255,255,0.08);
+      border-radius:20px; display:none; flex-direction:column; z-index:998;
+      box-shadow:0 20px 60px rgba(0,0,0,0.6); overflow:hidden;
+      animation:slideUp 0.35s ease;
+    }
+    .chat-box.open { display:flex; }
+    @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .chat-header { padding:1rem 1.2rem; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:space-between; }
+    .chat-header-info { display:flex; align-items:center; gap:0.7rem; }
+    .chat-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#f59e0b,#f97316); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem; }
+    .chat-header h4 { font-size:0.95rem; font-weight:600; }
+    .chat-header .status { font-size:0.7rem; color:#25d366; }
+    .chat-close { background:none; border:none; color:#606080; font-size:1.3rem; cursor:pointer; }
+    .chat-close:hover { color:#fff; }
+    .chat-messages { flex:1; padding:1rem 1.2rem; overflow-y:auto; display:flex; flex-direction:column; gap:0.6rem; min-height:200px; max-height:320px; }
+    .msg { max-width:85%; padding:0.7rem 1rem; border-radius:14px; font-size:0.88rem; line-height:1.4; animation:msgIn 0.3s ease; }
+    @keyframes msgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+    .msg.bot { background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.15); align-self:flex-start; border-bottom-left-radius:4px; }
+    .msg.user { background:rgba(249,115,22,0.15); border:1px solid rgba(249,115,22,0.15); align-self:flex-end; border-bottom-right-radius:4px; }
+    .chat-input-area { display:flex; gap:0.5rem; padding:0.8rem 1rem; border-top:1px solid rgba(255,255,255,0.06); background:rgba(255,255,255,0.02); }
+    .chat-input-area input { flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:0.7rem 1rem; color:#f0f0f5; font-size:0.9rem; outline:none; }
+    .chat-input-area input:focus { border-color:#f59e0b; }
+    .chat-input-area input::placeholder { color:#505070; }
+    .chat-send { width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg,#f59e0b,#f97316); border:none; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s; flex-shrink:0; }
+    .chat-send:hover { transform:scale(1.06); box-shadow:0 4px 20px rgba(245,158,11,0.35); }
+    .chat-send svg { width:18px; height:18px; fill:currentColor; }
+    .typing { display:flex; gap:4px; padding:0.7rem 1rem; background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.12); border-radius:14px; align-self:flex-start; border-bottom-left-radius:4px; }
+    .typing span { width:7px; height:7px; background:#f59e0b; border-radius:50%; animation:typingBounce 1.2s infinite; }
+    .typing span:nth-child(2) { animation-delay:0.2s; }
+    .typing span:nth-child(3) { animation-delay:0.4s; }
+    @keyframes typingBounce { 0%,60%,100%{transform:translateY(0);opacity:0.4} 30%{transform:translateY(-6px);opacity:1} }
+    .toast { position:fixed; bottom:6rem; right:6rem; background:#12121c; border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:0.8rem 1.2rem; font-size:0.85rem; color:#f0f0f5; box-shadow:0 10px 40px rgba(0,0,0,0.5); opacity:0; transform:translateY(10px); transition:all 0.35s; z-index:997; pointer-events:none; }
+    .toast.show { opacity:1; transform:translateY(0); }
+
+    .quote-form { max-width:680px; margin:0 auto; background:#12121c; border:1px solid rgba(255,255,255,0.06); border-radius:24px; padding:2.5rem; }
+    .quote-form .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .quote-form .field { margin-bottom:1.2rem; }
+    .quote-form label { display:block; font-size:0.8rem; font-weight:600; color:#a0a0b8; margin-bottom:0.4rem; }
+    .quote-form input, .quote-form select, .quote-form textarea { width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:0.8rem 1rem; color:#f0f0f5; font-size:0.9rem; font-family:inherit; outline:none; transition:border-color 0.3s; }
+    .quote-form input:focus, .quote-form select:focus, .quote-form textarea:focus { border-color:#f59e0b; }
+    .quote-form select option { background:#12121c; color:#f0f0f5; }
+    .quote-form textarea { min-height:100px; resize:vertical; }
+    .quote-form .btn-submit { width:100%; padding:0.9rem; border:none; border-radius:12px; background:linear-gradient(135deg,#f59e0b,#f97316); color:#fff; font-weight:700; font-size:1rem; cursor:pointer; transition:all 0.3s; }
+    .quote-form .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(245,158,11,0.35); }
+    .quote-form .btn-submit:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+    .quote-success { display:none; text-align:center; padding:2rem; color:#34d399; }
+    .quote-success.show { display:block; }
+
+    @media (max-width:768px) {
+      nav { padding:1rem 1.2rem; }
+      .nav-links { gap:1rem; }
+      .nav-links a { font-size:0.8rem; }
+      .chat-box { right:1rem; bottom:5rem; width:calc(100vw - 2rem); }
+      .toast { right:1rem; bottom:5.5rem; }
+      .quote-form .form-row { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo">BABE</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-back">← Inicio</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#cotizacion">Cotización</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+      <li><a class="btn-wa" style="padding:0.4rem 1rem;border-radius:50px;font-weight:600;color:#fff;" href="https://wa.me/521234567890?text=Hola!%20Quiero%20información%20sobre%20impresión%203D" target="_blank">WhatsApp</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <span class="hero-badge">✦ Fabricación aditiva de precisión</span>
+    <h1>Damos vida a tus <span>ideas en 3D</span></h1>
+    <p>Desde un prototipo funcional hasta producción en serie. Trabajamos con PLA, PETG, resina, TPU y materiales técnicos para llevar tu proyecto al mundo físico.</p>
+    <div class="hero-btns">
+      <a href="#servicios" class="btn btn-primary">Ver servicios</a>
+      <a href="https://wa.me/521234567890?text=Hola!%20Quiero%20cotizar%20una%20pieza%203D" target="_blank" class="btn btn-wa">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Cotizar ahora
+      </a>
+    </div>
+  </section>
+
+  <section id="servicios">
+    <span class="section-tag">Servicios</span>
+    <h2 class="section-title">Fabricación 3D profesional</h2>
+    <p class="section-desc">Cubrimos todo el proceso, desde el diseño hasta el post-procesado, con materiales y acabados de primera calidad.</p>
+    <div class="services-grid">
+      <div class="service-item"><div class="icon">🖨️</div><h4>Impresión FDM</h4><p>Prototipos funcionales con PLA+, PETG, ABS, TPU y composites. Precisión 0.1 mm.</p></div>
+      <div class="service-item"><div class="icon">💎</div><h4>Impresión Resina</h4><p>Alta resolución para miniaturas, joyería, odontología y piezas de alta definición.</p></div>
+      <div class="service-item"><div class="icon">📐</div><h4>Modelado 3D</h4><p>Diseño paramétrico y orgánico. Escaneo 3D y reverse engineering.</p></div>
+      <div class="service-item"><div class="icon">🔩</div><h4>Piezas mecánicas</h4><p>Engranajes, soportes, carcasas y componentes funcionales para ingeniería.</p></div>
+      <div class="service-item"><div class="icon">🎨</div><h4>Post-procesado</h4><p>Lijado, pintura, acabado profesional y ensamblaje de piezas complejas.</p></div>
+      <div class="service-item"><div class="icon">🏭</div><h4>Producción bajo demanda</h4><p>Tiradas cortas y medias. Fabricación just-in-time sin mínimo de cantidad.</p></div>
+    </div>
+  </section>
+
+  <section id="proyectos">
+    <span class="section-tag">Portafolio</span>
+    <h2 class="section-title">Proyectos en 3D</h2>
+    <p class="section-desc">Algunos de los trabajos que hemos materializado para nuestros clientes.</p>
+    <div class="projects-grid">
+      <div class="project-card"><div class="icon">🔧</div><span class="project-badge">Impresión 3D</span><h4>Soporte industrial</h4><p>Pieza mecánica en PETG para línea de producción. Resistencia y precisión.</p><div class="project-status"><span class="dot completed"></span> Completado</div></div>
+      <div class="project-card"><div class="icon">💎</div><span class="project-badge">Impresión 3D</span><h4>Miniatura coleccionable</h4><p>Modelo en resina de alta definición pintado a mano con acabado profesional.</p><div class="project-status"><span class="dot featured" style="background:#f59e0b;"></span> Destacado</div></div>
+      <div class="project-card"><div class="icon">🏗️</div><span class="project-badge">Impresión 3D</span><h4>Maqueta arquitectónica</h4><p>Maqueta a escala de edificio comercial con detalles precisos en fachada.</p><div class="project-status"><span class="dot completed"></span> Completado</div></div>
+      <div class="project-card"><div class="icon">🦾</div><span class="project-badge">Impresión 3D</span><h4>Prótesis personalizada</h4><p>Diseño y fabricación de órtesis a medida con materiales biocompatibles.</p><div class="project-status"><span class="dot progress"></span> En progreso</div></div>
+    </div>
+  </section>
+
+  <section id="cotizacion">
+    <span class="section-tag">Cotización</span>
+    <h2 class="section-title">Solicita tu cotización</h2>
+    <p class="section-desc">Cuéntanos qué pieza o proyecto necesitas y te responderemos en menos de 24 horas.</p>
+    <div class="quote-form">
+      <div class="form-row">
+        <div class="field"><label>Nombre completo</label><input type="text" id="qf_name" placeholder="Tu nombre" /></div>
+        <div class="field"><label>Correo electrónico</label><input type="email" id="qf_email" placeholder="tu@correo.com" /></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Teléfono / WhatsApp</label><input type="text" id="qf_phone" placeholder="+52 123 456 7890" /></div>
+        <div class="field"><label>Tipo de impresión</label>
+          <select id="qf_service">
+            <option value="fdm">FDM (PLA, PETG, ABS, TPU)</option>
+            <option value="resina">Resina (alta definición)</option>
+            <option value="modelado">Modelado 3D personalizado</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Descripción de la pieza o proyecto</label><textarea id="qf_desc" placeholder="Dimensiones, material deseado, cantidad, fecha estimada..."></textarea></div>
+      <button class="btn-submit" id="qf_submit">Enviar solicitud</button>
+      <div class="quote-success" id="qf_success"><div style="font-size:3rem;margin-bottom:1rem;">✓</div><strong>¡Solicitud enviada!</strong><br />Te contactaremos en menos de 24 horas.</div>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <div class="cta-section">
+      <span class="section-tag">Contacto</span>
+      <h2>¿Listo para imprimir tu idea?</h2>
+      <p>Cuéntanos qué necesitas y te daremos una cotización precisa con los mejores tiempos de entrega.</p>
+      <div class="hero-btns">
+        <a href="https://wa.me/521234567890?text=Hola!%20Quiero%20cotizar%20una%20pieza%203D" target="_blank" class="btn btn-wa">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Cotiza por WhatsApp
+        </a>
+        <a href="mailto:hola@babe.com" class="btn btn-outline">hola@babe.com</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>&copy; 2026 Babe &mdash; Impresión 3D. Todos los derechos reservados.<br /><span style="font-size:0.7rem;opacity:0.3;"><a href="admin.html">⚙️</a></span></footer>
+
+  <button class="chat-btn" id="chatBtn" aria-label="Abrir chat">
+    <svg id="chatIcon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+  </button>
+  <div class="chat-box" id="chatBox">
+    <div class="chat-header">
+      <div class="chat-header-info"><div class="chat-avatar">B</div><div><h4>Asistente 3D</h4><span class="status">● Online</span></div></div>
+      <button class="chat-close" id="chatClose">&times;</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">¡Hola! Soy el asistente de <strong>Impresión 3D</strong> de Babe. 👋<br />¿Qué tipo de pieza o proyecto necesitas fabricar?</div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." autocomplete="off" />
+      <button class="chat-send" id="chatSend"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const chatBtn = document.getElementById('chatBtn');
+    const chatBox = document.getElementById('chatBox');
+    const chatClose = document.getElementById('chatClose');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+    const chatIcon = document.getElementById('chatIcon');
+    const toast = document.getElementById('toast');
+    let chatOpen = false;
+
+    function toggleChat(open) {
+      chatOpen = open !== undefined ? open : !chatOpen;
+      chatBox.classList.toggle('open', chatOpen);
+      if (chatOpen) { chatInput.focus(); chatIcon.innerHTML = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>'; }
+      else { chatIcon.innerHTML = '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>'; }
+    }
+    chatBtn.addEventListener('click', () => toggleChat());
+    chatClose.addEventListener('click', () => toggleChat(false));
+
+    function showToast(text, duration) { toast.textContent = text; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(() => toast.classList.remove('show'), duration || 3000); }
+    function addMessage(text, type) { const div = document.createElement('div'); div.className = 'msg ' + type; div.innerHTML = text; chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; }
+    function showTyping() { const div = document.createElement('div'); div.className = 'typing'; div.id = 'typingIndicator'; div.innerHTML = '<span></span><span></span><span></span>'; chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; }
+    function hideTyping() { const el = document.getElementById('typingIndicator'); if (el) el.remove(); }
+
+    function getBotResponse(msg) {
+      const l = msg.toLowerCase();
+      if (l.includes('precio')||l.includes('costo')||l.includes('cotizar')) return 'Los precios varían según material, tamaño y complejidad. Para darte una cotización precisa, ¿podrías contarme más detalles de la pieza? O mejor, ¡escríbenos por WhatsApp!';
+      if (l.includes('pla')||l.includes('petg')||l.includes('abs')||l.includes('tpu')||l.includes('filamento')||l.includes('fdm')) return 'Trabajamos con PLA+, PETG, ABS, TPU y materiales compuestos. La FDM es ideal para prototipos funcionales y piezas mecánicas. ¿Qué material te interesa?';
+      if (l.includes('resina')) return 'La impresión en resina ofrece detalles finos y acabado suave. Perfecta para miniaturas, joyería, odontología y modelos decorativos. ¿Tienes el archivo STL?';
+      if (l.includes('whatsapp')||l.includes('contacto')) return 'Puedes escribirnos directo por WhatsApp y te respondemos en minutos. 👉 <a href="https://wa.me/521234567890" target="_blank" style="color:#f59e0b;">Abrir WhatsApp</a>';
+      if (l.includes('gracias')||l.includes('bye')) return '¡De nada! Quedamos atentos a cualquier duda. No olvides que puedes contactarnos por WhatsApp cuando gustes. 😊';
+      if (l.includes('hola')||l.includes('buenas')) return '¡Hola de nuevo! 😊 Cuéntame, ¿qué tipo de pieza o proyecto en 3D necesitas? ¿FDM o resina?';
+      return 'Gracias por tu mensaje. Para ayudarte mejor, ¿podrías indicarme qué tipo de pieza necesitas? ¿FDM (prototipos funcionales) o resina (alta definición)? O si prefieres, ¡escríbenos por WhatsApp!';
+    }
+
+    function handleSend() {
+      const text = chatInput.value.trim(); if (!text) return;
+      addMessage(text, 'user'); chatInput.value = ''; showTyping();
+      setTimeout(() => { hideTyping(); addMessage(getBotResponse(text), 'bot'); }, Math.min(600 + text.length * 20, 1800));
+    }
+    chatSend.addEventListener('click', handleSend);
+    chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleSend(); });
+
+    // Quote form
+    document.getElementById('qf_submit').addEventListener('click', function() {
+      const name = document.getElementById('qf_name').value.trim();
+      const email = document.getElementById('qf_email').value.trim();
+      const desc = document.getElementById('qf_desc').value.trim();
+      if (!name || !email || !desc) { alert('Completa nombre, correo y descripción.'); return; }
+      const quote = { id: Date.now(), name, email, phone: document.getElementById('qf_phone').value.trim(), service: '3d', desc, date: new Date().toISOString(), status: 'new' };
+      const existing = JSON.parse(localStorage.getItem('babe_quotes') || '[]');
+      existing.unshift(quote);
+      localStorage.setItem('babe_quotes', JSON.stringify(existing));
+      localStorage.setItem('babe_quotes_updated', Date.now().toString());
+      document.getElementById('qf_submit').style.display = 'none';
+      document.getElementById('qf_success').classList.add('show');
+    });
+
+    // Toast
+    let toastShown = false; let awayTimer = null;
+    function resetAwayTimer() {
+      if (toastShown) return; clearTimeout(awayTimer);
+      awayTimer = setTimeout(function() { if (!chatOpen) { showToast('💬 ¿Necesitas ayuda con tu impresión 3D?'); toastShown = true; } }, 30000);
+    }
+    document.addEventListener('mousemove', resetAwayTimer); document.addEventListener('keydown', resetAwayTimer); resetAwayTimer();
+    chatBtn.addEventListener('click', function() { toastShown = false; });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+      a.addEventListener('click', function(e) { const t = document.querySelector(this.getAttribute('href')); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
+    });
+  </script>
+</body>
+</html>
