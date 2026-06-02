@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="dynamic-title">Babe - Impresión 3D & Agencia IA</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0a0a0f;
+      color: #f0f0f5;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0a0f; }
+    ::-webkit-scrollbar-thumb { background: #3b3b5c; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #5c5c8a; }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      color: #b0b0c8;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #a78bfa, #60a5fa);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-wa {
+      background: #25d366;
+      color: #fff !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-weight: 600 !important;
+      transition: transform 0.3s, box-shadow 0.3s !important;
+    }
+    .nav-wa:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(37, 211, 102, 0.4);
+    }
+    .nav-wa::after { display: none !important; }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .menu-toggle span {
+      width: 26px;
+      height: 2.5px;
+      background: #f0f0f5;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      background: radial-gradient(ellipse at 20% 50%, rgba(167, 139, 250, 0.08), transparent 60%),
+                  radial-gradient(ellipse at 80% 50%, rgba(96, 165, 250, 0.08), transparent 60%);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(167, 139, 250, 0.12);
+      border: 1px solid rgba(167, 139, 250, 0.2);
+      padding: 0.4rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      color: #a78bfa;
+      margin-bottom: 1.5rem;
+      letter-spacing: 1px;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: #9090aa;
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .btn {
+      padding: 0.85rem 2.2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      color: #fff;
+      box-shadow: 0 4px 25px rgba(167, 139, 250, 0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 35px rgba(167, 139, 250, 0.45);
+    }
+    .btn-outline {
+      border: 1.5px solid rgba(255, 255, 255, 0.15);
+      color: #f0f0f5;
+    }
+    .btn-outline:hover {
+      border-color: #a78bfa;
+      background: rgba(167, 139, 250, 0.08);
+    }
+    .btn-wa {
+      background: #25d366;
+      color: #fff;
+    }
+    .btn-wa:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.35);
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: #606080;
+      font-size: 0.75rem;
+      animation: float 2s infinite;
+    }
+    .scroll-indicator svg { width: 20px; height: 20px; }
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* Section */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #a78bfa;
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      color: #9090aa;
+      max-width: 600px;
+      margin-bottom: 3rem;
+    }
+
+    /* Dual Axes */
+    .dual-axes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .axis-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+    .axis-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 24px 24px 0 0;
+    }
+    .axis-card.print::before { background: linear-gradient(90deg, #f59e0b, #f97316); }
+    .axis-card.ai::before { background: linear-gradient(90deg, #a78bfa, #60a5fa); }
+
+    .axis-card:hover {
+      border-color: rgba(255,255,255,0.12);
+      transform: translateY(-4px);
+    }
+    .axis-icon {
+      font-size: 2.8rem;
+      margin-bottom: 1.2rem;
+    }
+    .axis-card h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0.8rem;
+    }
+    .axis-card p {
+      color: #9090aa;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+    .axis-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .axis-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      color: #c0c0d8;
+    }
+    .axis-features li::before {
+      content: '✓';
+      color: #a78bfa;
+      font-weight: 700;
+    }
+    .axis-card.print .axis-features li::before { color: #f59e0b; }
+    .axis-card.ai .axis-features li::before { color: #60a5fa; }
+
+    /* Services / Grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .service-item {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 18px;
+      padding: 2rem 1.8rem;
+      transition: all 0.3s;
+    }
+    .service-item:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(167, 139, 250, 0.2);
+      transform: translateY(-3px);
+    }
+    .service-item .icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .service-item h4 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .service-item p {
+      font-size: 0.85rem;
+      color: #8080a0;
+    }
+
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 2rem;
+      text-align: center;
+      padding: 4rem 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      margin: 4rem 0;
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: #8080a0;
+      margin-top: 0.3rem;
+    }
+
+    /* CTA */
+    .cta-section {
+      text-align: center;
+      background: radial-gradient(ellipse at center, rgba(167,139,250,0.06), transparent);
+      padding: 6rem 2rem;
+      border-radius: 32px;
+      border: 1px solid rgba(255,255,255,0.05);
+      max-width: 900px;
+      margin: 0 auto 2rem;
+    }
+    .cta-section h2 {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      margin-bottom: 1rem;
+    }
+    .cta-section p {
+      color: #9090aa;
+      margin-bottom: 2rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #505070;
+      font-size: 0.8rem;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* ========== CHAT BOT ========== */
+    .chat-btn {
+      position: fixed;
+      bottom: 1.8rem;
+      right: 1.8rem;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 999;
+      box-shadow: 0 6px 30px rgba(167, 139, 250, 0.4);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chat-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 40px rgba(167, 139, 250, 0.55);
+    }
+    .chat-btn svg {
+      width: 26px;
+      height: 26px;
+      fill: currentColor;
+    }
+
+    .chat-box {
+      position: fixed;
+      bottom: 5.5rem;
+      right: 1.8rem;
+      width: 360px;
+      max-width: calc(100vw - 3.6rem);
+      max-height: 520px;
+      background: #12121c;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      display: none;
+      flex-direction: column;
+      z-index: 998;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      overflow: hidden;
+      animation: slideUp 0.35s ease;
+    }
+    .chat-box.open { display: flex; }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chat-header {
+      padding: 1rem 1.2rem;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .chat-header-info {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .chat-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .chat-header h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .chat-header .status {
+      font-size: 0.7rem;
+      color: #25d366;
+    }
+    .chat-close {
+      background: none;
+      border: none;
+      color: #606080;
+      font-size: 1.3rem;
+      cursor: pointer;
+      padding: 0 4px;
+      transition: color 0.3s;
+    }
+    .chat-close:hover { color: #fff; }
+
+    .chat-messages {
+      flex: 1;
+      padding: 1rem 1.2rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      min-height: 200px;
+      max-height: 320px;
+    }
+    .msg {
+      max-width: 85%;
+      padding: 0.7rem 1rem;
+      border-radius: 14px;
+      font-size: 0.88rem;
+      line-height: 1.4;
+      animation: msgIn 0.3s ease;
+    }
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .msg.bot {
+      background: rgba(167, 139, 250, 0.1);
+      border: 1px solid rgba(167, 139, 250, 0.15);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .msg.user {
+      background: rgba(96, 165, 250, 0.15);
+      border: 1px solid rgba(96, 165, 250, 0.15);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-input-area {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.8rem 1rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.02);
+    }
+    .chat-input-area input {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 0.7rem 1rem;
+      color: #f0f0f5;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .chat-input-area input:focus {
+      border-color: #a78bfa;
+    }
+    .chat-input-area input::placeholder { color: #505070; }
+    .chat-send {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+    .chat-send:hover {
+      transform: scale(1.06);
+      box-shadow: 0 4px 20px rgba(167, 139, 250, 0.35);
+    }
+    .chat-send svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* Typing indicator */
+    .typing {
+      display: flex;
+      gap: 4px;
+      padding: 0.7rem 1rem;
+      background: rgba(167, 139, 250, 0.08);
+      border: 1px solid rgba(167, 139, 250, 0.12);
+      border-radius: 14px;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .typing span {
+      width: 7px;
+      height: 7px;
+      background: #a78bfa;
+      border-radius: 50%;
+      animation: typingBounce 1.2s infinite;
+    }
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 6rem;
+      right: 6rem;
+      background: #12121c;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 0.8rem 1.2rem;
+      font-size: 0.85rem;
+      color: #f0f0f5;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.35s;
+      z-index: 997;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 2rem 1.8rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card:hover {
+      border-color: rgba(255,255,255,0.12);
+      transform: translateY(-4px);
+    }
+    .project-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.25rem 0.8rem;
+      border-radius: 50px;
+      margin-bottom: 1rem;
+    }
+    .project-badge._3d { background: rgba(245,158,11,0.12); color: #f59e0b; border: 1px solid rgba(245,158,11,0.2); }
+    .project-badge._ai { background: rgba(96,165,250,0.12); color: #60a5fa; border: 1px solid rgba(96,165,250,0.2); }
+    .project-card .project-icon { font-size: 2.4rem; margin-bottom: 0.8rem; }
+    .project-card h4 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .project-card p { font-size: 0.85rem; color: #8080a0; margin-bottom: 1rem; }
+    .project-status {
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .project-status .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .project-status .dot.completed { background: #34d399; }
+    .project-status .dot.progress { background: #f59e0b; }
+    .project-status .dot.featured { background: #a78bfa; }
+
+    /* Quote Form */
+    .quote-form {
+      max-width: 680px;
+      margin: 0 auto;
+      background: #12121c;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 2.5rem;
+    }
+    .quote-form .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .quote-form .field {
+      margin-bottom: 1.2rem;
+    }
+    .quote-form label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #a0a0b8;
+      margin-bottom: 0.4rem;
+    }
+    .quote-form input,
+    .quote-form select,
+    .quote-form textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      color: #f0f0f5;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .quote-form input:focus,
+    .quote-form select:focus,
+    .quote-form textarea:focus {
+      border-color: #a78bfa;
+    }
+    .quote-form select option { background: #12121c; color: #f0f0f5; }
+    .quote-form textarea { min-height: 100px; resize: vertical; }
+    .quote-form .btn-submit {
+      width: 100%;
+      padding: 0.9rem;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .quote-form .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(167,139,250,0.35);
+    }
+    .quote-form .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .quote-success {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      color: #34d399;
+    }
+    .quote-success.show { display: block; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.2rem; }
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 260px;
+        height: 100vh;
+        background: #0e0e18;
+        flex-direction: column;
+        padding: 5rem 2rem 2rem;
+        gap: 1.5rem;
+        transition: right 0.35s;
+        border-left: 1px solid rgba(255,255,255,0.06);
+        align-items: flex-start;
+      }
+      .nav-links.open { right: 0; }
+      .menu-toggle { display: flex; }
+
+      .dual-axes { grid-template-columns: 1fr; }
+
+      .chat-box {
+        right: 1rem;
+        bottom: 5rem;
+        width: calc(100vw - 2rem);
+      }
+      .toast {
+        right: 1rem;
+        bottom: 5.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav>
+    <div class="logo" id="cms-brand">BABE</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#ejes">Ejes</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#cotizacion">Cotización</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+      <li><a class="nav-wa" id="cms-nav-wa" href="https://wa.me/521234567890?text=Hola!%20Quiero%20más%20información" target="_blank">WhatsApp</a></li>
+    </ul>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="inicio">
+    <span class="hero-badge" id="cms-hero-badge">✦ Innovación en dos direcciones</span>
+    <h1>
+      <span id="cms-hero-title1">Imprimimos el futuro.</span><br />
+      <span id="cms-hero-title2">Codificamos la inteligencia.</span>
+    </h1>
+    <p id="cms-hero-desc">
+      Somos una empresa con dos almas: fabricación aditiva de precisión y
+      desarrollo de software con IA. Creemos en crear, tanto en el mundo físico
+      como en el digital.
+    </p>
+    <div class="hero-btns">
+      <a href="#ejes" class="btn btn-primary" id="cms-hero-btn1">Conoce nuestros ejes</a>
+      <a id="cms-hero-wa" href="https://wa.me/521234567890?text=Hola!%20Quiero%20saber%20más%20sobre%20Babe" target="_blank" class="btn btn-wa">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <span id="cms-hero-btn2">Escríbenos</span>
+      </a>
+    </div>
+    <div class="scroll-indicator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+      <span>Desliza</span>
+    </div>
+  </section>
+
+  <!-- ===== DUAL AXES ===== -->
+  <section id="ejes">
+    <span class="section-tag" id="cms-axes-tag">Dos ejes, un propósito</span>
+    <h2 class="section-title" id="cms-axes-title">Impresión 3D & Agencia IA</h2>
+    <p class="section-desc" id="cms-axes-desc">
+      Operamos en dos frentes para cubrir tanto la fabricación física como la
+      transformación digital. Un solo equipo, dos especialidades.
+    </p>
+
+    <div class="dual-axes">
+      <!-- Eje 1: Impresión 3D -->
+      <div class="axis-card print">
+        <div class="axis-icon" id="cms-axis1-icon">🔧</div>
+        <h3 id="cms-axis1-title">Impresión 3D</h3>
+        <p id="cms-axis1-desc">
+          Desde prototipado rápido hasta producción en serie. Trabajamos con
+          PLA, PETG, resina, TPU y materiales técnicos.
+        </p>
+        <ul class="axis-features" id="cms-axis1-features">
+          <li>Prototipado funcional y estético</li>
+          <li>Piezas mecánicas y de ingeniería</li>
+          <li>Modelado 3D personalizado</li>
+          <li>Post-procesado profesional</li>
+          <li>Producción bajo demanda</li>
+        </ul>
+      </div>
+
+      <!-- Eje 2: Agencia IA -->
+      <div class="axis-card ai">
+        <div class="axis-icon" id="cms-axis2-icon">🤖</div>
+        <h3 id="cms-axis2-title">Agencia IA</h3>
+        <p id="cms-axis2-desc">
+          Creamos aplicaciones web y móviles potenciadas por inteligencia
+          artificial. De la idea al producto en tiempo récord.
+        </p>
+        <ul class="axis-features" id="cms-axis2-features">
+          <li>Apps web progresivas (PWA)</li>
+          <li>Aplicaciones móviles nativas</li>
+          <li>Chatbots y asistentes con IA</li>
+          <li>Automatización inteligente</li>
+          <li>Integración con APIs y WhatsApp</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <div style="max-width:1200px;margin:0 auto;padding:0 2rem;">
+    <div class="stats" id="cms-stats"></div>
+  </div>
+
+  <!-- ===== SERVICES ===== -->
+  <section id="servicios">
+    <span class="section-tag" id="cms-services-tag">Servicios</span>
+    <h2 class="section-title" id="cms-services-title">Todo lo que necesitas</h2>
+    <p class="section-desc" id="cms-services-desc">
+      Un ecosistema completo de soluciones físicas y digitales para impulsar
+      tu proyecto o negocio.
+    </p>
+    <div class="services-grid" id="cms-services-grid"></div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section id="proyectos">
+    <span class="section-tag" id="cms-projects-tag">Portafolio</span>
+    <h2 class="section-title" id="cms-projects-title">Proyectos destacados</h2>
+    <p class="section-desc" id="cms-projects-desc">
+      Una muestra de los trabajos que hemos realizado en ambos ejes.
+    </p>
+    <div class="projects-grid" id="cms-projects-grid"></div>
+  </section>
+
+  <!-- ===== QUOTE ===== -->
+  <section id="cotizacion">
+    <span class="section-tag" id="cms-quote-tag">Cotización</span>
+    <h2 class="section-title" id="cms-quote-title">Solicita tu cotización</h2>
+    <p class="section-desc" id="cms-quote-desc">
+      Cuéntanos tu proyecto y te responderemos en menos de 24 horas.
+    </p>
+    <div class="quote-form" id="quoteFormContainer">
+      <div class="form-row">
+        <div class="field">
+          <label>Nombre completo</label>
+          <input type="text" id="qf_name" placeholder="Tu nombre" />
+        </div>
+        <div class="field">
+          <label>Correo electrónico</label>
+          <input type="email" id="qf_email" placeholder="tu@correo.com" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Teléfono / WhatsApp</label>
+          <input type="text" id="qf_phone" placeholder="+52 123 456 7890" />
+        </div>
+        <div class="field">
+          <label>Tipo de servicio</label>
+          <select id="qf_service">
+            <option value="3d">Impresión 3D</option>
+            <option value="ai">Agencia IA (Apps web/móviles)</option>
+            <option value="both">Ambos ejes</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Descripción del proyecto</label>
+        <textarea id="qf_desc" placeholder="Cuéntanos en detalle lo que necesitas..."></textarea>
+      </div>
+      <button class="btn-submit" id="qf_submit">Enviar solicitud</button>
+      <div class="quote-success" id="qf_success">
+        <div style="font-size:3rem;margin-bottom:1rem;">✓</div>
+        <strong>¡Solicitud enviada!</strong><br />
+        Te contactaremos en menos de 24 horas.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section id="contacto">
+    <div class="cta-section">
+      <span class="section-tag" id="cms-contact-tag">Contacto</span>
+      <h2 id="cms-contact-title">¿Hablamos de tu próximo proyecto?</h2>
+      <p id="cms-contact-desc">
+        Ya sea que necesites una pieza impresa o una app con inteligencia
+        artificial, estamos listos para ayudarte.
+      </p>
+      <div class="hero-btns">
+        <a id="cms-contact-wa" href="https://wa.me/521234567890?text=Hola!%20Quiero%20cotizar%20un%20proyecto" target="_blank" class="btn btn-wa">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span id="cms-contact-btn-wa">Cotiza por WhatsApp</span>
+        </a>
+        <a id="cms-contact-email" href="mailto:hola@babe.com" class="btn btn-outline">hola@babe.com</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer id="cms-footer">
+    &copy; 2026 Babe &mdash; Impresión 3D &amp; Agencia IA. Todos los derechos reservados.
+    <br /><span style="font-size:0.7rem;opacity:0.3;"><a href="admin.html" style="color:inherit;text-decoration:none;">⚙️</a></span>
+  </footer>
+
+  <!-- ===== CHAT BUTTON ===== -->
+  <button class="chat-btn" id="chatBtn" aria-label="Abrir chat">
+    <svg id="chatIcon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+  </button>
+
+  <!-- ===== CHAT BOX ===== -->
+  <div class="chat-box" id="chatBox">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="chat-avatar" id="cms-chat-avatar">B</div>
+        <div>
+          <h4 id="cms-chat-name">Asistente Babe</h4>
+          <span class="status">● Online</span>
+        </div>
+      </div>
+      <button class="chat-close" id="chatClose" aria-label="Cerrar chat">&times;</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">
+        ¡Hola! Soy el asistente de <strong>Babe</strong>. 👋<br />
+       ¿Te interesa <strong>Impresión 3D</strong> o <strong>Apps con IA</strong>?
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." autocomplete="off" />
+      <button class="chat-send" id="chatSend" aria-label="Enviar">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ===================================================================
+    // CMS DEFAULTS & CONFIG LOADER
+    // ===================================================================
+    const CMS_DEFAULTS = {
+      brand: 'BABE',
+      footer: '&copy; 2026 Babe &mdash; Impresi\u00f3n 3D &amp; Agencia IA. Todos los derechos reservados.',
+      email: 'hola@babe.com',
+      hero_badge: '\u2726 Innovaci\u00f3n en dos direcciones',
+      hero_title1: 'Imprimimos el futuro.',
+      hero_title2: 'Codificamos la inteligencia.',
+      hero_desc: 'Somos una empresa con dos almas: fabricaci\u00f3n aditiva de precisi\u00f3n y desarrollo de software con IA. Creemos en crear, tanto en el mundo f\u00edsico como en el digital.',
+      hero_btn1: 'Conoce nuestros ejes',
+      hero_btn2: 'Escr\u00edbenos',
+      axes_tag: 'Dos ejes, un prop\u00f3sito',
+      axes_title: 'Impresi\u00f3n 3D & Agencia IA',
+      axes_desc: 'Operamos en dos frentes para cubrir tanto la fabricaci\u00f3n f\u00edsica como la transformaci\u00f3n digital. Un solo equipo, dos especialidades.',
+      axis1_icon: '\uD83D\uDD27',
+      axis1_title: 'Impresi\u00f3n 3D',
+      axis1_desc: 'Desde prototipado r\u00e1pido hasta producci\u00f3n en serie. Trabajamos con PLA, PETG, resina, TPU y materiales t\u00e9cnicos.',
+      axis1_features: ['Prototipado funcional y est\u00e9tico', 'Piezas mec\u00e1nicas y de ingenier\u00eda', 'Modelado 3D personalizado', 'Post-procesado profesional', 'Producci\u00f3n bajo demanda'],
+      axis2_icon: '\uD83E\uDD16',
+      axis2_title: 'Agencia IA',
+      axis2_desc: 'Creamos aplicaciones web y m\u00f3viles potenciadas por inteligencia artificial. De la idea al producto en tiempo r\u00e9cord.',
+      axis2_features: ['Apps web progresivas (PWA)', 'Aplicaciones m\u00f3viles nativas', 'Chatbots y asistentes con IA', 'Automatizaci\u00f3n inteligente', 'Integraci\u00f3n con APIs y WhatsApp'],
+      stats: [
+        { number: '150+', label: 'Proyectos entregados' },
+        { number: '98%', label: 'Satisfacci\u00f3n cliente' },
+        { number: '24/7', label: 'Soporte continuo' },
+        { number: '2x', label: 'Velocidad de desarrollo' }
+      ],
+      services_tag: 'Servicios',
+      services_title: 'Todo lo que necesitas',
+      services_desc: 'Un ecosistema completo de soluciones f\u00edsicas y digitales para impulsar tu proyecto o negocio.',
+      services: [
+        { icon: '\uD83D\uDDA8\uFE0F', title: 'Impresi\u00f3n FDM', desc: 'Prototipos funcionales con PLA+, PETG, ABS, TPU y m\u00e1s.' },
+        { icon: '\uD83D\uDC8E', title: 'Impresi\u00f3n Resina', desc: 'Alta resoluci\u00f3n para miniaturas, joyer\u00eda y piezas detalladas.' },
+        { icon: '\uD83D\uDCD0', title: 'Modelado 3D', desc: 'Dise\u00f1o param\u00e9trico y org\u00e1nico. De tu idea al archivo STL.' },
+        { icon: '\uD83C\uDF10', title: 'Web Apps', desc: 'Dashboards, landing pages, SaaS y plataformas con IA integrada.' },
+        { icon: '\uD83D\uDCF1', title: 'Apps M\u00f3viles', desc: 'Apps nativas y multiplataforma con features de IA generativa.' },
+        { icon: '\uD83D\uDCAC', title: 'Chatbots & WhatsApp', desc: 'Asistentes con IA para WhatsApp, web y atenci\u00f3n al cliente.' }
+      ],
+      wa_number: '521234567890',
+      contact_tag: 'Contacto',
+      contact_title: '\u00bfHablamos de tu pr\u00f3ximo proyecto?',
+      contact_desc: 'Ya sea que necesites una pieza impresa o una app con inteligencia artificial, estamos listos para ayudarte.',
+      contact_btn_wa: 'Cotiza por WhatsApp',
+      contact_btn_email: 'hola@babe.com',
+      chat_avatar: 'B',
+      chat_name: 'Asistente Babe',
+      chat_welcome: '\u00a1Hola! Soy el asistente de <strong>Babe</strong>. \uD83D\uDC4B<br />\u00bfTe interesa <strong>Impresi\u00f3n 3D</strong> o <strong>Apps con IA</strong>?',
+      chat_r_3d: '\u00a1Genial! En nuestro eje de <strong>Impresi\u00f3n 3D</strong> trabajamos con FDM y resina. \u00bfBuscas un prototipo, una pieza mec\u00e1nica o un modelo decorativo?',
+      chat_r_ai: '\u00a1Perfecto! Nuestra <strong>Agencia IA</strong> crea apps web y m\u00f3viles con inteligencia artificial integrada. \u00bfTienes una idea en mente o necesitas una cotizaci\u00f3n?',
+      chat_r_price: 'Los precios var\u00edan seg\u00fan el proyecto. Cu\u00e9ntame un poco m\u00e1s de lo que necesitas y puedo darte una referencia, o mejor a\u00fan, \u00a1escr\u00edbenos por WhatsApp para una cotizaci\u00f3n precisa!',
+      chat_r_wa: 'Puedes escribirnos directamente por WhatsApp haciendo clic en el bot\u00f3n de WhatsApp. \u00a1Te respondemos en minutos!',
+      chat_r_bye: '\u00a1De nada! Quedamos atentos a cualquier duda. No olvides que puedes contactarnos por WhatsApp cuando gustes. \uD83D\uDE0A',
+      chat_r_default: 'Gracias por tu mensaje. Para darte la mejor atenci\u00f3n, \u00bfpodr\u00edas indicarme si te interesa <strong>Impresi\u00f3n 3D</strong> o <strong>Apps con IA</strong>? O si prefieres, \u00a1escr\u00edbenos por WhatsApp y te atenderemos al instante!',
+      projects_tag: 'Portafolio',
+      projects_title: 'Proyectos destacados',
+      projects_desc: 'Una muestra de los trabajos que hemos realizado en ambos ejes.',
+      projects: [
+        { icon: '\uD83D\uDEE0\uFE0F', title: 'Soporte industrial', desc: 'Pieza mec\u00e1nica en PETG para l\u00ednea de producci\u00f3n.', category: '3d', status: 'completed' },
+        { icon: '\uD83E\uDD16', title: 'Chatbot IA para ventas', desc: 'Asistente inteligente integrado con WhatsApp y CRM.', category: 'ai', status: 'completed' },
+        { icon: '\uD83D\uDC8E', title: 'Miniatura coleccionable', desc: 'Modelo en resina de alta definici\u00f3n pintado a mano.', category: '3d', status: 'featured' },
+        { icon: '\uD83D\uDCF1', title: 'App fitness con IA', desc: 'App mobile con planes de entrenamiento generados por IA.', category: 'ai', status: 'progress' }
+      ],
+      quote_tag: 'Cotizaci\u00f3n',
+      quote_title: 'Solicita tu cotizaci\u00f3n',
+      quote_desc: 'Cu\u00e9ntanos tu proyecto y te responderemos en menos de 24 horas.'
+    };
+
+    function getCMSConfig() {
+      try {
+        const raw = localStorage.getItem('babe_cms_config');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          return { ...CMS_DEFAULTS, ...parsed };
+        }
+      } catch (e) {}
+      return { ...CMS_DEFAULTS };
+    }
+
+    function applyCMSConfig() {
+      const cfg = getCMSConfig();
+
+      // Title
+      document.title = cfg.brand + ' - Impresi\u00f3n 3D & Agencia IA';
+
+      // Brand / Logo
+      const brandEl = document.getElementById('cms-brand');
+      if (brandEl) brandEl.textContent = cfg.brand;
+
+      // Footer
+      const footerEl = document.getElementById('cms-footer');
+      if (footerEl) footerEl.innerHTML = cfg.footer;
+
+      // Hero
+      setText('cms-hero-badge', cfg.hero_badge);
+      setText('cms-hero-title1', cfg.hero_title1);
+      setText('cms-hero-title2', cfg.hero_title2);
+      setHTML('cms-hero-desc', cfg.hero_desc);
+      setText('cms-hero-btn1', cfg.hero_btn1);
+      setText('cms-hero-btn2', cfg.hero_btn2);
+
+      // Hero + nav WhatsApp links
+      updateWALinks(cfg.wa_number);
+
+      // Axis section headers
+      setText('cms-axes-tag', cfg.axes_tag);
+      setText('cms-axes-title', cfg.axes_title);
+      setHTML('cms-axes-desc', cfg.axes_desc);
+
+      // Axis 1
+      setText('cms-axis1-icon', cfg.axis1_icon);
+      setText('cms-axis1-title', cfg.axis1_title);
+      setHTML('cms-axis1-desc', cfg.axis1_desc);
+      renderFeatureList('cms-axis1-features', cfg.axis1_features);
+
+      // Axis 2
+      setText('cms-axis2-icon', cfg.axis2_icon);
+      setText('cms-axis2-title', cfg.axis2_title);
+      setHTML('cms-axis2-desc', cfg.axis2_desc);
+      renderFeatureList('cms-axis2-features', cfg.axis2_features);
+
+      // Stats
+      renderStats(cfg.stats);
+
+      // Services
+      setText('cms-services-tag', cfg.services_tag);
+      setText('cms-services-title', cfg.services_title);
+      setHTML('cms-services-desc', cfg.services_desc);
+      renderServices(cfg.services);
+
+      // Contact
+      setText('cms-contact-tag', cfg.contact_tag);
+      setText('cms-contact-title', cfg.contact_title);
+      setHTML('cms-contact-desc', cfg.contact_desc);
+      setText('cms-contact-btn-wa', cfg.contact_btn_wa);
+      setText('cms-contact-email', cfg.contact_btn_email);
+      const emailLink = document.getElementById('cms-contact-email');
+      if (emailLink) emailLink.href = 'mailto:' + cfg.email;
+      const contactWa = document.getElementById('cms-contact-wa');
+      if (contactWa) contactWa.href = waURL(cfg.wa_number, 'Hola! Quiero cotizar un proyecto');
+
+      // Chat
+      const chatAvatar = document.getElementById('cms-chat-avatar');
+      if (chatAvatar) chatAvatar.textContent = cfg.chat_avatar;
+      setText('cms-chat-name', cfg.chat_name);
+
+      // Update welcome message in chat
+      const welcomeMsg = document.querySelector('#chatMessages .msg.bot');
+      if (welcomeMsg) welcomeMsg.innerHTML = cfg.chat_welcome;
+
+      // Projects
+      setText('cms-projects-tag', cfg.projects_tag);
+      setText('cms-projects-title', cfg.projects_title);
+      setHTML('cms-projects-desc', cfg.projects_desc);
+      renderProjects(cfg.projects || []);
+
+      // Quote section
+      setText('cms-quote-tag', cfg.quote_tag);
+      setText('cms-quote-title', cfg.quote_title);
+      setHTML('cms-quote-desc', cfg.quote_desc);
+
+      // Store config in a global for chat to use
+      window.__CMS = cfg;
+    }
+
+    function setText(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    }
+
+    function setHTML(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = val;
+    }
+
+    function waURL(number, text) {
+      return 'https://wa.me/' + number + '?text=' + encodeURIComponent(text);
+    }
+
+    function updateWALinks(number) {
+      const navWA = document.getElementById('cms-nav-wa');
+      if (navWA) navWA.href = waURL(number, 'Hola! Quiero m\u00e1s informaci\u00f3n');
+
+      const heroWA = document.getElementById('cms-hero-wa');
+      if (heroWA) heroWA.href = waURL(number, 'Hola! Quiero saber m\u00e1s sobre Babe');
+    }
+
+    function renderFeatureList(id, features) {
+      const ul = document.getElementById(id);
+      if (!ul) return;
+      ul.innerHTML = features.map(f => '<li>' + f + '</li>').join('');
+    }
+
+    function renderStats(stats) {
+      const container = document.getElementById('cms-stats');
+      if (!container) return;
+      container.innerHTML = stats.map(s =>
+        '<div><div class="stat-number">' + s.number + '</div><div class="stat-label">' + s.label + '</div></div>'
+      ).join('');
+    }
+
+    function renderServices(services) {
+      const grid = document.getElementById('cms-services-grid');
+      if (!grid) return;
+      grid.innerHTML = services.map(s =>
+        '<div class="service-item"><div class="icon">' + s.icon + '</div><h4>' + s.title + '</h4><p>' + s.desc + '</p></div>'
+      ).join('');
+    }
+
+    function renderProjects(projects) {
+      const grid = document.getElementById('cms-projects-grid');
+      if (!grid) return;
+      const statusMap = { completed: 'Completado', progress: 'En progreso', featured: 'Destacado' };
+      grid.innerHTML = projects.map(p =>
+        '<div class="project-card">' +
+          '<div class="project-icon">' + p.icon + '</div>' +
+          '<div class="project-badge _' + p.category + '">' + (p.category === '3d' ? 'Impresi\u00f3n 3D' : 'Agencia IA') + '</div>' +
+          '<h4>' + p.title + '</h4>' +
+          '<p>' + p.desc + '</p>' +
+          '<div class="project-status"><span class="dot ' + p.status + '"></span> ' + (statusMap[p.status] || p.status) + '</div>' +
+        '</div>'
+      ).join('');
+    }
+
+    // Quote form
+    function setupQuoteForm() {
+      const submitBtn = document.getElementById('qf_submit');
+      if (!submitBtn) return;
+      submitBtn.addEventListener('click', function() {
+        const name = document.getElementById('qf_name').value.trim();
+        const email = document.getElementById('qf_email').value.trim();
+        const phone = document.getElementById('qf_phone').value.trim();
+        const service = document.getElementById('qf_service').value;
+        const desc = document.getElementById('qf_desc').value.trim();
+
+        if (!name || !email || !desc) {
+          alert('Por favor completa nombre, correo y descripci\u00f3n del proyecto.');
+          return;
+        }
+
+        const quote = { id: Date.now(), name, email, phone, service, desc, date: new Date().toISOString(), status: 'new' };
+        const existing = JSON.parse(localStorage.getItem('babe_quotes') || '[]');
+        existing.unshift(quote);
+        localStorage.setItem('babe_quotes', JSON.stringify(existing));
+        localStorage.setItem('babe_quotes_updated', Date.now().toString());
+
+        document.getElementById('qf_name').value = '';
+        document.getElementById('qf_email').value = '';
+        document.getElementById('qf_phone').value = '';
+        document.getElementById('qf_desc').value = '';
+        document.getElementById('quoteFormContainer').querySelector('.btn-submit').style.display = 'none';
+        document.getElementById('qf_success').classList.add('show');
+      });
+    }
+
+    // ===================================================================
+    // APP
+    // ===================================================================
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    const chatBtn = document.getElementById('chatBtn');
+    const chatBox = document.getElementById('chatBox');
+    const chatClose = document.getElementById('chatClose');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+    const chatIcon = document.getElementById('chatIcon');
+    const toast = document.getElementById('toast');
+
+    let chatOpen = false;
+
+    function toggleChat(open) {
+      chatOpen = open !== undefined ? open : !chatOpen;
+      chatBox.classList.toggle('open', chatOpen);
+      if (chatOpen) {
+        chatInput.focus();
+        chatIcon.innerHTML = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>';
+      } else {
+        chatIcon.innerHTML = '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>';
+      }
+    }
+
+    chatBtn.addEventListener('click', () => toggleChat());
+    chatClose.addEventListener('click', () => toggleChat(false));
+
+    function showToast(text, duration) {
+      toast.textContent = text;
+      toast.classList.add('show');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => toast.classList.remove('show'), duration || 3000);
+    }
+
+    function addMessage(text, type) {
+      const div = document.createElement('div');
+      div.className = 'msg ' + type;
+      div.innerHTML = text;
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function showTyping() {
+      const div = document.createElement('div');
+      div.className = 'typing';
+      div.id = 'typingIndicator';
+      div.innerHTML = '<span></span><span></span><span></span>';
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function hideTyping() {
+      const el = document.getElementById('typingIndicator');
+      if (el) el.remove();
+    }
+
+    function getBotResponse(userMsg) {
+      const cfg = window.__CMS || CMS_DEFAULTS;
+      const lower = userMsg.toLowerCase();
+
+      if (lower.includes('3d') || lower.includes('impres') || lower.includes('pieza') || lower.includes('prototipo') || lower.includes('print')) {
+        return cfg.chat_r_3d;
+      }
+      if (lower.includes('ia') || lower.includes('app') || lower.includes('web') || lower.includes('m\u00f3vil') || lower.includes('chatbot') || lower.includes('bot')) {
+        return cfg.chat_r_ai;
+      }
+      if (lower.includes('precio') || lower.includes('costo') || lower.includes('cotizar') || lower.includes('presupuesto')) {
+        return cfg.chat_r_price;
+      }
+      if (lower.includes('whatsapp') || lower.includes('wa') || lower.includes('contacto')) {
+        return cfg.chat_r_wa + ' \uD83D\uDC49 <a href="https://wa.me/' + cfg.wa_number + '" target="_blank" style="color:#a78bfa;">Abrir WhatsApp</a>';
+      }
+      if (lower.includes('gracias') || lower.includes('bye') || lower.includes('adi\u00f3s')) {
+        return cfg.chat_r_bye;
+      }
+      if (lower.includes('hola') || lower.includes('buenas') || lower.includes('hey')) {
+        return '\u00a1Hola de nuevo! \uD83D\uDE0A Cu\u00e9ntame, \u00bfqu\u00e9 te trae por aqu\u00ed? \u00bfImpresi\u00f3n 3D o desarrollo con IA?';
+      }
+
+      return cfg.chat_r_default;
+    }
+
+    function handleSend() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      addMessage(text, 'user');
+      chatInput.value = '';
+      showTyping();
+
+      const delay = Math.min(600 + text.length * 20, 1800);
+      const cfg = window.__CMS || CMS_DEFAULTS;
+
+      setTimeout(() => {
+        hideTyping();
+        const reply = getBotResponse(text);
+        addMessage(reply, 'bot');
+
+        if (!text.toLowerCase().includes('whatsapp') && !text.toLowerCase().includes('gracias')) {
+          setTimeout(() => {
+            const followUp = document.createElement('div');
+            followUp.className = 'msg bot';
+            followUp.style.fontSize = '0.8rem';
+            followUp.style.opacity = '0.8';
+            followUp.innerHTML = '\uD83D\uDCAC \u00bfQuieres una respuesta m\u00e1s r\u00e1pida? <a href="https://wa.me/' + cfg.wa_number + '?text=' + encodeURIComponent(text) + '" target="_blank" style="color:#25d366;font-weight:600;">Habla por WhatsApp</a>';
+            chatMessages.appendChild(followUp);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }, 800);
+        }
+      }, delay);
+    }
+
+    chatSend.addEventListener('click', handleSend);
+    chatInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleSend();
+    });
+
+    // Toast
+    let toastShown = false;
+    let awayTimer = null;
+
+    function resetAwayTimer() {
+      if (toastShown) return;
+      clearTimeout(awayTimer);
+      awayTimer = setTimeout(function() {
+        if (!chatOpen) {
+          showToast('\uD83D\uDCAC \u00bfNecesitas ayuda? \u00a1Estamos aqu\u00ed!');
+          toastShown = true;
+        }
+      }, 30000);
+    }
+
+    document.addEventListener('mousemove', resetAwayTimer);
+    document.addEventListener('keydown', resetAwayTimer);
+    resetAwayTimer();
+
+    chatBtn.addEventListener('click', function() { toastShown = false; });
+    chatClose.addEventListener('click', function() {
+      setTimeout(function() { toastShown = false; }, 10000);
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ===================================================================
+    // INIT: apply CMS config on load + listen for changes
+    // ===================================================================
+    applyCMSConfig();
+    setupQuoteForm();
+
+    // Auto-refresh when admin saves changes
+    let _lastUpdate = localStorage.getItem('babe_cms_updated') || '0';
+
+    function checkForUpdates() {
+      const current = localStorage.getItem('babe_cms_updated') || '0';
+      if (current !== _lastUpdate) {
+        _lastUpdate = current;
+        applyCMSConfig();
+      }
+    }
+
+    // Listen for cross-tab storage events (fires in other tabs)
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'babe_cms_updated') {
+        _lastUpdate = e.newValue || '0';
+        applyCMSConfig();
+      }
+    });
+
+    // Poll every 2s as fallback (catches same-tab and edge cases)
+    setInterval(checkForUpdates, 2000);
+  </script>
+</body>
+</html>

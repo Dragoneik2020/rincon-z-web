@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel CMS - Babe</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0a0a0f;
+      color: #e0e0ec;
+      min-height: 100vh;
+    }
+
+    /* Login */
+    .login-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0a0a0f;
+    }
+    .login-screen.hidden { display: none; }
+    .login-box {
+      background: #12121c;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      width: 380px;
+      max-width: 90vw;
+      text-align: center;
+    }
+    .login-box h1 {
+      font-size: 1.6rem;
+      margin-bottom: 0.3rem;
+    }
+    .login-box p {
+      color: #8080a0;
+      font-size: 0.85rem;
+      margin-bottom: 2rem;
+    }
+    .login-box input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      color: #e0e0ec;
+      font-size: 1rem;
+      outline: none;
+      margin-bottom: 1rem;
+      transition: border-color 0.3s;
+    }
+    .login-box input:focus { border-color: #a78bfa; }
+    .login-box input::placeholder { color: #505070; }
+    .login-box .error {
+      color: #f87171;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .login-box .error.show { display: block; }
+    .login-btn {
+      width: 100%;
+      padding: 0.85rem;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(167,139,250,0.35);
+    }
+
+    /* Layout */
+    .admin-layout { display: none; }
+    .admin-layout.unlocked { display: flex; }
+    .sidebar {
+      width: 220px;
+      background: #0e0e18;
+      border-right: 1px solid rgba(255,255,255,0.05);
+      padding: 1.5rem 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    .sidebar h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .sidebar nav a {
+      display: block;
+      padding: 0.6rem 0.8rem;
+      color: #9090aa;
+      text-decoration: none;
+      font-size: 0.85rem;
+      border-radius: 10px;
+      transition: all 0.2s;
+      margin-bottom: 0.2rem;
+    }
+    .sidebar nav a:hover, .sidebar nav a.active {
+      background: rgba(167,139,250,0.1);
+      color: #d0d0e0;
+    }
+
+    .main-content {
+      margin-left: 220px;
+      padding: 2rem 2.5rem;
+      max-width: 900px;
+    }
+    .main-content h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .main-content .subtitle {
+      color: #8080a0;
+      font-size: 0.85rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 1.4rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #a0a0b8;
+      margin-bottom: 0.4rem;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      color: #e0e0ec;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: #a78bfa;
+    }
+    .form-group textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: #505070;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .section-card {
+      background: #12121c;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+    .section-card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      color: #c0c0d8;
+    }
+
+    .features-list .feature-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.6rem;
+    }
+    .features-list .feature-row input {
+      flex: 1;
+    }
+    .features-list .feature-row button {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #f87171;
+      border-radius: 8px;
+      width: 36px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .features-list .feature-row button:hover {
+      background: rgba(248,113,113,0.1);
+      border-color: #f87171;
+    }
+    .add-feature-btn {
+      background: none;
+      border: 1px dashed rgba(255,255,255,0.1);
+      color: #8080a0;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+      width: 100%;
+      margin-top: 0.4rem;
+    }
+    .add-feature-btn:hover {
+      border-color: #a78bfa;
+      color: #a78bfa;
+    }
+
+    .btn-save {
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      border: none;
+      color: #fff;
+      padding: 0.85rem 2.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-save:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(167,139,250,0.35);
+    }
+    .btn-save:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-msg {
+      display: inline-block;
+      font-size: 0.85rem;
+      margin-left: 1rem;
+      vertical-align: middle;
+    }
+    .status-msg.ok { color: #34d399; }
+    .status-msg.err { color: #f87171; }
+
+    .danger-zone {
+      margin-top: 3rem;
+      padding: 1.5rem;
+      border: 1px solid rgba(248,113,113,0.2);
+      border-radius: 12px;
+      background: rgba(248,113,113,0.04);
+    }
+    .danger-zone h3 { color: #f87171; font-size: 0.9rem; margin-bottom: 0.8rem; }
+    .btn-danger {
+      background: rgba(248,113,113,0.1);
+      border: 1px solid rgba(248,113,113,0.2);
+      color: #f87171;
+      padding: 0.6rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .btn-danger:hover {
+      background: rgba(248,113,113,0.15);
+    }
+
+    /* Quotes table */
+    .quotes-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .quotes-table th { text-align: left; padding: 0.6rem 0.8rem; color: #8080a0; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .quotes-table td { padding: 0.7rem 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: top; }
+    .quotes-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .quotes-table .badge { display: inline-block; font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 50px; font-weight: 600; }
+    .quotes-table .badge.new { background: rgba(96,165,250,0.12); color: #60a5fa; border: 1px solid rgba(96,165,250,0.2); }
+    .quotes-table .badge.read { background: rgba(255,255,255,0.05); color: #8080a0; border: 1px solid rgba(255,255,255,0.08); }
+    .quotes-table .badge.replied { background: rgba(52,211,153,0.12); color: #34d399; border: 1px solid rgba(52,211,153,0.2); }
+    .quotes-table .svc-badge { font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 50px; }
+    .quotes-table .svc-badge._3d { background: rgba(245,158,11,0.12); color: #f59e0b; }
+    .quotes-table .svc-badge._ai { background: rgba(167,139,250,0.12); color: #a78bfa; }
+    .quotes-table .svc-badge._both { background: rgba(96,165,250,0.12); color: #60a5fa; }
+    .quote-detail-toggle { color: #a78bfa; cursor: pointer; font-size: 0.8rem; }
+    .quote-detail-toggle:hover { text-decoration: underline; }
+    .quote-desc-box { display: none; margin-top: 0.4rem; padding: 0.6rem; background: rgba(255,255,255,0.03); border-radius: 8px; font-size: 0.8rem; }
+    .quote-desc-box.open { display: block; }
+    .no-quotes { color: #505070; text-align: center; padding: 3rem; font-size: 0.9rem; }
+
+    /* Admin project card */
+    .admin-project-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+    }
+    .admin-project-card .form-row { margin-bottom: 0.5rem; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0f; }
+    ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 3px; }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        position: static;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        padding: 1rem;
+      }
+      .sidebar nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+      }
+      .sidebar nav a { font-size: 0.8rem; padding: 0.4rem 0.7rem; }
+      .main-content {
+        margin-left: 0;
+        padding: 1.5rem 1rem;
+      }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <h1>🔐 Panel CMS</h1>
+    <p>Ingresa la contraseña para administrar <strong>Babe</strong></p>
+    <input type="password" id="loginPass" placeholder="Contraseña" autocomplete="off" />
+    <div class="error" id="loginError">Contraseña incorrecta</div>
+    <button class="login-btn" id="loginBtn">Entrar al panel</button>
+  </div>
+</div>
+
+<!-- ===== ADMIN LAYOUT ===== -->
+<div class="admin-layout" id="adminLayout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>⚙️ CMS Babe</h2>
+    <nav id="sidebarNav">
+      <a href="#" data-section="general" class="active">General</a>
+      <a href="#" data-section="hero">Hero</a>
+      <a href="#" data-section="axes">Ejes (3D & IA)</a>
+      <a href="#" data-section="stats">Estadísticas</a>
+      <a href="#" data-section="services">Servicios</a>
+      <a href="#" data-section="contact">Contacto</a>
+      <a href="#" data-section="chat">Chat Bot</a>
+      <a href="#" data-section="projects">📁 Proyectos</a>
+      <a href="#" data-section="quotes">📋 Cotizaciones</a>
+      <a href="#" data-section="danger" style="color:#f87171;">⚠️ Administración</a>
+      <a href="/" target="_blank" style="color:#34d399;margin-top:0.5rem;border-top:1px solid rgba(255,255,255,0.05);padding-top:0.8rem;">🌐 Ver sitio público</a>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+
+    <!-- ===== SECTION: GENERAL ===== -->
+    <div class="admin-section" id="section-general">
+      <h2>Configuración General</h2>
+      <p class="subtitle">Marca, logo y footer del sitio</p>
+      <div class="section-card">
+        <div class="form-group">
+          <label>Nombre de la marca (logo)</label>
+          <input type="text" id="cfg_brand" placeholder="BABE" />
+        </div>
+        <div class="form-group">
+          <label>Texto del footer</label>
+          <input type="text" id="cfg_footer" placeholder="&copy; 2026 Babe &mdash; Impresión 3D &amp; Agencia IA. Todos los derechos reservados." />
+        </div>
+        <div class="form-group">
+          <label>Email de contacto</label>
+          <input type="email" id="cfg_email" placeholder="hola@babe.com" />
+        </div>
+      </div>
+      <button class="btn-save" onclick="saveSection('general')">Guardar cambios</button>
+      <span class="status-msg" id="status-general"></span>
+    </div>
+
+    <!-- ===== SECTION: HERO ===== -->
+    <div class="admin-section" id="section-hero" style="display:none;">
+      <h2>Hero (Portada)</h2>
+      <p class="subtitle">Texto principal de la landing page</p>
+      <div class="section-card">
+        <div class="form-group">
+          <label>Badge (etiqueta superior)</label>
+          <input type="text" id="cfg_hero_badge" placeholder="✦ Innovación en dos direcciones" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Título línea 1</label>
+            <input type="text" id="cfg_hero_title1" placeholder="Imprimimos el futuro." />
+          </div>
+          <div class="form-group">
+            <label>Título línea 2 (con gradiente)</label>
+            <input type="text" id="cfg_hero_title2" placeholder="Codificamos la inteligencia." />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="cfg_hero_desc" rows="3" placeholder="Somos una empresa con dos almas..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Texto botón primario</label>
+            <input type="text" id="cfg_hero_btn1" placeholder="Conoce nuestros ejes" />
+          </div>
+          <div class="form-group">
+            <label>Texto botón WhatsApp</label>
+            <input type="text" id="cfg_hero_btn2" placeholder="Escríbenos" />
+          </div>
+        </div>
+      </div>
+      <button class="btn-save" onclick="saveSection('hero')">Guardar cambios</button>
+      <span class="status-msg" id="status-hero"></span>
+    </div>
+
+    <!-- ===== SECTION: AXES ===== -->
+    <div class="admin-section" id="section-axes" style="display:none;">
+      <h2>Ejes de Negocio</h2>
+      <p class="subtitle">Impresión 3D y Agencia IA</p>
+
+      <div class="section-card">
+        <h3>Sección Ejes (títulos generales)</h3>
+        <div class="form-group">
+          <label>Tag de la sección</label>
+          <input type="text" id="cfg_axes_tag" placeholder="Dos ejes, un propósito" />
+        </div>
+        <div class="form-group">
+          <label>Título de la sección</label>
+          <input type="text" id="cfg_axes_title" placeholder="Impresión 3D & Agencia IA" />
+        </div>
+        <div class="form-group">
+          <label>Descripción de la sección</label>
+          <textarea id="cfg_axes_desc" rows="2" placeholder="Operamos en dos frentes..."></textarea>
+        </div>
+      </div>
+
+      <!-- Axis 1: 3D Printing -->
+      <div class="section-card">
+        <h3>🔧 Eje 1 — Impresión 3D</h3>
+        <div class="form-group">
+          <label>Icono (emoji)</label>
+          <input type="text" id="cfg_axis1_icon" placeholder="🔧" />
+        </div>
+        <div class="form-group">
+          <label>Título</label>
+          <input type="text" id="cfg_axis1_title" placeholder="Impresión 3D" />
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="cfg_axis1_desc" rows="2" placeholder="Desde prototipado rápido..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Características (una por línea)</label>
+          <div class="features-list" id="axis1-features"></div>
+          <button class="add-feature-btn" onclick="addFeature('axis1')">+ Agregar característica</button>
+        </div>
+      </div>
+
+      <!-- Axis 2: AI Agency -->
+      <div class="section-card">
+        <h3>🤖 Eje 2 — Agencia IA</h3>
+        <div class="form-group">
+          <label>Icono (emoji)</label>
+          <input type="text" id="cfg_axis2_icon" placeholder="🤖" />
+        </div>
+        <div class="form-group">
+          <label>Título</label>
+          <input type="text" id="cfg_axis2_title" placeholder="Agencia IA" />
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="cfg_axis2_desc" rows="2" placeholder="Creamos aplicaciones web..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Características (una por línea)</label>
+          <div class="features-list" id="axis2-features"></div>
+          <button class="add-feature-btn" onclick="addFeature('axis2')">+ Agregar característica</button>
+        </div>
+      </div>
+
+      <button class="btn-save" onclick="saveSection('axes')">Guardar cambios</button>
+      <span class="status-msg" id="status-axes"></span>
+    </div>
+
+    <!-- ===== SECTION: STATS ===== -->
+    <div class="admin-section" id="section-stats" style="display:none;">
+      <h2>Estadísticas</h2>
+      <p class="subtitle">Números que aparecen en el sitio</p>
+      <div class="section-card">
+        <div id="stats-container"></div>
+        <button class="add-feature-btn" onclick="addStat()">+ Agregar estadística</button>
+      </div>
+      <button class="btn-save" onclick="saveSection('stats')">Guardar cambios</button>
+      <span class="status-msg" id="status-stats"></span>
+    </div>
+
+    <!-- ===== SECTION: SERVICES ===== -->
+    <div class="admin-section" id="section-services" style="display:none;">
+      <h2>Servicios</h2>
+      <p class="subtitle">Grid de servicios (6 por defecto)</p>
+      <div class="section-card">
+        <div class="form-group">
+          <label>Tag de la sección</label>
+          <input type="text" id="cfg_services_tag" placeholder="Servicios" />
+        </div>
+        <div class="form-group">
+          <label>Título de la sección</label>
+          <input type="text" id="cfg_services_title" placeholder="Todo lo que necesitas" />
+        </div>
+        <div class="form-group">
+          <label>Descripción de la sección</label>
+          <textarea id="cfg_services_desc" rows="2" placeholder="Un ecosistema completo..."></textarea>
+        </div>
+        <div id="services-container"></div>
+        <button class="add-feature-btn" onclick="addService()">+ Agregar servicio</button>
+      </div>
+      <button class="btn-save" onclick="saveSection('services')">Guardar cambios</button>
+      <span class="status-msg" id="status-services"></span>
+    </div>
+
+    <!-- ===== SECTION: CONTACT ===== -->
+    <div class="admin-section" id="section-contact" style="display:none;">
+      <h2>Contacto</h2>
+      <p class="subtitle">WhatsApp y sección de contacto</p>
+      <div class="section-card">
+        <div class="form-group">
+          <label>Número de WhatsApp (con código de país, sin +)</label>
+          <input type="text" id="cfg_wa_number" placeholder="521234567890" />
+        </div>
+        <div class="form-group">
+          <label>Tag de la sección contacto</label>
+          <input type="text" id="cfg_contact_tag" placeholder="Contacto" />
+        </div>
+        <div class="form-group">
+          <label>Título de la sección contacto</label>
+          <input type="text" id="cfg_contact_title" placeholder="¿Hablamos de tu próximo proyecto?" />
+        </div>
+        <div class="form-group">
+          <label>Descripción de la sección contacto</label>
+          <textarea id="cfg_contact_desc" rows="2" placeholder="Ya sea que necesites una pieza impresa..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Texto botón WhatsApp</label>
+            <input type="text" id="cfg_contact_btn_wa" placeholder="Cotiza por WhatsApp" />
+          </div>
+          <div class="form-group">
+            <label>Texto botón email</label>
+            <input type="text" id="cfg_contact_btn_email" placeholder="hola@babe.com" />
+          </div>
+        </div>
+      </div>
+      <button class="btn-save" onclick="saveSection('contact')">Guardar cambios</button>
+      <span class="status-msg" id="status-contact"></span>
+    </div>
+
+    <!-- ===== SECTION: CHAT ===== -->
+    <div class="admin-section" id="section-chat" style="display:none;">
+      <h2>Chat Bot</h2>
+      <p class="subtitle">Configura el asistente virtual</p>
+      <div class="section-card">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Letra del avatar</label>
+            <input type="text" id="cfg_chat_avatar" placeholder="B" maxlength="2" />
+          </div>
+          <div class="form-group">
+            <label>Nombre del bot</label>
+            <input type="text" id="cfg_chat_name" placeholder="Asistente Babe" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Mensaje de bienvenida</label>
+          <textarea id="cfg_chat_welcome" rows="3" placeholder="¡Hola! Soy el asistente de Babe..."></textarea>
+        </div>
+      </div>
+      <div class="section-card">
+        <h3>Respuestas del bot</h3>
+        <div class="form-group">
+          <label>Si menciona impresión 3D / pieza / prototipo</label>
+          <textarea id="cfg_chat_r_3d" rows="2" placeholder="¡Genial! En nuestro eje de Impresión 3D..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Si menciona IA / app / web / móvil / chatbot</label>
+          <textarea id="cfg_chat_r_ai" rows="2" placeholder="¡Perfecto! Nuestra Agencia IA crea apps..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Si pregunta por precio / costo / presupuesto</label>
+          <textarea id="cfg_chat_r_price" rows="2" placeholder="Los precios varían según el proyecto..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Si menciona WhatsApp / contacto</label>
+          <textarea id="cfg_chat_r_wa" rows="2" placeholder="Puedes escribirnos directamente por WhatsApp..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Si dice gracias / bye / adiós</label>
+          <textarea id="cfg_chat_r_bye" rows="2" placeholder="¡De nada! Quedamos atentos..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Respuesta por defecto (cuando no entiende)</label>
+          <textarea id="cfg_chat_r_default" rows="2" placeholder="Gracias por tu mensaje. Para darte la mejor atención..."></textarea>
+        </div>
+      </div>
+      <button class="btn-save" onclick="saveSection('chat')">Guardar cambios</button>
+      <span class="status-msg" id="status-chat"></span>
+    </div>
+
+    <!-- ===== SECTION: PROJECTS ===== -->
+    <div class="admin-section" id="section-projects" style="display:none;">
+      <h2>📁 Proyectos</h2>
+      <p class="subtitle">Gestiona los proyectos del portafolio</p>
+      <div class="section-card">
+        <div class="form-group">
+          <label>Tag de la sección</label>
+          <input type="text" id="cfg_projects_tag" placeholder="Portafolio" />
+        </div>
+        <div class="form-group">
+          <label>Título de la sección</label>
+          <input type="text" id="cfg_projects_title" placeholder="Proyectos destacados" />
+        </div>
+        <div class="form-group">
+          <label>Descripción de la sección</label>
+          <textarea id="cfg_projects_desc" rows="2" placeholder="Una muestra de los trabajos..."></textarea>
+        </div>
+        <div id="admin-projects-container"></div>
+        <button class="add-feature-btn" onclick="addAdminProject()">+ Agregar proyecto</button>
+      </div>
+      <button class="btn-save" onclick="saveSection('projects')">Guardar cambios</button>
+      <span class="status-msg" id="status-projects"></span>
+    </div>
+
+    <!-- ===== SECTION: QUOTES ===== -->
+    <div class="admin-section" id="section-quotes" style="display:none;">
+      <h2>📋 Cotizaciones</h2>
+      <p class="subtitle">Texto de la sección y solicitudes recibidas</p>
+      <div class="section-card">
+        <h3>Texto de la sección</h3>
+        <div class="form-group">
+          <label>Tag de la sección</label>
+          <input type="text" id="cfg_quote_tag" placeholder="Cotización" />
+        </div>
+        <div class="form-group">
+          <label>Título</label>
+          <input type="text" id="cfg_quote_title" placeholder="Solicita tu cotización" />
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="cfg_quote_desc" rows="2" placeholder="Cuéntanos tu proyecto..."></textarea>
+        </div>
+      </div>
+      <div class="section-card">
+        <h3>Solicitudes recibidas</h3>
+        <div id="quotes-list"></div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION: DANGER ===== -->
+    <div class="admin-section" id="section-danger" style="display:none;">
+      <h2>⚠️ Administración</h2>
+      <p class="subtitle">Opciones avanzadas</p>
+      <div class="section-card">
+        <div class="form-group">
+          <label>Cambiar contraseña del panel</label>
+          <div class="form-row">
+            <input type="password" id="cfg_new_pass" placeholder="Nueva contraseña" />
+            <input type="password" id="cfg_confirm_pass" placeholder="Confirmar contraseña" />
+          </div>
+        </div>
+        <button class="btn-save" onclick="changePassword()">Cambiar contraseña</button>
+        <span class="status-msg" id="status-password"></span>
+      </div>
+      <div class="danger-zone">
+        <h3>⚠️ Restablecer todo</h3>
+        <p style="font-size:0.85rem;color:#8080a0;margin-bottom:1rem;">
+          Esto borrará toda la configuración guardada y volverá a los valores por defecto.
+        </p>
+        <button class="btn-danger" onclick="resetAll()">Restablecer valores por defecto</button>
+        <span class="status-msg" id="status-reset"></span>
+      </div>
+      <div style="margin-top:1.5rem;">
+        <a href="index.html" target="_blank" class="btn-save" style="display:inline-block;text-decoration:none;padding:0.7rem 2rem;">👁️ Ver sitio público</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // ===== DEFAULTS =====
+  const DEFAULTS = {
+    brand: 'BABE',
+    footer: '&copy; 2026 Babe &mdash; Impresi\u00f3n 3D &amp; Agencia IA. Todos los derechos reservados.',
+    email: 'hola@babe.com',
+    hero_badge: '\u2726 Innovaci\u00f3n en dos direcciones',
+    hero_title1: 'Imprimimos el futuro.',
+    hero_title2: 'Codificamos la inteligencia.',
+    hero_desc: 'Somos una empresa con dos almas: fabricaci\u00f3n aditiva de precisi\u00f3n y desarrollo de software con IA. Creemos en crear, tanto en el mundo f\u00edsico como en el digital.',
+    hero_btn1: 'Conoce nuestros ejes',
+    hero_btn2: 'Escr\u00edbenos',
+    axes_tag: 'Dos ejes, un prop\u00f3sito',
+    axes_title: 'Impresi\u00f3n 3D & Agencia IA',
+    axes_desc: 'Operamos en dos frentes para cubrir tanto la fabricaci\u00f3n f\u00edsica como la transformaci\u00f3n digital. Un solo equipo, dos especialidades.',
+    axis1_icon: '\uD83D\uDD27',
+    axis1_title: 'Impresi\u00f3n 3D',
+    axis1_desc: 'Desde prototipado r\u00e1pido hasta producci\u00f3n en serie. Trabajamos con PLA, PETG, resina, TPU y materiales t\u00e9cnicos.',
+    axis1_features: ['Prototipado funcional y est\u00e9tico', 'Piezas mec\u00e1nicas y de ingenier\u00eda', 'Modelado 3D personalizado', 'Post-procesado profesional', 'Producci\u00f3n bajo demanda'],
+    axis2_icon: '\uD83E\uDD16',
+    axis2_title: 'Agencia IA',
+    axis2_desc: 'Creamos aplicaciones web y m\u00f3viles potenciadas por inteligencia artificial. De la idea al producto en tiempo r\u00e9cord.',
+    axis2_features: ['Apps web progresivas (PWA)', 'Aplicaciones m\u00f3viles nativas', 'Chatbots y asistentes con IA', 'Automatizaci\u00f3n inteligente', 'Integraci\u00f3n con APIs y WhatsApp'],
+    stats: [
+      { number: '150+', label: 'Proyectos entregados' },
+      { number: '98%', label: 'Satisfacci\u00f3n cliente' },
+      { number: '24/7', label: 'Soporte continuo' },
+      { number: '2x', label: 'Velocidad de desarrollo' }
+    ],
+    services_tag: 'Servicios',
+    services_title: 'Todo lo que necesitas',
+    services_desc: 'Un ecosistema completo de soluciones f\u00edsicas y digitales para impulsar tu proyecto o negocio.',
+    services: [
+      { icon: '\uD83D\uDDA8\uFE0F', title: 'Impresi\u00f3n FDM', desc: 'Prototipos funcionales con PLA+, PETG, ABS, TPU y m\u00e1s.' },
+      { icon: '\uD83D\uDC8E', title: 'Impresi\u00f3n Resina', desc: 'Alta resoluci\u00f3n para miniaturas, joyer\u00eda y piezas detalladas.' },
+      { icon: '\uD83D\uDCD0', title: 'Modelado 3D', desc: 'Dise\u00f1o param\u00e9trico y org\u00e1nico. De tu idea al archivo STL.' },
+      { icon: '\uD83C\uDF10', title: 'Web Apps', desc: 'Dashboards, landing pages, SaaS y plataformas con IA integrada.' },
+      { icon: '\uD83D\uDCF1', title: 'Apps M\u00f3viles', desc: 'Apps nativas y multiplataforma con features de IA generativa.' },
+      { icon: '\uD83D\uDCAC', title: 'Chatbots & WhatsApp', desc: 'Asistentes con IA para WhatsApp, web y atenci\u00f3n al cliente.' }
+    ],
+    wa_number: '521234567890',
+    contact_tag: 'Contacto',
+    contact_title: '\u00bfHablamos de tu pr\u00f3ximo proyecto?',
+    contact_desc: 'Ya sea que necesites una pieza impresa o una app con inteligencia artificial, estamos listos para ayudarte.',
+    contact_btn_wa: 'Cotiza por WhatsApp',
+    projects_tag: 'Portafolio',
+    projects_title: 'Proyectos destacados',
+    projects_desc: 'Una muestra de los trabajos que hemos realizado en ambos ejes.',
+    projects: [
+      { icon: '\uD83D\uDEE0\uFE0F', title: 'Soporte industrial', desc: 'Pieza mec\u00e1nica en PETG para l\u00ednea de producci\u00f3n.', category: '3d', status: 'completed' },
+      { icon: '\uD83E\uDD16', title: 'Chatbot IA para ventas', desc: 'Asistente inteligente integrado con WhatsApp y CRM.', category: 'ai', status: 'completed' },
+      { icon: '\uD83D\uDC8E', title: 'Miniatura coleccionable', desc: 'Modelo en resina de alta definici\u00f3n pintado a mano.', category: '3d', status: 'featured' },
+      { icon: '\uD83D\uDCF1', title: 'App fitness con IA', desc: 'App mobile con planes de entrenamiento generados por IA.', category: 'ai', status: 'progress' }
+    ],
+    quote_tag: 'Cotizaci\u00f3n',
+    quote_title: 'Solicita tu cotizaci\u00f3n',
+    quote_desc: 'Cu\u00e9ntanos tu proyecto y te responderemos en menos de 24 horas.',
+    contact_btn_email: 'hola@babe.com',
+    chat_avatar: 'B',
+    chat_name: 'Asistente Babe',
+    chat_welcome: '\u00a1Hola! Soy el asistente de <strong>Babe</strong>. \uD83D\uDC4B<br />\u00bfTe interesa <strong>Impresi\u00f3n 3D</strong> o <strong>Apps con IA</strong>?',
+    chat_r_3d: '\u00a1Genial! En nuestro eje de <strong>Impresi\u00f3n 3D</strong> trabajamos con FDM y resina. \u00bfBuscas un prototipo, una pieza mec\u00e1nica o un modelo decorativo?',
+    chat_r_ai: '\u00a1Perfecto! Nuestra <strong>Agencia IA</strong> crea apps web y m\u00f3viles con inteligencia artificial integrada. \u00bfTienes una idea en mente o necesitas una cotizaci\u00f3n?',
+    chat_r_price: 'Los precios var\u00edan seg\u00fan el proyecto. Cu\u00e9ntame un poco m\u00e1s de lo que necesitas y puedo darte una referencia, o mejor a\u00fan, \u00a1escr\u00edbenos por WhatsApp para una cotizaci\u00f3n precisa!',
+    chat_r_wa: 'Puedes escribirnos directamente por WhatsApp haciendo clic en el bot\u00f3n de WhatsApp. \u00a1Te respondemos en minutos!',
+    chat_r_bye: '\u00a1De nada! Quedamos atentos a cualquier duda. No olvides que puedes contactarnos por WhatsApp cuando gustes. \uD83D\uDE0A',
+    chat_r_default: 'Gracias por tu mensaje. Para darte la mejor atenci\u00f3n, \u00bfpodr\u00edas indicarme si te interesa <strong>Impresi\u00f3n 3D</strong> o <strong>Apps con IA</strong>? O si prefieres, \u00a1escr\u00edbenos por WhatsApp y te atenderemos al instante!'
+  };
+
+  // ===== STORAGE =====
+  const STORAGE_KEY = 'babe_cms_config';
+  const PASS_KEY = 'babe_cms_pass';
+
+  function getConfig() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        return { ...DEFAULTS, ...parsed, stats: parsed.stats || DEFAULTS.stats, services: parsed.services || DEFAULTS.services, projects: parsed.projects || DEFAULTS.projects, axis1_features: parsed.axis1_features || DEFAULTS.axis1_features, axis2_features: parsed.axis2_features || DEFAULTS.axis2_features };
+      }
+    } catch (e) {}
+    return { ...DEFAULTS };
+  }
+
+  function saveConfig(data) {
+    const current = getConfig();
+    const merged = { ...current, ...data };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+    return merged;
+  }
+
+  // ===== PASSWORD =====
+  function getPassword() {
+    return localStorage.getItem(PASS_KEY) || 'admin123';
+  }
+
+  function showStatus(id, msg, ok) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg;
+    el.className = 'status-msg ' + (ok ? 'ok' : 'err');
+    clearTimeout(el._timer);
+    el._timer = setTimeout(() => { el.textContent = ''; el.className = 'status-msg'; }, 3000);
+  }
+
+  // ===== LOGIN =====
+  function doLogin() {
+    const pass = document.getElementById('loginPass').value;
+    if (pass === getPassword()) {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('adminLayout').classList.add('unlocked');
+      loadAllSections();
+    } else {
+      document.getElementById('loginError').classList.add('show');
+    }
+  }
+  document.getElementById('loginBtn').addEventListener('click', doLogin);
+  document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+  // ===== SIDEBAR NAV =====
+  document.querySelectorAll('#sidebarNav a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('#sidebarNav a').forEach(x => x.classList.remove('active'));
+      a.classList.add('active');
+      document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
+      const section = document.getElementById('section-' + a.dataset.section);
+      if (section) section.style.display = 'block';
+      if (a.dataset.section === 'quotes') loadQuotes();
+    });
+  });
+
+  // ===== LOAD ALL SECTIONS =====
+  function loadAllSections() {
+    const cfg = getConfig();
+
+    // General
+    document.getElementById('cfg_brand').value = cfg.brand || '';
+    document.getElementById('cfg_footer').value = cfg.footer || '';
+    document.getElementById('cfg_email').value = cfg.email || '';
+
+    // Hero
+    document.getElementById('cfg_hero_badge').value = cfg.hero_badge || '';
+    document.getElementById('cfg_hero_title1').value = cfg.hero_title1 || '';
+    document.getElementById('cfg_hero_title2').value = cfg.hero_title2 || '';
+    document.getElementById('cfg_hero_desc').value = cfg.hero_desc || '';
+    document.getElementById('cfg_hero_btn1').value = cfg.hero_btn1 || '';
+    document.getElementById('cfg_hero_btn2').value = cfg.hero_btn2 || '';
+
+    // Axes
+    document.getElementById('cfg_axes_tag').value = cfg.axes_tag || '';
+    document.getElementById('cfg_axes_title').value = cfg.axes_title || '';
+    document.getElementById('cfg_axes_desc').value = cfg.axes_desc || '';
+    document.getElementById('cfg_axis1_icon').value = cfg.axis1_icon || '';
+    document.getElementById('cfg_axis1_title').value = cfg.axis1_title || '';
+    document.getElementById('cfg_axis1_desc').value = cfg.axis1_desc || '';
+    document.getElementById('cfg_axis2_icon').value = cfg.axis2_icon || '';
+    document.getElementById('cfg_axis2_title').value = cfg.axis2_title || '';
+    document.getElementById('cfg_axis2_desc').value = cfg.axis2_desc || '';
+
+    loadFeatures('axis1', cfg.axis1_features || []);
+    loadFeatures('axis2', cfg.axis2_features || []);
+
+    // Stats
+    loadStats(cfg.stats || []);
+
+    // Services
+    document.getElementById('cfg_services_tag').value = cfg.services_tag || '';
+    document.getElementById('cfg_services_title').value = cfg.services_title || '';
+    document.getElementById('cfg_services_desc').value = cfg.services_desc || '';
+    loadServices(cfg.services || []);
+
+    // Projects
+    document.getElementById('cfg_projects_tag').value = cfg.projects_tag || '';
+    document.getElementById('cfg_projects_title').value = cfg.projects_title || '';
+    document.getElementById('cfg_projects_desc').value = cfg.projects_desc || '';
+    loadAdminProjects(cfg.projects || []);
+
+    // Contact
+    document.getElementById('cfg_wa_number').value = cfg.wa_number || '';
+    document.getElementById('cfg_contact_tag').value = cfg.contact_tag || '';
+    document.getElementById('cfg_contact_title').value = cfg.contact_title || '';
+    document.getElementById('cfg_contact_desc').value = cfg.contact_desc || '';
+    document.getElementById('cfg_contact_btn_wa').value = cfg.contact_btn_wa || '';
+    document.getElementById('cfg_contact_btn_email').value = cfg.contact_btn_email || '';
+
+    // Chat
+    document.getElementById('cfg_chat_avatar').value = cfg.chat_avatar || '';
+    document.getElementById('cfg_chat_name').value = cfg.chat_name || '';
+    document.getElementById('cfg_chat_welcome').value = cfg.chat_welcome || '';
+    document.getElementById('cfg_chat_r_3d').value = cfg.chat_r_3d || '';
+    document.getElementById('cfg_chat_r_ai').value = cfg.chat_r_ai || '';
+    document.getElementById('cfg_chat_r_price').value = cfg.chat_r_price || '';
+    document.getElementById('cfg_chat_r_wa').value = cfg.chat_r_wa || '';
+    document.getElementById('cfg_chat_r_bye').value = cfg.chat_r_bye || '';
+    document.getElementById('cfg_chat_r_default').value = cfg.chat_r_default || '';
+
+    // Quotes section text
+    document.getElementById('cfg_quote_tag').value = cfg.quote_tag || '';
+    document.getElementById('cfg_quote_title').value = cfg.quote_title || '';
+    document.getElementById('cfg_quote_desc').value = cfg.quote_desc || '';
+  }
+
+  // ===== FEATURES (dynamic list) =====
+  function loadFeatures(axis, features) {
+    const container = document.getElementById(axis + '-features');
+    container.innerHTML = '';
+    features.forEach((f, i) => {
+      const row = document.createElement('div');
+      row.className = 'feature-row';
+      row.innerHTML = `<input type="text" value="${escapeHtml(f)}" data-index="${i}" />`;
+      const delBtn = document.createElement('button');
+      delBtn.textContent = '×';
+      delBtn.onclick = () => { row.remove(); };
+      row.appendChild(delBtn);
+      container.appendChild(row);
+    });
+  }
+
+  function getFeatures(axis) {
+    const container = document.getElementById(axis + '-features');
+    const items = [];
+    container.querySelectorAll('input').forEach(inp => {
+      const val = inp.value.trim();
+      if (val) items.push(val);
+    });
+    return items;
+  }
+
+  function addFeature(axis) {
+    const container = document.getElementById(axis + '-features');
+    const row = document.createElement('div');
+    row.className = 'feature-row';
+    row.innerHTML = `<input type="text" placeholder="Nueva característica" />`;
+    const delBtn = document.createElement('button');
+    delBtn.textContent = '×';
+    delBtn.onclick = () => { row.remove(); };
+    row.appendChild(delBtn);
+    container.appendChild(row);
+    row.querySelector('input').focus();
+  }
+
+  // ===== STATS =====
+  function loadStats(stats) {
+    const container = document.getElementById('stats-container');
+    container.innerHTML = '';
+    stats.forEach((s, i) => {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:1rem;margin-bottom:0.8rem;';
+      card.innerHTML = `
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Número</label>
+            <input type="text" value="${escapeHtml(s.number)}" class="stat-num" />
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Etiqueta</label>
+            <input type="text" value="${escapeHtml(s.label)}" class="stat-label-input" />
+          </div>
+        </div>
+        <button style="background:none;border:1px solid rgba(248,113,113,0.2);color:#f87171;border-radius:6px;padding:0.3rem 0.8rem;font-size:0.75rem;cursor:pointer;margin-top:0.5rem;" onclick="this.closest('div').remove()">Eliminar</button>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function addStat() {
+    const container = document.getElementById('stats-container');
+    const card = document.createElement('div');
+    card.style.cssText = 'background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:1rem;margin-bottom:0.8rem;';
+    card.innerHTML = `
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Número</label>
+          <input type="text" placeholder="100+" class="stat-num" />
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Etiqueta</label>
+          <input type="text" placeholder="Clientes felices" class="stat-label-input" />
+        </div>
+      </div>
+      <button style="background:none;border:1px solid rgba(248,113,113,0.2);color:#f87171;border-radius:6px;padding:0.3rem 0.8rem;font-size:0.75rem;cursor:pointer;margin-top:0.5rem;" onclick="this.closest('div').remove()">Eliminar</button>
+    `;
+    container.appendChild(card);
+  }
+
+  function getStats() {
+    const items = [];
+    document.querySelectorAll('#stats-container > div').forEach(card => {
+      const num = card.querySelector('.stat-num').value.trim();
+      const label = card.querySelector('.stat-label-input').value.trim();
+      if (num && label) items.push({ number: num, label });
+    });
+    return items;
+  }
+
+  // ===== SERVICES =====
+  function loadServices(services) {
+    const container = document.getElementById('services-container');
+    container.innerHTML = '';
+    services.forEach((s, i) => {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:1rem;margin-bottom:0.8rem;';
+      card.innerHTML = `
+        <div class="form-row">
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Icono (emoji)</label>
+            <input type="text" value="${escapeHtml(s.icon)}" class="svc-icon" />
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Título</label>
+            <input type="text" value="${escapeHtml(s.title)}" class="svc-title" />
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:0;margin-top:0.5rem;">
+          <label>Descripción</label>
+          <input type="text" value="${escapeHtml(s.desc)}" class="svc-desc" />
+        </div>
+        <button style="background:none;border:1px solid rgba(248,113,113,0.2);color:#f87171;border-radius:6px;padding:0.3rem 0.8rem;font-size:0.75rem;cursor:pointer;margin-top:0.5rem;" onclick="this.closest('div').remove()">Eliminar</button>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function addService() {
+    const container = document.getElementById('services-container');
+    const card = document.createElement('div');
+    card.style.cssText = 'background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:1rem;margin-bottom:0.8rem;';
+    card.innerHTML = `
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Icono (emoji)</label>
+          <input type="text" placeholder="🛠️" class="svc-icon" />
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Título</label>
+          <input type="text" placeholder="Nuevo servicio" class="svc-title" />
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:0;margin-top:0.5rem;">
+        <label>Descripción</label>
+        <input type="text" placeholder="Descripción del servicio" class="svc-desc" />
+      </div>
+      <button style="background:none;border:1px solid rgba(248,113,113,0.2);color:#f87171;border-radius:6px;padding:0.3rem 0.8rem;font-size:0.75rem;cursor:pointer;margin-top:0.5rem;" onclick="this.closest('div').remove()">Eliminar</button>
+    `;
+    container.appendChild(card);
+  }
+
+  function getServices() {
+    const items = [];
+    document.querySelectorAll('#services-container > div').forEach(card => {
+      const icon = card.querySelector('.svc-icon').value.trim();
+      const title = card.querySelector('.svc-title').value.trim();
+      const desc = card.querySelector('.svc-desc').value.trim();
+      if (icon && title && desc) items.push({ icon, title, desc });
+    });
+    return items;
+  }
+
+  // ===== ADMIN PROJECTS =====
+  function loadAdminProjects(projects) {
+    const container = document.getElementById('admin-projects-container');
+    if (!container) return;
+    container.innerHTML = '';
+    projects.forEach(function(p, i) {
+      const card = document.createElement('div');
+      card.className = 'admin-project-card';
+      card.dataset.index = i;
+      card.innerHTML =
+        '<div class="form-row">' +
+          '<div class="form-group" style="margin-bottom:0;"><label>Icono</label><input type="text" class="pj-icon" value="' + escapeHtml(p.icon) + '" /></div>' +
+          '<div class="form-group" style="margin-bottom:0;"><label>T\u00edtulo</label><input type="text" class="pj-title" value="' + escapeHtml(p.title) + '" /></div>' +
+        '</div>' +
+        '<div class="form-group" style="margin-bottom:0.5rem;"><label>Descripci\u00f3n</label><input type="text" class="pj-desc" value="' + escapeHtml(p.desc) + '" /></div>' +
+        '<div class="form-row">' +
+          '<div class="form-group" style="margin-bottom:0;"><label>Categor\u00eda</label><select class="pj-cat">' +
+            '<option value="3d"' + (p.category === '3d' ? ' selected' : '') + '>Impresi\u00f3n 3D</option>' +
+            '<option value="ai"' + (p.category === 'ai' ? ' selected' : '') + '>Agencia IA</option>' +
+          '</select></div>' +
+          '<div class="form-group" style="margin-bottom:0;"><label>Estado</label><select class="pj-status">' +
+            '<option value="completed"' + (p.status === 'completed' ? ' selected' : '') + '>Completado</option>' +
+            '<option value="progress"' + (p.status === 'progress' ? ' selected' : '') + '>En progreso</option>' +
+            '<option value="featured"' + (p.status === 'featured' ? ' selected' : '') + '>Destacado</option>' +
+          '</select></div>' +
+        '</div>' +
+        '<button style="background:none;border:1px solid rgba(248,113,113,0.2);color:#f87171;border-radius:6px;padding:0.3rem 0.8rem;font-size:0.75rem;cursor:pointer;margin-top:0.5rem;" onclick=\'this.closest(".admin-project-card").remove()\'>Eliminar proyecto</button>';
+      container.appendChild(card);
+    });
+  }
+
+  function getAdminProjects() {
+    const items = [];
+    document.querySelectorAll('#admin-projects-container .admin-project-card').forEach(function(card) {
+      const icon = card.querySelector('.pj-icon').value.trim();
+      const title = card.querySelector('.pj-title').value.trim();
+      const desc = card.querySelector('.pj-desc').value.trim();
+      const category = card.querySelector('.pj-cat').value;
+      const status = card.querySelector('.pj-status').value;
+      if (icon && title && desc) items.push({ icon: icon, title: title, desc: desc, category: category, status: status });
+    });
+    return items;
+  }
+
+  function addAdminProject() {
+    const container = document.getElementById('admin-projects-container');
+    if (!container) return;
+    const card = document.createElement('div');
+    card.className = 'admin-project-card';
+    card.innerHTML =
+      '<div class="form-row">' +
+        '<div class="form-group" style="margin-bottom:0;"><label>Icono</label><input type="text" class="pj-icon" placeholder="\uD83D\uDD27" /></div>' +
+        '<div class="form-group" style="margin-bottom:0;"><label>T\u00edtulo</label><input type="text" class="pj-title" placeholder="Nuevo proyecto" /></div>' +
+      '</div>' +
+      '<div class="form-group" style="margin-bottom:0.5rem;"><label>Descripci\u00f3n</label><input type="text" class="pj-desc" placeholder="Descripci\u00f3n del proyecto" /></div>' +
+      '<div class="form-row">' +
+        '<div class="form-group" style="margin-bottom:0;"><label>Categor\u00eda</label><select class="pj-cat"><option value="3d">Impresi\u00f3n 3D</option><option value="ai">Agencia IA</option></select></div>' +
+        '<div class="form-group" style="margin-bottom:0;"><label>Estado</label><select class="pj-status"><option value="completed">Completado</option><option value="progress">En progreso</option><option value="featured">Destacado</option></select></div>' +
+      '</div>' +
+      '<button style="background:none;border:1px solid rgba(248,113,113,0.2);color:#f87171;border-radius:6px;padding:0.3rem 0.8rem;font-size:0.75rem;cursor:pointer;margin-top:0.5rem;" onclick=\'this.closest(".admin-project-card").remove()\'>Eliminar proyecto</button>';
+    container.appendChild(card);
+  }
+
+  // ===== QUOTES =====
+  function loadQuotes() {
+    const container = document.getElementById('quotes-list');
+    if (!container) return;
+    const quotes = JSON.parse(localStorage.getItem('babe_quotes') || '[]');
+    if (quotes.length === 0) {
+      container.innerHTML = '<div class="no-quotes">No hay solicitudes de cotización aún.</div>';
+      return;
+    }
+    const serviceLabels = { '3d': 'Impresión 3D', 'ai': 'Agencia IA', 'both': 'Ambos' };
+    const statusLabels = { 'new': 'Nueva', 'read': 'Leída', 'replied': 'Respondida' };
+    let html = '<table class="quotes-table"><thead><tr><th>Fecha</th><th>Nombre</th><th>Contacto</th><th>Servicio</th><th>Estado</th><th></th></tr></thead><tbody>';
+    quotes.forEach(function(q) {
+      const date = new Date(q.date).toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      html += '<tr>' +
+        '<td style="white-space:nowrap;">' + date + '</td>' +
+        '<td><strong>' + escapeHtml(q.name) + '</strong></td>' +
+        '<td>' + escapeHtml(q.email) + '<br /><span style="font-size:0.75rem;color:#606080;">' + escapeHtml(q.phone || '') + '</span></td>' +
+        '<td><span class="svc-badge _' + q.service + '">' + serviceLabels[q.service] + '</span></td>' +
+        '<td><span class="badge ' + q.status + '">' + statusLabels[q.status] + '</span></td>' +
+        '<td><span class="quote-detail-toggle" onclick="toggleQuoteDesc(this)">Ver más</span><div class="quote-desc-box">' + escapeHtml(q.desc) + '</div></td>' +
+        '</tr>';
+    });
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  }
+
+  function toggleQuoteDesc(el) {
+    const box = el.nextElementSibling;
+    if (box) box.classList.toggle('open');
+  }
+
+  // Listen for new quotes from public site
+  function watchQuotes() {
+    var lastQuoteCount = (JSON.parse(localStorage.getItem('babe_quotes') || '[]')).length;
+    setInterval(function() {
+      var current = JSON.parse(localStorage.getItem('babe_quotes') || '[]');
+      if (current.length !== lastQuoteCount) {
+        lastQuoteCount = current.length;
+        loadQuotes();
+      }
+    }, 3000);
+  }
+
+  // ===== SAVE =====
+  function saveSection(section) {
+    const data = {};
+    const cfg = getConfig();
+
+    switch (section) {
+      case 'general':
+        data.brand = document.getElementById('cfg_brand').value.trim() || DEFAULTS.brand;
+        data.footer = document.getElementById('cfg_footer').value.trim() || DEFAULTS.footer;
+        data.email = document.getElementById('cfg_email').value.trim() || DEFAULTS.email;
+        break;
+      case 'hero':
+        data.hero_badge = document.getElementById('cfg_hero_badge').value.trim() || DEFAULTS.hero_badge;
+        data.hero_title1 = document.getElementById('cfg_hero_title1').value.trim() || DEFAULTS.hero_title1;
+        data.hero_title2 = document.getElementById('cfg_hero_title2').value.trim() || DEFAULTS.hero_title2;
+        data.hero_desc = document.getElementById('cfg_hero_desc').value.trim() || DEFAULTS.hero_desc;
+        data.hero_btn1 = document.getElementById('cfg_hero_btn1').value.trim() || DEFAULTS.hero_btn1;
+        data.hero_btn2 = document.getElementById('cfg_hero_btn2').value.trim() || DEFAULTS.hero_btn2;
+        break;
+      case 'axes':
+        data.axes_tag = document.getElementById('cfg_axes_tag').value.trim() || DEFAULTS.axes_tag;
+        data.axes_title = document.getElementById('cfg_axes_title').value.trim() || DEFAULTS.axes_title;
+        data.axes_desc = document.getElementById('cfg_axes_desc').value.trim() || DEFAULTS.axes_desc;
+        data.axis1_icon = document.getElementById('cfg_axis1_icon').value.trim() || DEFAULTS.axis1_icon;
+        data.axis1_title = document.getElementById('cfg_axis1_title').value.trim() || DEFAULTS.axis1_title;
+        data.axis1_desc = document.getElementById('cfg_axis1_desc').value.trim() || DEFAULTS.axis1_desc;
+        data.axis1_features = getFeatures('axis1');
+        data.axis2_icon = document.getElementById('cfg_axis2_icon').value.trim() || DEFAULTS.axis2_icon;
+        data.axis2_title = document.getElementById('cfg_axis2_title').value.trim() || DEFAULTS.axis2_title;
+        data.axis2_desc = document.getElementById('cfg_axis2_desc').value.trim() || DEFAULTS.axis2_desc;
+        data.axis2_features = getFeatures('axis2');
+        break;
+      case 'stats':
+        data.stats = getStats();
+        break;
+      case 'services':
+        data.services_tag = document.getElementById('cfg_services_tag').value.trim() || DEFAULTS.services_tag;
+        data.services_title = document.getElementById('cfg_services_title').value.trim() || DEFAULTS.services_title;
+        data.services_desc = document.getElementById('cfg_services_desc').value.trim() || DEFAULTS.services_desc;
+        data.services = getServices();
+        break;
+      case 'contact':
+        data.wa_number = document.getElementById('cfg_wa_number').value.trim() || DEFAULTS.wa_number;
+        data.contact_tag = document.getElementById('cfg_contact_tag').value.trim() || DEFAULTS.contact_tag;
+        data.contact_title = document.getElementById('cfg_contact_title').value.trim() || DEFAULTS.contact_title;
+        data.contact_desc = document.getElementById('cfg_contact_desc').value.trim() || DEFAULTS.contact_desc;
+        data.contact_btn_wa = document.getElementById('cfg_contact_btn_wa').value.trim() || DEFAULTS.contact_btn_wa;
+        data.contact_btn_email = document.getElementById('cfg_contact_btn_email').value.trim() || DEFAULTS.contact_btn_email;
+        break;
+      case 'chat':
+        data.chat_avatar = document.getElementById('cfg_chat_avatar').value.trim() || DEFAULTS.chat_avatar;
+        data.chat_name = document.getElementById('cfg_chat_name').value.trim() || DEFAULTS.chat_name;
+        data.chat_welcome = document.getElementById('cfg_chat_welcome').value.trim() || DEFAULTS.chat_welcome;
+        data.chat_r_3d = document.getElementById('cfg_chat_r_3d').value.trim() || DEFAULTS.chat_r_3d;
+        data.chat_r_ai = document.getElementById('cfg_chat_r_ai').value.trim() || DEFAULTS.chat_r_ai;
+        data.chat_r_price = document.getElementById('cfg_chat_r_price').value.trim() || DEFAULTS.chat_r_price;
+        data.chat_r_wa = document.getElementById('cfg_chat_r_wa').value.trim() || DEFAULTS.chat_r_wa;
+        data.chat_r_bye = document.getElementById('cfg_chat_r_bye').value.trim() || DEFAULTS.chat_r_bye;
+        data.chat_r_default = document.getElementById('cfg_chat_r_default').value.trim() || DEFAULTS.chat_r_default;
+        break;
+      case 'projects':
+        data.projects_tag = document.getElementById('cfg_projects_tag').value.trim() || DEFAULTS.projects_tag;
+        data.projects_title = document.getElementById('cfg_projects_title').value.trim() || DEFAULTS.projects_title;
+        data.projects_desc = document.getElementById('cfg_projects_desc').value.trim() || DEFAULTS.projects_desc;
+        data.projects = getAdminProjects();
+        break;
+      case 'quotes':
+        data.quote_tag = document.getElementById('cfg_quote_tag').value.trim() || DEFAULTS.quote_tag;
+        data.quote_title = document.getElementById('cfg_quote_title').value.trim() || DEFAULTS.quote_title;
+        data.quote_desc = document.getElementById('cfg_quote_desc').value.trim() || DEFAULTS.quote_desc;
+        break;
+    }
+
+    saveConfig(data);
+    showStatus('status-' + section, '✓ Guardado correctamente', true);
+
+    // Dispatch event so index.html can react
+    localStorage.setItem('babe_cms_updated', Date.now().toString());
+  }
+
+  // ===== PASSWORD CHANGE =====
+  function changePassword() {
+    const newPass = document.getElementById('cfg_new_pass').value;
+    const confirmPass = document.getElementById('cfg_confirm_pass').value;
+    if (!newPass) {
+      showStatus('status-password', '✗ La contraseña no puede estar vacía', false);
+      return;
+    }
+    if (newPass !== confirmPass) {
+      showStatus('status-password', '✗ Las contraseñas no coinciden', false);
+      return;
+    }
+    localStorage.setItem(PASS_KEY, newPass);
+    document.getElementById('cfg_new_pass').value = '';
+    document.getElementById('cfg_confirm_pass').value = '';
+    showStatus('status-password', '✓ Contraseña actualizada', true);
+  }
+
+  // ===== RESET =====
+  function resetAll() {
+    if (!confirm('¿Estás seguro? Esto borrará toda la configuración y la contraseña volverá a "admin123".')) return;
+    if (!confirm('¿Realmente quieres restablecer todo?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(PASS_KEY);
+    localStorage.removeItem('babe_cms_updated');
+    loadAllSections();
+    showStatus('status-reset', '✓ Todo restablecido a valores por defecto', true);
+  }
+
+  // ===== UTILITY =====
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // Load sections on unlock
+  loadAllSections();
+  loadQuotes();
+  watchQuotes();
+</script>
+</body>
+</html>
