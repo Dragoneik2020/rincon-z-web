@@ -373,6 +373,8 @@
       <a href="#" data-section="chat">Chat Bot</a>
       <a href="#" data-section="projects">📁 Proyectos</a>
       <a href="#" data-section="quotes">📋 Cotizaciones</a>
+      <a href="#" data-section="page3d" style="color:#f59e0b;">🖨️ 3D - Página completa</a>
+      <a href="#" data-section="pageia" style="color:#a78bfa;">🤖 IA - Página completa</a>
       <a href="#" data-section="danger" style="color:#f87171;">⚠️ Administración</a>
       <a href="/" target="_blank" style="color:#34d399;margin-top:0.5rem;border-top:1px solid rgba(255,255,255,0.05);padding-top:0.8rem;">🌐 Ver sitio público</a>
     </nav>
@@ -682,6 +684,114 @@
       </div>
     </div>
 
+    <!-- ===== SECTION: 3D PAGE ===== -->
+    <div class="admin-section" id="section-page3d" style="display:none;">
+      <h2 style="color:#f59e0b;">🖨️ Impresión 3D — Página completa</h2>
+      <p class="subtitle">Hero, servicios, proceso, materiales, proyectos y FAQ de la sub-página 3D</p>
+
+      <div class="section-card"><h3>Hero</h3>
+        <div class="form-group"><label>Badge</label><input type="text" id="cfg_3d_hero_badge" /></div>
+        <div class="form-row"><div class="form-group"><label>Título parte 1</label><input type="text" id="cfg_3d_hero_t1" /></div><div class="form-group"><label>Título parte 2 (gradiente)</label><input type="text" id="cfg_3d_hero_t2" /></div></div>
+        <div class="form-group"><label>Descripción</label><textarea id="cfg_3d_hero_desc" rows="2"></textarea></div>
+        <div class="form-row"><div class="form-group"><label>Botón 1 texto</label><input type="text" id="cfg_3d_hero_btn1" /></div><div class="form-group"><label>Botón 2 texto</label><input type="text" id="cfg_3d_hero_btn2" /></div></div>
+        <div class="form-group"><label>URL imagen de fondo</label><input type="text" id="cfg_3d_hero_bg" /></div>
+      </div>
+
+      <div class="section-card"><h3>Servicios</h3>
+        <div class="form-row"><div class="form-group"><label>Tag</label><input type="text" id="cfg_3d_services_tag" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Título</label><input type="text" id="cfg_3d_services_title" /></div><div class="form-group"><label>Descripción</label><input type="text" id="cfg_3d_services_desc" /></div></div>
+        <div id="services-3d-container"></div><button class="add-feature-btn" onclick="addService3D()">+ Agregar servicio 3D</button>
+      </div>
+
+      <div class="section-card"><h3>Proceso</h3>
+        <div class="form-row"><div class="form-group"><label>Tag</label><input type="text" id="cfg_3d_process_tag" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Título</label><input type="text" id="cfg_3d_process_title" /></div><div class="form-group"><label>Descripción</label><input type="text" id="cfg_3d_process_desc" /></div></div>
+        <div id="process-3d-container"></div><button class="add-feature-btn" onclick="addProcess3DStep()">+ Agregar paso</button>
+      </div>
+
+      <div class="section-card"><h3>Materiales</h3>
+        <div class="form-row"><div class="form-group"><label>Tag</label><input type="text" id="cfg_3d_materials_tag" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Título</label><input type="text" id="cfg_3d_materials_title" /></div><div class="form-group"><label>Descripción</label><input type="text" id="cfg_3d_materials_desc" /></div></div>
+        <div id="materials-3d-container"></div><button class="add-feature-btn" onclick="addMaterial3D()">+ Agregar material</button>
+      </div>
+
+      <div class="section-card"><h3>Proyectos</h3>
+        <div class="form-row"><div class="form-group"><label>Tag</label><input type="text" id="cfg_3d_projects_tag" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Título</label><input type="text" id="cfg_3d_projects_title" /></div><div class="form-group"><label>Descripción</label><input type="text" id="cfg_3d_projects_desc" /></div></div>
+        <div id="projects-3d-container"></div><button class="add-feature-btn" onclick="addProject3D()">+ Agregar proyecto 3D</button>
+      </div>
+
+      <div class="section-card"><h3>FAQ</h3>
+        <div class="form-row"><div class="form-group"><label>Tag</label><input type="text" id="cfg_3d_faq_tag" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Título</label><input type="text" id="cfg_3d_faq_title" /></div><div class="form-group"><label>Descripción</label><input type="text" id="cfg_3d_faq_desc" /></div></div>
+        <div id="faq-3d-container"></div><button class="add-feature-btn" onclick="addFAQ3D()">+ Agregar pregunta</button>
+      </div>
+
+      <div class="section-card"><h3>Contacto & Chat</h3>
+        <div class="form-row"><div class="form-group"><label>Tag contacto</label><input type="text" id="cfg_3d_contact_tag" /></div><div class="form-group"><label>Chat nombre</label><input type="text" id="cfg_3d_chat_name" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Título contacto</label><input type="text" id="cfg_3d_contact_title" /></div><div class="form-group"><label>Chat avatar (1 letra)</label><input type="text" id="cfg_3d_chat_avatar" maxlength="2" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Descripción contacto</label><input type="text" id="cfg_3d_contact_desc" /></div></div>
+        <div class="form-row" style="grid-column:1/-1;"><div class="form-group"><label>Mensaje bienvenida chatbot</label><textarea id="cfg_3d_chat_welcome" rows="2"></textarea></div></div>
+      </div>
+
+      <button class="btn-save" onclick="saveSection('page3d')">Guardar página 3D</button>
+      <span class="status-msg" id="status-page3d"></span>
+    </div>
+
+    <!-- ===== SECTION: IA PAGE ===== -->
+    <div class="admin-section" id="section-pageia" style="display:none;">
+      <h2 style="color:#a78bfa;">🤖 Agencia IA — Página completa</h2>
+      <p class="subtitle">Hero, servicios, metodología, tecnologías, proyectos y FAQ de la sub-página IA</p>
+
+      <div class="section-card"><h3>Hero</h3>
+        <div class="form-group"><label>Badge</label><input type="text" id="cfg_ia_hero_badge" /></div>
+        <div class="form-row"><div class="form-group"><label>Título parte 1</label><input type="text" id="cfg_ia_hero_t1" /></div><div class="form-group"><label>Título parte 2 (gradiente)</label><input type="text" id="cfg_ia_hero_t2" /></div></div>
+        <div class="form-group"><label>Descripción</label><textarea id="cfg_ia_hero_desc" rows="2"></textarea></div>
+        <div class="form-row"><div class="form-group"><label>Botón 1 texto</label><input type="text" id="cfg_ia_hero_btn1" /></div><div class="form-group"><label>Botón 2 texto</label><input type="text" id="cfg_ia_hero_btn2" /></div></div>
+        <div class="form-group"><label>URL imagen de fondo</label><input type="text" id="cfg_ia_hero_bg" /></div>
+      </div>
+
+      <div class="section-card"><h3>Servicios</h3>
+        <div class="form-row"><div class="form-group"><label>Tag</label><input type="text" id="cfg_ia_services_tag" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Título</label><input type="text" id="cfg_ia_services_title" /></div><div class="form-group"><label>Descripción</label><input type="text" id="cfg_ia_services_desc" /></div></div>
+        <div id="services-ia-container"></div><button class="add-feature-btn" onclick="addServiceIA()">+ Agregar servicio IA</button>
+      </div>
+
+      <div class="section-card"><h3>Metodología</h3>
+        <div class="form-row"><div class="form-group"><label>Tag</label><input type="text" id="cfg_ia_process_tag" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Título</label><input type="text" id="cfg_ia_process_title" /></div><div class="form-group"><label>Descripción</label><input type="text" id="cfg_ia_process_desc" /></div></div>
+        <div id="process-ia-container"></div><button class="add-feature-btn" onclick="addProcessIAStep()">+ Agregar paso</button>
+      </div>
+
+      <div class="section-card"><h3>Tecnologías</h3>
+        <div class="form-row"><div class="form-group"><label>Tag</label><input type="text" id="cfg_ia_tech_tag" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Título</label><input type="text" id="cfg_ia_tech_title" /></div><div class="form-group"><label>Descripción</label><input type="text" id="cfg_ia_tech_desc" /></div></div>
+        <div id="tech-ia-container"></div><button class="add-feature-btn" onclick="addTechIA()">+ Agregar tecnología</button>
+      </div>
+
+      <div class="section-card"><h3>Proyectos</h3>
+        <div class="form-row"><div class="form-group"><label>Tag</label><input type="text" id="cfg_ia_projects_tag" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Título</label><input type="text" id="cfg_ia_projects_title" /></div><div class="form-group"><label>Descripción</label><input type="text" id="cfg_ia_projects_desc" /></div></div>
+        <div id="projects-ia-container"></div><button class="add-feature-btn" onclick="addProjectIA()">+ Agregar proyecto IA</button>
+      </div>
+
+      <div class="section-card"><h3>FAQ</h3>
+        <div class="form-row"><div class="form-group"><label>Tag</label><input type="text" id="cfg_ia_faq_tag" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Título</label><input type="text" id="cfg_ia_faq_title" /></div><div class="form-group"><label>Descripción</label><input type="text" id="cfg_ia_faq_desc" /></div></div>
+        <div id="faq-ia-container"></div><button class="add-feature-btn" onclick="addFAQIA()">+ Agregar pregunta</button>
+      </div>
+
+      <div class="section-card"><h3>Contacto & Chat</h3>
+        <div class="form-row"><div class="form-group"><label>Tag contacto</label><input type="text" id="cfg_ia_contact_tag" /></div><div class="form-group"><label>Chat nombre</label><input type="text" id="cfg_ia_chat_name" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Título contacto</label><input type="text" id="cfg_ia_contact_title" /></div><div class="form-group"><label>Chat avatar (1 letra)</label><input type="text" id="cfg_ia_chat_avatar" maxlength="2" /></div></div>
+        <div class="form-row"><div class="form-group"><label>Descripción contacto</label><input type="text" id="cfg_ia_contact_desc" /></div></div>
+        <div class="form-row" style="grid-column:1/-1;"><div class="form-group"><label>Mensaje bienvenida chatbot</label><textarea id="cfg_ia_chat_welcome" rows="2"></textarea></div></div>
+      </div>
+
+      <button class="btn-save" onclick="saveSection('pageia')">Guardar página IA</button>
+      <span class="status-msg" id="status-pageia"></span>
+    </div>
+
     <!-- ===== SECTION: DANGER ===== -->
     <div class="admin-section" id="section-danger" style="display:none;">
       <h2>⚠️ Administración</h2>
@@ -914,6 +1024,76 @@
     document.getElementById('cfg_quote_tag').value = cfg.quote_tag || '';
     document.getElementById('cfg_quote_title').value = cfg.quote_title || '';
     document.getElementById('cfg_quote_desc').value = cfg.quote_desc || '';
+
+    // 3D Page
+    document.getElementById('cfg_3d_hero_badge').value = cfg.hero_3d_badge || '';
+    document.getElementById('cfg_3d_hero_t1').value = cfg.hero_3d_title1 || '';
+    document.getElementById('cfg_3d_hero_t2').value = cfg.hero_3d_title2 || '';
+    document.getElementById('cfg_3d_hero_desc').value = cfg.hero_3d_desc || '';
+    document.getElementById('cfg_3d_hero_btn1').value = cfg.hero_3d_btn1 || '';
+    document.getElementById('cfg_3d_hero_btn2').value = cfg.hero_3d_btn2 || '';
+    document.getElementById('cfg_3d_hero_bg').value = cfg.hero_3d_bg || '';
+    document.getElementById('cfg_3d_services_tag').value = cfg.services_3d_tag || '';
+    document.getElementById('cfg_3d_services_title').value = cfg.services_3d_title || '';
+    document.getElementById('cfg_3d_services_desc').value = cfg.services_3d_desc || '';
+    document.getElementById('cfg_3d_process_tag').value = cfg.process_3d_tag || '';
+    document.getElementById('cfg_3d_process_title').value = cfg.process_3d_title || '';
+    document.getElementById('cfg_3d_process_desc').value = cfg.process_3d_desc || '';
+    document.getElementById('cfg_3d_materials_tag').value = cfg.materials_3d_tag || '';
+    document.getElementById('cfg_3d_materials_title').value = cfg.materials_3d_title || '';
+    document.getElementById('cfg_3d_materials_desc').value = cfg.materials_3d_desc || '';
+    document.getElementById('cfg_3d_projects_tag').value = cfg.projects_3d_tag || '';
+    document.getElementById('cfg_3d_projects_title').value = cfg.projects_3d_title || '';
+    document.getElementById('cfg_3d_projects_desc').value = cfg.projects_3d_desc || '';
+    document.getElementById('cfg_3d_faq_tag').value = cfg.faq_3d_tag || '';
+    document.getElementById('cfg_3d_faq_title').value = cfg.faq_3d_title || '';
+    document.getElementById('cfg_3d_faq_desc').value = cfg.faq_3d_desc || '';
+    document.getElementById('cfg_3d_contact_tag').value = cfg.contact_3d_tag || '';
+    document.getElementById('cfg_3d_contact_title').value = cfg.contact_3d_title || '';
+    document.getElementById('cfg_3d_contact_desc').value = cfg.contact_3d_desc || '';
+    document.getElementById('cfg_3d_chat_avatar').value = cfg.chat_3d_avatar || '';
+    document.getElementById('cfg_3d_chat_name').value = cfg.chat_3d_name || '';
+    document.getElementById('cfg_3d_chat_welcome').value = cfg.chat_3d_welcome || '';
+    loadServices3D(cfg.services_3d || []);
+    loadProcess3D(cfg.process_3d_steps || []);
+    loadMaterials3D(cfg.materials_3d || []);
+    loadProjects3D(cfg.projects_3d || []);
+    loadFAQ3D(cfg.faq_3d || []);
+
+    // IA Page
+    document.getElementById('cfg_ia_hero_badge').value = cfg.hero_ia_badge || '';
+    document.getElementById('cfg_ia_hero_t1').value = cfg.hero_ia_title1 || '';
+    document.getElementById('cfg_ia_hero_t2').value = cfg.hero_ia_title2 || '';
+    document.getElementById('cfg_ia_hero_desc').value = cfg.hero_ia_desc || '';
+    document.getElementById('cfg_ia_hero_btn1').value = cfg.hero_ia_btn1 || '';
+    document.getElementById('cfg_ia_hero_btn2').value = cfg.hero_ia_btn2 || '';
+    document.getElementById('cfg_ia_hero_bg').value = cfg.hero_ia_bg || '';
+    document.getElementById('cfg_ia_services_tag').value = cfg.services_ia_tag || '';
+    document.getElementById('cfg_ia_services_title').value = cfg.services_ia_title || '';
+    document.getElementById('cfg_ia_services_desc').value = cfg.services_ia_desc || '';
+    document.getElementById('cfg_ia_process_tag').value = cfg.process_ia_tag || '';
+    document.getElementById('cfg_ia_process_title').value = cfg.process_ia_title || '';
+    document.getElementById('cfg_ia_process_desc').value = cfg.process_ia_desc || '';
+    document.getElementById('cfg_ia_tech_tag').value = cfg.tech_ia_tag || '';
+    document.getElementById('cfg_ia_tech_title').value = cfg.tech_ia_title || '';
+    document.getElementById('cfg_ia_tech_desc').value = cfg.tech_ia_desc || '';
+    document.getElementById('cfg_ia_projects_tag').value = cfg.projects_ia_tag || '';
+    document.getElementById('cfg_ia_projects_title').value = cfg.projects_ia_title || '';
+    document.getElementById('cfg_ia_projects_desc').value = cfg.projects_ia_desc || '';
+    document.getElementById('cfg_ia_faq_tag').value = cfg.faq_ia_tag || '';
+    document.getElementById('cfg_ia_faq_title').value = cfg.faq_ia_title || '';
+    document.getElementById('cfg_ia_faq_desc').value = cfg.faq_ia_desc || '';
+    document.getElementById('cfg_ia_contact_tag').value = cfg.contact_ia_tag || '';
+    document.getElementById('cfg_ia_contact_title').value = cfg.contact_ia_title || '';
+    document.getElementById('cfg_ia_contact_desc').value = cfg.contact_ia_desc || '';
+    document.getElementById('cfg_ia_chat_avatar').value = cfg.chat_ia_avatar || '';
+    document.getElementById('cfg_ia_chat_name').value = cfg.chat_ia_name || '';
+    document.getElementById('cfg_ia_chat_welcome').value = cfg.chat_ia_welcome || '';
+    loadServicesIA(cfg.services_ia || []);
+    loadProcessIA(cfg.process_ia_steps || []);
+    loadTechIA(cfg.tech_ia || []);
+    loadProjectsIA(cfg.projects_ia || []);
+    loadFAQIA(cfg.faq_ia || []);
   }
 
   // ===== FEATURES (dynamic list) =====
@@ -1167,6 +1347,81 @@
     if (box) box.classList.toggle('open');
   }
 
+  // ===== 3D PAGE HELPERS =====
+  function loadServices3D(items) { renderList3d('services-3d-container', items, ['icon','title','desc']); }
+  function addService3D() { addListItem3d('services-3d-container', ['icon','title','desc'], ['Icono','Título','Descripción']); }
+  function getServices3D() { return getListItems3d('services-3d-container', ['icon','title','desc']); }
+  function loadProcess3D(items) { renderList3d('process-3d-container', items, ['icon','title','desc']); }
+  function addProcess3DStep() { addListItem3d('process-3d-container', ['icon','title','desc'], ['Icono','Título','Descripción']); }
+  function getProcess3DSteps() { return getListItems3d('process-3d-container', ['icon','title','desc']); }
+  function loadMaterials3D(items) { renderList3d('materials-3d-container', items, ['icon','name','props','desc']); }
+  function addMaterial3D() { addListItem3d('materials-3d-container', ['icon','name','props','desc'], ['Icono','Nombre','Propiedades','Descripción']); }
+  function getMaterials3D() { return getListItems3d('materials-3d-container', ['icon','name','props','desc']); }
+  function loadProjects3D(items) { renderList3d('projects-3d-container', items, ['icon','title','desc','status']); }
+  function addProject3D() { addListItem3d('projects-3d-container', ['icon','title','desc','status'], ['Icono','Título','Descripción','Estado: completed/progress/featured']); }
+  function getProjects3D() { return getListItems3d('projects-3d-container', ['icon','title','desc','status']); }
+  function loadFAQ3D(items) { renderList3d('faq-3d-container', items, ['q','a']); }
+  function addFAQ3D() { addListItem3d('faq-3d-container', ['q','a'], ['Pregunta','Respuesta']); }
+  function getFAQ3D() { return getListItems3d('faq-3d-container', ['q','a']); }
+
+  // ===== IA PAGE HELPERS =====
+  function loadServicesIA(items) { renderList3d('services-ia-container', items, ['icon','title','desc']); }
+  function addServiceIA() { addListItem3d('services-ia-container', ['icon','title','desc'], ['Icono','Título','Descripción']); }
+  function getServicesIA() { return getListItems3d('services-ia-container', ['icon','title','desc']); }
+  function loadProcessIA(items) { renderList3d('process-ia-container', items, ['icon','title','desc']); }
+  function addProcessIAStep() { addListItem3d('process-ia-container', ['icon','title','desc'], ['Icono','Título','Descripción']); }
+  function getProcessIASteps() { return getListItems3d('process-ia-container', ['icon','title','desc']); }
+  function loadTechIA(items) { renderList3d('tech-ia-container', items, ['icon','name','cat']); }
+  function addTechIA() { addListItem3d('tech-ia-container', ['icon','name','cat'], ['Icono','Nombre','Categoría']); }
+  function getTechIA() { return getListItems3d('tech-ia-container', ['icon','name','cat']); }
+  function loadProjectsIA(items) { renderList3d('projects-ia-container', items, ['icon','title','desc','status']); }
+  function addProjectIA() { addListItem3d('projects-ia-container', ['icon','title','desc','status'], ['Icono','Título','Descripción','Estado']); }
+  function getProjectsIA() { return getListItems3d('projects-ia-container', ['icon','title','desc','status']); }
+  function loadFAQIA(items) { renderList3d('faq-ia-container', items, ['q','a']); }
+  function addFAQIA() { addListItem3d('faq-ia-container', ['q','a'], ['Pregunta','Respuesta']); }
+  function getFAQIA() { return getListItems3d('faq-ia-container', ['q','a']); }
+
+  // ===== GENERIC LIST RENDERER for sub-page fields =====
+  function renderList3d(containerId, items, fields) {
+    const container = document.getElementById(containerId); container.innerHTML = '';
+    items.forEach(function(item) {
+      const card = document.createElement('div'); card.style.cssText = 'background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:1rem;margin-bottom:0.8rem;';
+      let html = fields.length <= 3 ? '<div class="form-row">' : '';
+      fields.forEach(function(f) {
+        html += '<div class="form-group" style="margin-bottom:0.5rem;"><label>' + f.charAt(0).toUpperCase() + f.slice(1) + '</label><input type="text" class="fld-' + f + '" value="' + escapeHtml(item[f] || '') + '" /></div>';
+      });
+      if (fields.length <= 3) html += '</div>'; else { html = '<div class="form-row">' + html; html += '</div>'; }
+      html += '<button style="background:none;border:1px solid rgba(248,113,113,0.2);color:#f87171;border-radius:6px;padding:0.3rem 0.8rem;font-size:0.75rem;cursor:pointer;margin-top:0.3rem;" onclick="this.closest(\'div\').remove()">Eliminar</button>';
+      card.innerHTML = html; container.appendChild(card);
+    });
+  }
+
+  function addListItem3d(containerId, fields, placeholders) {
+    const container = document.getElementById(containerId);
+    const card = document.createElement('div'); card.style.cssText = 'background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:1rem;margin-bottom:0.8rem;';
+    let html = '<div class="form-row">';
+    fields.forEach(function(f, i) {
+      html += '<div class="form-group" style="margin-bottom:0;"><label>' + (placeholders[i] || f) + '</label><input type="text" class="fld-' + f + '" placeholder="' + (placeholders[i] || f) + '" /></div>';
+    });
+    html += '</div><button style="background:none;border:1px solid rgba(248,113,113,0.2);color:#f87171;border-radius:6px;padding:0.3rem 0.8rem;font-size:0.75rem;cursor:pointer;margin-top:0.5rem;" onclick="this.closest(\'div\').remove()">Eliminar</button>';
+    card.innerHTML = html; container.appendChild(card);
+  }
+
+  function getListItems3d(containerId, fields) {
+    const items = [];
+    document.querySelectorAll('#' + containerId + ' > div').forEach(function(card) {
+      const obj = {};
+      let valid = true;
+      fields.forEach(function(f) {
+        const val = (card.querySelector('.fld-' + f) || {}).value || '';
+        obj[f] = val.trim();
+        if (!obj[f]) valid = false;
+      });
+      if (valid) items.push(obj);
+    });
+    return items;
+  }
+
   // Listen for new quotes from public site
   function watchQuotes() {
     var lastQuoteCount = (JSON.parse(localStorage.getItem('babe_quotes') || '[]')).length;
@@ -1249,6 +1504,76 @@
         data.quote_tag = document.getElementById('cfg_quote_tag').value.trim() || DEFAULTS.quote_tag;
         data.quote_title = document.getElementById('cfg_quote_title').value.trim() || DEFAULTS.quote_title;
         data.quote_desc = document.getElementById('cfg_quote_desc').value.trim() || DEFAULTS.quote_desc;
+        break;
+      case 'page3d':
+        data.hero_3d_badge = document.getElementById('cfg_3d_hero_badge').value.trim() || '';
+        data.hero_3d_title1 = document.getElementById('cfg_3d_hero_t1').value.trim() || '';
+        data.hero_3d_title2 = document.getElementById('cfg_3d_hero_t2').value.trim() || '';
+        data.hero_3d_desc = document.getElementById('cfg_3d_hero_desc').value.trim() || '';
+        data.hero_3d_btn1 = document.getElementById('cfg_3d_hero_btn1').value.trim() || '';
+        data.hero_3d_btn2 = document.getElementById('cfg_3d_hero_btn2').value.trim() || '';
+        data.hero_3d_bg = document.getElementById('cfg_3d_hero_bg').value.trim() || '';
+        data.services_3d_tag = document.getElementById('cfg_3d_services_tag').value.trim() || '';
+        data.services_3d_title = document.getElementById('cfg_3d_services_title').value.trim() || '';
+        data.services_3d_desc = document.getElementById('cfg_3d_services_desc').value.trim() || '';
+        data.services_3d = getServices3D();
+        data.process_3d_tag = document.getElementById('cfg_3d_process_tag').value.trim() || '';
+        data.process_3d_title = document.getElementById('cfg_3d_process_title').value.trim() || '';
+        data.process_3d_desc = document.getElementById('cfg_3d_process_desc').value.trim() || '';
+        data.process_3d_steps = getProcess3DSteps();
+        data.materials_3d_tag = document.getElementById('cfg_3d_materials_tag').value.trim() || '';
+        data.materials_3d_title = document.getElementById('cfg_3d_materials_title').value.trim() || '';
+        data.materials_3d_desc = document.getElementById('cfg_3d_materials_desc').value.trim() || '';
+        data.materials_3d = getMaterials3D();
+        data.projects_3d_tag = document.getElementById('cfg_3d_projects_tag').value.trim() || '';
+        data.projects_3d_title = document.getElementById('cfg_3d_projects_title').value.trim() || '';
+        data.projects_3d_desc = document.getElementById('cfg_3d_projects_desc').value.trim() || '';
+        data.projects_3d = getProjects3D();
+        data.faq_3d_tag = document.getElementById('cfg_3d_faq_tag').value.trim() || '';
+        data.faq_3d_title = document.getElementById('cfg_3d_faq_title').value.trim() || '';
+        data.faq_3d_desc = document.getElementById('cfg_3d_faq_desc').value.trim() || '';
+        data.faq_3d = getFAQ3D();
+        data.contact_3d_tag = document.getElementById('cfg_3d_contact_tag').value.trim() || '';
+        data.contact_3d_title = document.getElementById('cfg_3d_contact_title').value.trim() || '';
+        data.contact_3d_desc = document.getElementById('cfg_3d_contact_desc').value.trim() || '';
+        data.chat_3d_avatar = document.getElementById('cfg_3d_chat_avatar').value.trim() || '';
+        data.chat_3d_name = document.getElementById('cfg_3d_chat_name').value.trim() || '';
+        data.chat_3d_welcome = document.getElementById('cfg_3d_chat_welcome').value.trim() || '';
+        break;
+      case 'pageia':
+        data.hero_ia_badge = document.getElementById('cfg_ia_hero_badge').value.trim() || '';
+        data.hero_ia_title1 = document.getElementById('cfg_ia_hero_t1').value.trim() || '';
+        data.hero_ia_title2 = document.getElementById('cfg_ia_hero_t2').value.trim() || '';
+        data.hero_ia_desc = document.getElementById('cfg_ia_hero_desc').value.trim() || '';
+        data.hero_ia_btn1 = document.getElementById('cfg_ia_hero_btn1').value.trim() || '';
+        data.hero_ia_btn2 = document.getElementById('cfg_ia_hero_btn2').value.trim() || '';
+        data.hero_ia_bg = document.getElementById('cfg_ia_hero_bg').value.trim() || '';
+        data.services_ia_tag = document.getElementById('cfg_ia_services_tag').value.trim() || '';
+        data.services_ia_title = document.getElementById('cfg_ia_services_title').value.trim() || '';
+        data.services_ia_desc = document.getElementById('cfg_ia_services_desc').value.trim() || '';
+        data.services_ia = getServicesIA();
+        data.process_ia_tag = document.getElementById('cfg_ia_process_tag').value.trim() || '';
+        data.process_ia_title = document.getElementById('cfg_ia_process_title').value.trim() || '';
+        data.process_ia_desc = document.getElementById('cfg_ia_process_desc').value.trim() || '';
+        data.process_ia_steps = getProcessIASteps();
+        data.tech_ia_tag = document.getElementById('cfg_ia_tech_tag').value.trim() || '';
+        data.tech_ia_title = document.getElementById('cfg_ia_tech_title').value.trim() || '';
+        data.tech_ia_desc = document.getElementById('cfg_ia_tech_desc').value.trim() || '';
+        data.tech_ia = getTechIA();
+        data.projects_ia_tag = document.getElementById('cfg_ia_projects_tag').value.trim() || '';
+        data.projects_ia_title = document.getElementById('cfg_ia_projects_title').value.trim() || '';
+        data.projects_ia_desc = document.getElementById('cfg_ia_projects_desc').value.trim() || '';
+        data.projects_ia = getProjectsIA();
+        data.faq_ia_tag = document.getElementById('cfg_ia_faq_tag').value.trim() || '';
+        data.faq_ia_title = document.getElementById('cfg_ia_faq_title').value.trim() || '';
+        data.faq_ia_desc = document.getElementById('cfg_ia_faq_desc').value.trim() || '';
+        data.faq_ia = getFAQIA();
+        data.contact_ia_tag = document.getElementById('cfg_ia_contact_tag').value.trim() || '';
+        data.contact_ia_title = document.getElementById('cfg_ia_contact_title').value.trim() || '';
+        data.contact_ia_desc = document.getElementById('cfg_ia_contact_desc').value.trim() || '';
+        data.chat_ia_avatar = document.getElementById('cfg_ia_chat_avatar').value.trim() || '';
+        data.chat_ia_name = document.getElementById('cfg_ia_chat_name').value.trim() || '';
+        data.chat_ia_welcome = document.getElementById('cfg_ia_chat_welcome').value.trim() || '';
         break;
     }
 

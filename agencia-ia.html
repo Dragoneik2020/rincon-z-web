@@ -32,24 +32,15 @@
       transition:color 0.3s;
     }
     .nav-links a:hover { color:#fff; }
-    .nav-back {
-      color:#a78bfa !important; font-weight:600 !important;
-    }
+    .nav-back { color:#a78bfa !important; font-weight:600 !important; }
 
     .hero {
       min-height:100vh; display:flex; flex-direction:column;
       justify-content:center; align-items:center; text-align:center;
-      padding:6rem 2rem 2rem;
-      position:relative;
-      background:
-        radial-gradient(ellipse at 20% 50%, rgba(167,139,250,0.1), transparent 60%),
-        radial-gradient(ellipse at 80% 50%, rgba(96,165,250,0.08), transparent 60%);
+      padding:6rem 2rem 2rem; position:relative;
+      background: radial-gradient(ellipse at 20% 50%, rgba(167,139,250,0.1), transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(96,165,250,0.08), transparent 60%);
     }
-    .hero::before {
-      content:''; position:absolute; inset:0;
-      background:url('https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1400&q=80') center/cover;
-      opacity:0.06; z-index:0;
-    }
+    .hero::before { content:''; position:absolute; inset:0; background:var(--hero-bg) center/cover; opacity:0.08; z-index:0; }
     .hero>* { position:relative; z-index:1; }
     .hero-badge {
       display:inline-block; background:rgba(167,139,250,0.12);
@@ -57,14 +48,8 @@
       border-radius:50px; font-size:0.8rem; color:#a78bfa;
       margin-bottom:1.5rem; letter-spacing:1px;
     }
-    .hero h1 {
-      font-size:clamp(2.5rem,7vw,5rem); font-weight:800;
-      line-height:1.1; margin-bottom:1.2rem;
-    }
-    .hero h1 span {
-      background:linear-gradient(135deg,#a78bfa,#60a5fa);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
+    .hero h1 { font-size:clamp(2.5rem,7vw,5rem); font-weight:800; line-height:1.1; margin-bottom:1.2rem; }
+    .hero h1 span { background:linear-gradient(135deg,#a78bfa,#60a5fa); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
     .hero p { font-size:1.15rem; color:#9090aa; max-width:600px; margin-bottom:2rem; }
     .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; }
     .btn {
@@ -72,10 +57,7 @@
       font-weight:600; font-size:0.95rem; transition:all 0.3s;
       display:inline-flex; align-items:center; gap:0.5rem;
     }
-    .btn-primary {
-      background:linear-gradient(135deg,#a78bfa,#60a5fa); color:#fff;
-      box-shadow:0 4px 25px rgba(167,139,250,0.3);
-    }
+    .btn-primary { background:linear-gradient(135deg,#a78bfa,#60a5fa); color:#fff; box-shadow:0 4px 25px rgba(167,139,250,0.3); }
     .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 35px rgba(167,139,250,0.45); }
     .btn-outline { border:1.5px solid rgba(255,255,255,0.15); color:#f0f0f5; }
     .btn-outline:hover { border-color:#a78bfa; background:rgba(167,139,250,0.08); }
@@ -83,76 +65,63 @@
     .btn-wa:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(37,211,102,0.35); }
 
     section { padding:6rem 2rem; max-width:1200px; margin:0 auto; }
-    .section-tag {
-      display:inline-block; font-size:0.75rem; text-transform:uppercase;
-      letter-spacing:2px; color:#a78bfa; margin-bottom:0.6rem; font-weight:600;
-    }
+    .section-tag { display:inline-block; font-size:0.75rem; text-transform:uppercase; letter-spacing:2px; color:#a78bfa; margin-bottom:0.6rem; font-weight:600; }
     .section-title { font-size:clamp(2rem,4vw,3rem); font-weight:700; margin-bottom:1rem; }
     .section-desc { color:#9090aa; max-width:600px; margin-bottom:3rem; }
 
     .services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
-    .service-item {
-      background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05);
-      border-radius:18px; padding:2rem 1.8rem; transition:all 0.3s;
-    }
-    .service-item:hover {
-      background:rgba(255,255,255,0.04);
-      border-color:rgba(167,139,250,0.2); transform:translateY(-3px);
-    }
+    .service-item { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:18px; padding:2rem 1.8rem; transition:all 0.3s; }
+    .service-item:hover { background:rgba(255,255,255,0.04); border-color:rgba(167,139,250,0.2); transform:translateY(-3px); }
     .service-item .icon { font-size:2rem; margin-bottom:1rem; }
     .service-item h4 { font-size:1.1rem; margin-bottom:0.5rem; }
     .service-item p { font-size:0.85rem; color:#8080a0; }
 
+    .steps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; counter-reset:step; }
+    .step-item { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:18px; padding:2rem 1.8rem; text-align:center; position:relative; transition:all 0.3s; }
+    .step-item:hover { border-color:rgba(167,139,250,0.2); transform:translateY(-3px); }
+    .step-item .step-num { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#a78bfa,#60a5fa); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; margin:0 auto 1rem; }
+    .step-item .icon { font-size:2rem; margin-bottom:0.8rem; }
+    .step-item h4 { font-size:1.05rem; margin-bottom:0.4rem; }
+    .step-item p { font-size:0.85rem; color:#8080a0; }
+
+    .tech-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.2rem; }
+    .tech-item { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:14px; padding:1.5rem; text-align:center; transition:all 0.3s; }
+    .tech-item:hover { border-color:rgba(167,139,250,0.2); transform:translateY(-2px); }
+    .tech-item .icon { font-size:2.2rem; margin-bottom:0.5rem; }
+    .tech-item h4 { font-size:0.95rem; }
+    .tech-item .tech-cat { font-size:0.7rem; color:#a78bfa; text-transform:uppercase; letter-spacing:1px; margin-top:0.3rem; }
+
     .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; }
-    .project-card {
-      background:linear-gradient(145deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.06); border-radius:20px;
-      padding:2rem 1.8rem; transition:all 0.3s;
-    }
+    .project-card { background:linear-gradient(145deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.06); border-radius:20px; padding:2rem 1.8rem; transition:all 0.3s; }
     .project-card:hover { border-color:rgba(255,255,255,0.12); transform:translateY(-4px); }
     .project-card .icon { font-size:2.4rem; margin-bottom:0.8rem; }
     .project-card h4 { font-size:1.1rem; margin-bottom:0.5rem; }
     .project-card p { font-size:0.85rem; color:#8080a0; margin-bottom:1rem; }
-    .project-badge {
-      display:inline-block; font-size:0.7rem; font-weight:600; text-transform:uppercase;
-      letter-spacing:1px; padding:0.25rem 0.8rem; border-radius:50px; margin-bottom:1rem;
-      background:rgba(167,139,250,0.12); color:#a78bfa; border:1px solid rgba(167,139,250,0.2);
-    }
+    .project-badge { display:inline-block; font-size:0.7rem; font-weight:600; text-transform:uppercase; letter-spacing:1px; padding:0.25rem 0.8rem; border-radius:50px; margin-bottom:1rem; background:rgba(167,139,250,0.12); color:#a78bfa; border:1px solid rgba(167,139,250,0.2); }
     .project-status { font-size:0.75rem; display:flex; align-items:center; gap:0.4rem; }
     .project-status .dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
     .project-status .dot.completed { background:#34d399; }
     .project-status .dot.progress { background:#a78bfa; }
 
-    .cta-section {
-      text-align:center;
-      background:radial-gradient(ellipse at center,rgba(167,139,250,0.06),transparent);
-      padding:6rem 2rem; border-radius:32px;
-      border:1px solid rgba(255,255,255,0.05); max-width:900px; margin:0 auto 2rem;
-    }
+    .faq-grid { max-width:800px; margin:0 auto; }
+    .faq-item { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:14px; margin-bottom:0.8rem; overflow:hidden; transition:all 0.3s; }
+    .faq-item:hover { border-color:rgba(167,139,250,0.15); }
+    .faq-q { padding:1.2rem 1.5rem; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-weight:600; font-size:0.95rem; }
+    .faq-q .arrow { font-size:1.1rem; transition:transform 0.3s; color:#a78bfa; }
+    .faq-item.open .faq-q .arrow { transform:rotate(180deg); }
+    .faq-a { max-height:0; padding:0 1.5rem; overflow:hidden; transition:all 0.35s; color:#8080a0; font-size:0.88rem; line-height:1.6; }
+    .faq-item.open .faq-a { max-height:300px; padding:0 1.5rem 1.2rem; }
+
+    .cta-section { text-align:center; background:radial-gradient(ellipse at center,rgba(167,139,250,0.06),transparent); padding:6rem 2rem; border-radius:32px; border:1px solid rgba(255,255,255,0.05); max-width:900px; margin:0 auto 2rem; }
     .cta-section h2 { font-size:clamp(1.8rem,3vw,2.6rem); margin-bottom:1rem; }
     .cta-section p { color:#9090aa; margin-bottom:2rem; }
 
     footer { text-align:center; padding:2rem; color:#505070; font-size:0.8rem; border-top:1px solid rgba(255,255,255,0.04); }
-    footer a { color:#505070; text-decoration:none; }
 
-    .chat-btn {
-      position:fixed; bottom:1.8rem; right:1.8rem; width:58px; height:58px;
-      border-radius:50%; background:linear-gradient(135deg,#a78bfa,#60a5fa);
-      border:none; color:#fff; font-size:1.5rem; cursor:pointer; z-index:999;
-      box-shadow:0 6px 30px rgba(167,139,250,0.4);
-      transition:all 0.3s; display:flex; align-items:center; justify-content:center;
-    }
+    .chat-btn { position:fixed; bottom:1.8rem; right:1.8rem; width:58px; height:58px; border-radius:50%; background:linear-gradient(135deg,#a78bfa,#60a5fa); border:none; color:#fff; font-size:1.5rem; cursor:pointer; z-index:999; box-shadow:0 6px 30px rgba(167,139,250,0.4); transition:all 0.3s; display:flex; align-items:center; justify-content:center; }
     .chat-btn:hover { transform:scale(1.1); box-shadow:0 8px 40px rgba(167,139,250,0.55); }
     .chat-btn svg { width:26px; height:26px; fill:currentColor; }
-
-    .chat-box {
-      position:fixed; bottom:5.5rem; right:1.8rem; width:360px;
-      max-width:calc(100vw - 3.6rem); max-height:520px;
-      background:#12121c; border:1px solid rgba(255,255,255,0.08);
-      border-radius:20px; display:none; flex-direction:column; z-index:998;
-      box-shadow:0 20px 60px rgba(0,0,0,0.6); overflow:hidden;
-      animation:slideUp 0.35s ease;
-    }
+    .chat-box { position:fixed; bottom:5.5rem; right:1.8rem; width:360px; max-width:calc(100vw - 3.6rem); max-height:520px; background:#12121c; border:1px solid rgba(255,255,255,0.08); border-radius:20px; display:none; flex-direction:column; z-index:998; box-shadow:0 20px 60px rgba(0,0,0,0.6); overflow:hidden; animation:slideUp 0.35s ease; }
     .chat-box.open { display:flex; }
     @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
     .chat-header { padding:1rem 1.2rem; background:rgba(255,255,255,0.03); border-bottom:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:space-between; }
@@ -207,193 +176,357 @@
   </style>
 </head>
 <body>
-  <nav>
-    <a href="index.html" class="logo">RINCON-Z</a>
-    <ul class="nav-links">
-      <li><a href="index.html" class="nav-back">← Inicio</a></li>
-      <li><a href="#servicios">Servicios</a></li>
-      <li><a href="#proyectos">Proyectos</a></li>
-      <li><a href="#cotizacion">Cotización</a></li>
-      <li><a href="#contacto">Contacto</a></li>
-      <li><a class="btn-wa" style="padding:0.4rem 1rem;border-radius:50px;font-weight:600;color:#fff;" href="https://wa.me/521234567890?text=Hola!%20Quiero%20información%20sobre%20desarrollo%20con%20IA" target="_blank">WhatsApp</a></li>
-    </ul>
-  </nav>
-
-  <section class="hero">
-    <span class="hero-badge">✦ Inteligencia artificial aplicada</span>
-    <h1>Transformamos tu negocio <span>con IA</span></h1>
-    <p>Creamos aplicaciones web, chatbots inteligentes y sistemas de automatización que potencian la productividad y la experiencia de tus clientes.</p>
-    <div class="hero-btns">
-      <a href="#servicios" class="btn btn-primary">Ver servicios</a>
-      <a href="https://wa.me/521234567890?text=Hola!%20Quiero%20una%20cotización%20para%20desarrollo%20con%20IA" target="_blank" class="btn btn-wa">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Cotizar ahora
-      </a>
-    </div>
-  </section>
-
-  <section id="servicios">
-    <span class="section-tag">Servicios</span>
-    <h2 class="section-title">Desarrollo inteligente</h2>
-    <p class="section-desc">Integramos IA en cada capa de tu producto digital: desde asistentes conversacionales hasta sistemas de análisis predictivo.</p>
-    <div class="services-grid">
-      <div class="service-item"><div class="icon">🤖</div><h4>Chatbots & Asistentes IA</h4><p>Agentes conversacionales con GPT, Claude y modelos custom. Atención 24/7 con lenguaje natural.</p></div>
-      <div class="service-item"><div class="icon">🌐</div><h4>Apps Web Progresivas</h4><p>Plataformas web modernas con React, Next.js y backend serverless. Experiencias rápidas y escalables.</p></div>
-      <div class="service-item"><div class="icon">📱</div><h4>Apps Móviles</h4><p>Desarrollo iOS y Android con Flutter y React Native. Apps nativas con inteligencia embebida.</p></div>
-      <div class="service-item"><div class="icon">⚡</div><h4>Automatización inteligente</h4><p>Workflows, RPA y procesos automatizados con toma de decisiones basada en IA.</p></div>
-      <div class="service-item"><div class="icon">📊</div><h4>Análisis de datos & BI</h4><p>Dashboards dinámicos, predicciones, segmentación de clientes y detección de patrones.</p></div>
-      <div class="service-item"><div class="icon">🔌</div><h4>Integración de APIs</h4><p>Conexión con OpenAI, Stripe, WhatsApp Business API, Google Cloud y más.</p></div>
-    </div>
-  </section>
-
-  <section id="proyectos">
-    <span class="section-tag">Portafolio</span>
-    <h2 class="section-title">Proyectos IA</h2>
-    <p class="section-desc">Soluciones digitales que hemos construido para impulsar negocios.</p>
-    <div class="projects-grid">
-      <div class="project-card"><div class="icon">💬</div><span class="project-badge">IA / Chatbot</span><h4>Asistente comercial</h4><p>Chatbot con IA generativa para atención al cliente, agendamiento y ventas automatizadas.</p><div class="project-status"><span class="dot completed"></span> Completado</div></div>
-      <div class="project-card"><div class="icon">📊</div><span class="project-badge">IA / Dashboard</span><h4>Analytics predictivo</h4><p>Tablero de inteligencia de negocio con predicción de ventas y alertas automáticas.</p><div class="project-status"><span class="dot featured" style="background:#a78bfa;"></span> Destacado</div></div>
-      <div class="project-card"><div class="icon">🛒</div><span class="project-badge">IA / Web App</span><h4>E-commerce inteligente</h4><p>Plataforma de comercio electrónico con recomendaciones personalizadas y búsqueda semántica.</p><div class="project-status"><span class="dot completed"></span> Completado</div></div>
-      <div class="project-card"><div class="icon">⚙️</div><span class="project-badge">IA / Automatización</span><h4>Pipeline de documentos</h4><p>Sistema de procesamiento automático de facturas con extracción de datos por IA.</p><div class="project-status"><span class="dot progress"></span> En progreso</div></div>
-    </div>
-  </section>
-
-  <section id="cotizacion">
-    <span class="section-tag">Cotización</span>
-    <h2 class="section-title">Solicita tu cotización</h2>
-    <p class="section-desc">Cuéntanos qué proyecto digital tienes en mente y te daremos una propuesta en menos de 48 horas.</p>
-    <div class="quote-form">
-      <div class="form-row">
-        <div class="field"><label>Nombre completo</label><input type="text" id="qf_name" placeholder="Tu nombre" /></div>
-        <div class="field"><label>Correo electrónico</label><input type="email" id="qf_email" placeholder="tu@correo.com" /></div>
-      </div>
-      <div class="form-row">
-        <div class="field"><label>Teléfono / WhatsApp</label><input type="text" id="qf_phone" placeholder="+52 123 456 7890" /></div>
-        <div class="field"><label>Tipo de servicio</label>
-          <select id="qf_service">
-            <option value="chatbot">Chatbot / Asistente IA</option>
-            <option value="web">App web / PWA</option>
-            <option value="mobile">App móvil</option>
-            <option value="automation">Automatización / RPA</option>
-            <option value="analytics">Analytics / BI</option>
-          </select>
-        </div>
-      </div>
-      <div class="field"><label>Descripción del proyecto</label><textarea id="qf_desc" placeholder="Objetivos, funcionalidades clave, plazo estimado, presupuesto..."></textarea></div>
-      <button class="btn-submit" id="qf_submit">Enviar solicitud</button>
-      <div class="quote-success" id="qf_success"><div style="font-size:3rem;margin-bottom:1rem;">✓</div><strong>¡Solicitud enviada!</strong><br />Te contactaremos en menos de 48 horas.</div>
-    </div>
-  </section>
-
-  <section id="contacto">
-    <div class="cta-section">
-      <span class="section-tag">Contacto</span>
-      <h2>¿Listo para dar el salto digital?</h2>
-      <p>Conversemos sobre tu proyecto y descubre cómo la inteligencia artificial puede transformar tu negocio.</p>
-      <div class="hero-btns">
-        <a href="https://wa.me/521234567890?text=Hola!%20Quiero%20una%20cotización%20para%20desarrollo%20con%20IA" target="_blank" class="btn btn-wa">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Cotiza por WhatsApp
-        </a>
-        <a href="mailto:hola@babe.com" class="btn btn-outline">hola@babe.com</a>
-      </div>
-    </div>
-  </section>
-
-  <footer>&copy; 2026 Rincon-Z &mdash; Agencia IA. Todos los derechos reservados.<br /><span style="font-size:0.7rem;opacity:0.3;"><a href="admin.html">⚙️</a></span></footer>
-
-  <button class="chat-btn" id="chatBtn" aria-label="Abrir chat">
-    <svg id="chatIcon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
-  </button>
-  <div class="chat-box" id="chatBox">
-    <div class="chat-header">
-      <div class="chat-header-info"><div class="chat-avatar">A</div><div><h4>Asistente IA</h4><span class="status">● Online</span></div></div>
-      <button class="chat-close" id="chatClose">&times;</button>
-    </div>
-    <div class="chat-messages" id="chatMessages">
-      <div class="msg bot">¡Hola! Soy el asistente de <strong>Agencia IA</strong> de Rincon-Z. 🚀<br />¿Qué proyecto digital o solución con IA necesitas?</div>
-    </div>
-    <div class="chat-input-area">
-      <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." autocomplete="off" />
-      <button class="chat-send" id="chatSend"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
-    </div>
-  </div>
+  <div id="app"></div>
+  <footer id="footer"></footer>
+  <div id="chat-widget"></div>
   <div class="toast" id="toast"></div>
 
   <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const chatBtn = document.getElementById('chatBtn');
-    const chatBox = document.getElementById('chatBox');
-    const chatClose = document.getElementById('chatClose');
-    const chatMessages = document.getElementById('chatMessages');
-    const chatInput = document.getElementById('chatInput');
-    const chatSend = document.getElementById('chatSend');
-    const chatIcon = document.getElementById('chatIcon');
-    const toast = document.getElementById('toast');
-    let chatOpen = false;
+    const STORAGE_KEY = 'babe_cms_config';
 
-    function toggleChat(open) {
-      chatOpen = open !== undefined ? open : !chatOpen;
-      chatBox.classList.toggle('open', chatOpen);
-      if (chatOpen) { chatInput.focus(); chatIcon.innerHTML = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>'; }
-      else { chatIcon.innerHTML = '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>'; }
+    const DEFAULTS = {
+      brand: 'RINCON-Z',
+      footer: '&copy; 2026 Rincon-Z &mdash; Agencia IA. Todos los derechos reservados.',
+      email: 'hola@rincon-z.com',
+      wa_number: '521234567890',
+      hero_ia_badge: '\u2726 Inteligencia artificial aplicada',
+      hero_ia_title1: 'Transformamos tu negocio',
+      hero_ia_title2: 'con IA',
+      hero_ia_desc: 'Creamos aplicaciones web, chatbots inteligentes y sistemas de automatizaci\u00f3n que potencian la productividad y la experiencia de tus clientes.',
+      hero_ia_btn1: 'Ver servicios',
+      hero_ia_btn2: 'Cotizar ahora',
+      hero_ia_bg: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1400&q=80',
+      services_ia_tag: 'Servicios',
+      services_ia_title: 'Desarrollo inteligente',
+      services_ia_desc: 'Integramos IA en cada capa de tu producto digital: desde asistentes conversacionales hasta sistemas de an\u00e1lisis predictivo.',
+      services_ia: [
+        { icon: '\uD83E\uDD16', title: 'Chatbots & Asistentes IA', desc: 'Agentes conversacionales con GPT, Claude y modelos custom. Atenci\u00f3n 24/7 con lenguaje natural.' },
+        { icon: '\uD83C\uDF10', title: 'Apps Web Progresivas', desc: 'Plataformas web modernas con React, Next.js y backend serverless. Experiencias r\u00e1pidas y escalables.' },
+        { icon: '\uD83D\uDCF1', title: 'Apps M\u00f3viles', desc: 'Desarrollo iOS y Android con Flutter y React Native. Apps nativas con inteligencia embebida.' },
+        { icon: '\u26A1', title: 'Automatizaci\u00f3n inteligente', desc: 'Workflows, RPA y procesos automatizados con toma de decisiones basada en IA.' },
+        { icon: '\uD83D\uDCCA', title: 'An\u00e1lisis de datos & BI', desc: 'Dashboards din\u00e1micos, predicciones, segmentaci\u00f3n de clientes y detecci\u00f3n de patrones.' },
+        { icon: '\uD83D\uDD0C', title: 'Integraci\u00f3n de APIs', desc: 'Conexi\u00f3n con OpenAI, Stripe, WhatsApp Business API, Google Cloud y m\u00e1s.' }
+      ],
+      process_ia_tag: 'Metodolog\u00eda',
+      process_ia_title: 'C\u00f3mo trabajamos',
+      process_ia_desc: 'Un proceso \u00e1gil y transparente para llevar tu proyecto digital de la idea a la producci\u00f3n.',
+      process_ia_steps: [
+        { icon: '\uD83D\uDCDD', title: 'Relevamiento', desc: 'Entendemos tu negocio, objetivos y necesidades t\u00e9cnicas en una sesi\u00f3n de descubrimiento.' },
+        { icon: '\uD83D\uDCD0', title: 'Arquitectura', desc: 'Dise\u00f1amos la soluci\u00f3n: tecnolog\u00edas, flujos, UX/UI y plan de desarrollo.' },
+        { icon: '\uD83D\uDCBB', title: 'Desarrollo \u00e1gil', desc: 'Iteramos en sprints con entregas continuas, revisi\u00f3n y feedback constante.' },
+        { icon: '\uD83E\uDD16', title: 'Integraci\u00f3n IA', desc: 'Incorporamos modelos de lenguaje, APIs y automatizaci\u00f3n inteligente.' },
+        { icon: '\u2705', title: 'Pruebas y QA', desc: 'Probamos cada funcionalidad con tests automatizados y control de calidad.' },
+        { icon: '\uD83D\uDE80', title: 'Despliegue y soporte', desc: 'Publicamos en producci\u00f3n y damos mantenimiento continuo con monitoreo.' }
+      ],
+      tech_ia_tag: 'Tecnolog\u00edas',
+      tech_ia_title: 'Stack tecnol\u00f3gico',
+      tech_ia_desc: 'Usamos las mejores herramientas y frameworks para cada proyecto.',
+      tech_ia: [
+        { icon: '\u26A1', name: 'React / Next.js', cat: 'Frontend' },
+        { icon: '\uD83D\uDCDC', name: 'TypeScript', cat: 'Lenguaje' },
+        { icon: '\uD83D\uDEE0\uFE0F', name: 'Node.js / Python', cat: 'Backend' },
+        { icon: '\uD83C\uDF10', name: 'Flutter / RN', cat: 'Mobile' },
+        { icon: '\uD83E\uDD16', name: 'OpenAI / Claude', cat: 'IA Modelos' },
+        { icon: '\uD83D\uDCC8', name: 'TensorFlow / PyTorch', cat: 'Machine Learning' },
+        { icon: '\u2601\uFE0F', name: 'AWS / GCP / Vercel', cat: 'Infraestructura' },
+        { icon: '\uD83D\uDEE1\uFE0F', name: 'Stripe / WhatsApp API', cat: 'Integraciones' }
+      ],
+      projects_ia_tag: 'Portafolio',
+      projects_ia_title: 'Proyectos IA',
+      projects_ia_desc: 'Soluciones digitales que hemos construido para impulsar negocios.',
+      projects_ia: [
+        { icon: '\uD83D\uDCAC', title: 'Asistente comercial', desc: 'Chatbot con IA generativa para atenci\u00f3n al cliente, agendamiento y ventas automatizadas.', status: 'completed' },
+        { icon: '\uD83D\uDCCA', title: 'Analytics predictivo', desc: 'Tablero de inteligencia de negocio con predicci\u00f3n de ventas y alertas autom\u00e1ticas.', status: 'featured' },
+        { icon: '\uD83D\uDED2', title: 'E-commerce inteligente', desc: 'Plataforma de comercio electr\u00f3nico con recomendaciones personalizadas y b\u00fasqueda sem\u00e1ntica.', status: 'completed' },
+        { icon: '\u2699\uFE0F', title: 'Pipeline de documentos', desc: 'Sistema de procesamiento autom\u00e1tico de facturas con extracci\u00f3n de datos por IA.', status: 'progress' },
+        { icon: '\uD83D\uDCF1', title: 'App fitness con IA', desc: 'App mobile con planes de entrenamiento generados por IA y seguimiento en tiempo real.', status: 'completed' },
+        { icon: '\uD83E\uDD16', title: 'Agente de soporte', desc: 'Sistema multicanal de atenci\u00f3n con IA para WhatsApp, web y Messenger.', status: 'completed' }
+      ],
+      faq_ia_tag: 'FAQ',
+      faq_ia_title: 'Preguntas frecuentes',
+      faq_ia_desc: 'Resolvemos tus dudas sobre nuestros servicios de IA y desarrollo.',
+      faq_ia: [
+        { q: '\u00bfCu\u00e1nto cuesta desarrollar un chatbot?', a: 'Depende de la complejidad. Desde $500 USD para un asistente simple hasta soluciones enterprise. Cont\u00e1ctanos para una cotizaci\u00f3n personalizada.' },
+        { q: '\u00bfCu\u00e1nto tiempo toma crear una app web?', a: 'Un MVP puede estar listo en 4-6 semanas. Proyectos m\u00e1s complejos pueden tomar 2-4 meses dependiendo del alcance.' },
+        { q: '\u00bfQu\u00e9 tecnolog\u00edas usan?', a: 'Trabajamos con React, Next.js, Node.js, Python, Flutter, y modelos de IA como GPT-4, Claude y modelos open-source.' },
+        { q: '\u00bfOfrecen mantenimiento despu\u00e9s del lanzamiento?', a: 'S\u00ed, ofrecemos planes de mantenimiento continuo, monitoreo, actualizaciones y soporte t\u00e9cnico.' },
+        { q: '\u00bfPueden integrarse con mi sistema actual?', a: 'S\u00ed, nos integramos con APIs existentes, CRMs, ERPs y plataformas de terceros.' },
+        { q: '\u00bfTrabajan con startups?', a: '\u00a1Por supuesto! Tenemos paquetes especiales para startups y proyectos en etapa temprana con presupuestos ajustados.' }
+      ],
+      contact_ia_tag: 'Contacto',
+      contact_ia_title: '\u00bfListo para dar el salto digital?',
+      contact_ia_desc: 'Conversemos sobre tu proyecto y descubre c\u00f3mo la inteligencia artificial puede transformar tu negocio.',
+      chat_ia_avatar: 'R',
+      chat_ia_name: 'Asistente IA',
+      chat_ia_welcome: '\u00a1Hola! Soy el asistente de <strong>Agencia IA</strong> de Rincon-Z. \uD83D\uDE80<br />\u00bfQu\u00e9 proyecto digital o soluci\u00f3n con IA necesitas?'
+    };
+
+    function getConfig() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return {};
     }
-    chatBtn.addEventListener('click', () => toggleChat());
-    chatClose.addEventListener('click', () => toggleChat(false));
 
-    function showToast(text, duration) { toast.textContent = text; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(() => toast.classList.remove('show'), duration || 3000); }
-    function addMessage(text, type) { const div = document.createElement('div'); div.className = 'msg ' + type; div.innerHTML = text; chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; }
-    function showTyping() { const div = document.createElement('div'); div.className = 'typing'; div.id = 'typingIndicator'; div.innerHTML = '<span></span><span></span><span></span>'; chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; }
-    function hideTyping() { const el = document.getElementById('typingIndicator'); if (el) el.remove(); }
+    function html(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-    function getBotResponse(msg) {
-      const l = msg.toLowerCase();
-      if (l.includes('precio')||l.includes('costo')||l.includes('cotizar')) return 'Los costos dependen del alcance del proyecto. Trabajamos desde $500 USD para chatbots hasta soluciones enterprise. Cuéntanos qué necesitas y te damos una cotización personalizada.';
-      if (l.includes('chatbot')||l.includes('asistente')||l.includes('bot')) return 'Creamos chatbots inteligentes con GPT, Claude y modelos custom. Integramos WhatsApp, web y apps. ¿Qué canal necesitas?';
-      if (l.includes('web')||l.includes('app')||l.includes('página')) return 'Desarrollamos apps web progresivas con React, Next.js y backend serverless. También apps móviles nativas con Flutter. ¿Tienes una idea en mente?';
-      if (l.includes('automatizacion')||l.includes('automatización')||l.includes('workflow')||l.includes('rpa')) return 'Automatizamos procesos repetitivos con IA: facturación, atención al cliente, análisis de datos. Cuéntanos qué proceso quieres optimizar.';
-      if (l.includes('whatsapp')||l.includes('contacto')) return 'Puedes escribirnos directo por WhatsApp. 👉 <a href="https://wa.me/521234567890" target="_blank" style="color:#a78bfa;">Abrir WhatsApp</a>';
-      if (l.includes('gracias')||l.includes('bye')) return '¡Un placer! Quedamos atentos a cualquier duda. Escríbenos cuando gustes. 🚀';
-      if (l.includes('hola')||l.includes('buenas')) return '¡Hola de nuevo! 😊 Cuéntame, ¿qué proyecto digital o solución con IA necesitas? ¿Un chatbot, una app web, automatización?';
-      return 'Gracias por tu interés. ¿Podrías contarme más sobre tu proyecto? Puedo ayudarte con chatbots, apps web, automatización o análisis de datos. O si prefieres, ¡escríbenos por WhatsApp!';
+    function render() {
+      const cfg = getConfig();
+      const c = {};
+      for (const key in DEFAULTS) { c[key] = (key in cfg) ? cfg[key] : DEFAULTS[key]; }
+
+      document.title = 'Rincon-Z - Agencia IA';
+
+      document.getElementById('app').innerHTML = `
+        <nav>
+          <a href="index.html" class="logo">${html(c.brand)}</a>
+          <ul class="nav-links">
+            <li><a href="index.html" class="nav-back">\u2190 Inicio</a></li>
+            <li><a href="#metodologia">Metodolog\u00eda</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#tecnologias">Tecnolog\u00edas</a></li>
+            <li><a href="#proyectos">Proyectos</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#cotizacion">Cotizaci\u00f3n</a></li>
+            <li><a class="btn-wa" style="padding:0.4rem 1rem;border-radius:50px;font-weight:600;color:#fff;" href="https://wa.me/${c.wa_number}?text=Hola!%20Quiero%20informaci%C3%B3n%20sobre%20desarrollo%20con%20IA" target="_blank">WhatsApp</a></li>
+          </ul>
+        </nav>
+
+        <section class="hero" id="hero">
+          <span class="hero-badge">${html(c.hero_ia_badge)}</span>
+          <h1>${html(c.hero_ia_title1)} <span>${html(c.hero_ia_title2)}</span></h1>
+          <p>${html(c.hero_ia_desc)}</p>
+          <div class="hero-btns">
+            <a href="#servicios" class="btn btn-primary">${html(c.hero_ia_btn1)}</a>
+            <a href="https://wa.me/${c.wa_number}?text=Hola!%20Quiero%20una%20cotizaci%C3%B3n%20para%20desarrollo%20con%20IA" target="_blank" class="btn btn-wa">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              ${html(c.hero_ia_btn2)}
+            </a>
+          </div>
+        </section>
+
+        <section id="metodologia">
+          <span class="section-tag">${html(c.process_ia_tag)}</span>
+          <h2 class="section-title">${html(c.process_ia_title)}</h2>
+          <p class="section-desc">${html(c.process_ia_desc)}</p>
+          <div class="steps-grid">
+            ${(c.process_ia_steps || []).map((s, i) => `
+              <div class="step-item">
+                <div class="step-num">${i + 1}</div>
+                <div class="icon">${s.icon}</div>
+                <h4>${html(s.title)}</h4>
+                <p>${html(s.desc)}</p>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <section id="servicios">
+          <span class="section-tag">${html(c.services_ia_tag)}</span>
+          <h2 class="section-title">${html(c.services_ia_title)}</h2>
+          <p class="section-desc">${html(c.services_ia_desc)}</p>
+          <div class="services-grid">
+            ${(c.services_ia || []).map(s => `
+              <div class="service-item"><div class="icon">${s.icon}</div><h4>${html(s.title)}</h4><p>${html(s.desc)}</p></div>
+            `).join('')}
+          </div>
+        </section>
+
+        <section id="tecnologias">
+          <span class="section-tag">${html(c.tech_ia_tag)}</span>
+          <h2 class="section-title">${html(c.tech_ia_title)}</h2>
+          <p class="section-desc">${html(c.tech_ia_desc)}</p>
+          <div class="tech-grid">
+            ${(c.tech_ia || []).map(t => `
+              <div class="tech-item">
+                <div class="icon">${t.icon}</div>
+                <h4>${html(t.name)}</h4>
+                <div class="tech-cat">${html(t.cat)}</div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <section id="proyectos">
+          <span class="section-tag">${html(c.projects_ia_tag)}</span>
+          <h2 class="section-title">${html(c.projects_ia_title)}</h2>
+          <p class="section-desc">${html(c.projects_ia_desc)}</p>
+          <div class="projects-grid">
+            ${(c.projects_ia || []).map(p => `
+              <div class="project-card">
+                <div class="icon">${p.icon}</div>
+                <span class="project-badge">Agencia IA</span>
+                <h4>${html(p.title)}</h4>
+                <p>${html(p.desc)}</p>
+                <div class="project-status"><span class="dot ${p.status}"></span> ${p.status === 'completed' ? 'Completado' : p.status === 'progress' ? 'En progreso' : 'Destacado'}</div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <section id="faq">
+          <span class="section-tag">${html(c.faq_ia_tag)}</span>
+          <h2 class="section-title">${html(c.faq_ia_title)}</h2>
+          <p class="section-desc">${html(c.faq_ia_desc)}</p>
+          <div class="faq-grid">
+            ${(c.faq_ia || []).map((f, i) => `
+              <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-q">${html(f.q)} <span class="arrow">\u25BC</span></div>
+                <div class="faq-a">${html(f.a)}</div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <section id="cotizacion">
+          <span class="section-tag">Cotizaci\u00f3n</span>
+          <h2 class="section-title">Solicita tu cotizaci\u00f3n</h2>
+          <p class="section-desc">Cu\u00e9ntanos qu\u00e9 proyecto digital tienes en mente y te daremos una propuesta en menos de 48 horas.</p>
+          <div class="quote-form">
+            <div class="form-row">
+              <div class="field"><label>Nombre completo</label><input type="text" id="qf_name" placeholder="Tu nombre" /></div>
+              <div class="field"><label>Correo electr\u00f3nico</label><input type="email" id="qf_email" placeholder="tu@correo.com" /></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label>Tel\u00e9fono / WhatsApp</label><input type="text" id="qf_phone" placeholder="+52 123 456 7890" /></div>
+              <div class="field"><label>Tipo de servicio</label>
+                <select id="qf_service">
+                  <option value="chatbot">Chatbot / Asistente IA</option>
+                  <option value="web">App web / PWA</option>
+                  <option value="mobile">App m\u00f3vil</option>
+                  <option value="automation">Automatizaci\u00f3n / RPA</option>
+                  <option value="analytics">Analytics / BI</option>
+                </select>
+              </div>
+            </div>
+            <div class="field"><label>Descripci\u00f3n del proyecto</label><textarea id="qf_desc" placeholder="Objetivos, funcionalidades clave, plazo estimado, presupuesto..."></textarea></div>
+            <button class="btn-submit" id="qf_submit">Enviar solicitud</button>
+            <div class="quote-success" id="qf_success"><div style="font-size:3rem;margin-bottom:1rem;">\u2713</div><strong>\u00a1Solicitud enviada!</strong><br />Te contactaremos en menos de 48 horas.</div>
+          </div>
+        </section>
+
+        <section id="contacto">
+          <div class="cta-section">
+            <span class="section-tag">${html(c.contact_ia_tag)}</span>
+            <h2>${html(c.contact_ia_title)}</h2>
+            <p>${html(c.contact_ia_desc)}</p>
+            <div class="hero-btns">
+              <a href="https://wa.me/${c.wa_number}?text=Hola!%20Quiero%20una%20cotizaci%C3%B3n%20para%20desarrollo%20con%20IA" target="_blank" class="btn btn-wa">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Cotiza por WhatsApp
+              </a>
+              <a href="mailto:${c.email}" class="btn btn-outline">${c.email}</a>
+            </div>
+          </div>
+        </section>
+      `;
+
+      document.getElementById('footer').innerHTML = `${c.footer}<br /><span style="font-size:0.7rem;opacity:0.3;"><a href="admin.html">\u2699\uFE0F</a></span>`;
+
+      document.getElementById('chat-widget').innerHTML = `
+        <button class="chat-btn" id="chatBtn" aria-label="Abrir chat">
+          <svg id="chatIcon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+        </button>
+        <div class="chat-box" id="chatBox">
+          <div class="chat-header">
+            <div class="chat-header-info"><div class="chat-avatar">${c.chat_ia_avatar}</div><div><h4>${html(c.chat_ia_name)}</h4><span class="status">\u25cf Online</span></div></div>
+            <button class="chat-close" id="chatClose">&times;</button>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="msg bot">${c.chat_ia_welcome}</div>
+          </div>
+          <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Escribe tu mensaje..." autocomplete="off" />
+            <button class="chat-send" id="chatSend"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
+          </div>
+        </div>
+      `;
+
+      document.documentElement.style.setProperty('--hero-bg', `url('${c.hero_ia_bg}')`);
+
+      initChat();
+      initQuote();
+      initUI();
     }
 
-    function handleSend() {
-      const text = chatInput.value.trim(); if (!text) return;
-      addMessage(text, 'user'); chatInput.value = ''; showTyping();
-      setTimeout(() => { hideTyping(); addMessage(getBotResponse(text), 'bot'); }, Math.min(600 + text.length * 20, 1800));
+    function initChat() {
+      const chatBtn = document.getElementById('chatBtn');
+      const chatBox = document.getElementById('chatBox');
+      const chatClose = document.getElementById('chatClose');
+      const chatMessages = document.getElementById('chatMessages');
+      const chatInput = document.getElementById('chatInput');
+      const chatSend = document.getElementById('chatSend');
+      const chatIcon = document.getElementById('chatIcon');
+      const toast = document.getElementById('toast');
+      let chatOpen = false;
+
+      function toggleChat(open) {
+        chatOpen = open !== undefined ? open : !chatOpen;
+        chatBox.classList.toggle('open', chatOpen);
+        if (chatOpen) { chatInput.focus(); chatIcon.innerHTML = '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>'; }
+        else { chatIcon.innerHTML = '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>'; }
+      }
+      chatBtn.addEventListener('click', () => toggleChat());
+      chatClose.addEventListener('click', () => toggleChat(false));
+
+      function showToast(text, duration) { toast.textContent = text; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(() => toast.classList.remove('show'), duration || 3000); }
+      function addMessage(text, type) { const div = document.createElement('div'); div.className = 'msg ' + type; div.innerHTML = text; chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; }
+      function showTyping() { const div = document.createElement('div'); div.className = 'typing'; div.id = 'typingIndicator'; div.innerHTML = '<span></span><span></span><span></span>'; chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight; }
+      function hideTyping() { const el = document.getElementById('typingIndicator'); if (el) el.remove(); }
+
+      function getBotResponse(msg) {
+        const l = msg.toLowerCase();
+        if (l.includes('precio')||l.includes('costo')||l.includes('cotizar')) return 'Los costos dependen del alcance del proyecto. Trabajamos desde $500 USD para chatbots hasta soluciones enterprise. Cu\u00e9ntanos qu\u00e9 necesitas y te damos una cotizaci\u00f3n personalizada.';
+        if (l.includes('chatbot')||l.includes('asistente')||l.includes('bot')) return 'Creamos chatbots inteligentes con GPT, Claude y modelos custom. Integramos WhatsApp, web y apps. \u00bfQu\u00e9 canal necesitas?';
+        if (l.includes('web')||l.includes('app')||l.includes('p\u00e1gina')) return 'Desarrollamos apps web progresivas con React, Next.js y backend serverless. Tambi\u00e9n apps m\u00f3viles nativas con Flutter. \u00bfTienes una idea en mente?';
+        if (l.includes('automatizacion')||l.includes('automatizaci\u00f3n')||l.includes('workflow')||l.includes('rpa')) return 'Automatizamos procesos repetitivos con IA: facturaci\u00f3n, atenci\u00f3n al cliente, an\u00e1lisis de datos. Cu\u00e9ntanos qu\u00e9 proceso quieres optimizar.';
+        if (l.includes('whatsapp')||l.includes('contacto')) return 'Puedes escribirnos directo por WhatsApp. \uD83D\uDC49 <a href="https://wa.me/' + (getConfig().wa_number || DEFAULTS.wa_number) + '" target="_blank" style="color:#a78bfa;">Abrir WhatsApp</a>';
+        if (l.includes('gracias')||l.includes('bye')) return '\u00a1Un placer! Quedamos atentos a cualquier duda. Escr\u00edbenos cuando gustes. \uD83D\uDE80';
+        if (l.includes('hola')||l.includes('buenas')) return '\u00a1Hola de nuevo! \uD83D\uDE0A Cu\u00e9ntame, \u00bfqu\u00e9 proyecto digital o soluci\u00f3n con IA necesitas? \u00bfUn chatbot, una app web, automatizaci\u00f3n?';
+        return 'Gracias por tu inter\u00e9s. \u00bfPodr\u00edas contarme m\u00e1s sobre tu proyecto? Puedo ayudarte con chatbots, apps web, automatizaci\u00f3n o an\u00e1lisis de datos. O si prefieres, \u00a1escr\u00edbenos por WhatsApp!';
+      }
+
+      function handleSend() {
+        const text = chatInput.value.trim(); if (!text) return;
+        addMessage(text, 'user'); chatInput.value = ''; showTyping();
+        setTimeout(() => { hideTyping(); addMessage(getBotResponse(text), 'bot'); }, Math.min(600 + text.length * 20, 1800));
+      }
+      chatSend.addEventListener('click', handleSend);
+      chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleSend(); });
+
+      let toastShown = false; let awayTimer = null;
+      function resetAwayTimer() {
+        if (toastShown) return; clearTimeout(awayTimer);
+        awayTimer = setTimeout(function() { if (!chatOpen) { showToast('\uD83D\uDCAC \u00bfNecesitas ayuda con tu proyecto IA?'); toastShown = true; } }, 30000);
+      }
+      document.addEventListener('mousemove', resetAwayTimer); document.addEventListener('keydown', resetAwayTimer); resetAwayTimer();
+      chatBtn.addEventListener('click', function() { toastShown = false; });
     }
-    chatSend.addEventListener('click', handleSend);
-    chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleSend(); });
 
-    // Quote form
-    document.getElementById('qf_submit').addEventListener('click', function() {
-      const name = document.getElementById('qf_name').value.trim();
-      const email = document.getElementById('qf_email').value.trim();
-      const desc = document.getElementById('qf_desc').value.trim();
-      if (!name || !email || !desc) { alert('Completa nombre, correo y descripción.'); return; }
-      const quote = { id: Date.now(), name, email, phone: document.getElementById('qf_phone').value.trim(), service: 'ia', desc, date: new Date().toISOString(), status: 'new' };
-      const existing = JSON.parse(localStorage.getItem('babe_quotes') || '[]');
-      existing.unshift(quote);
-      localStorage.setItem('babe_quotes', JSON.stringify(existing));
-      localStorage.setItem('babe_quotes_updated', Date.now().toString());
-      document.getElementById('qf_submit').style.display = 'none';
-      document.getElementById('qf_success').classList.add('show');
-    });
-
-    // Toast
-    let toastShown = false; let awayTimer = null;
-    function resetAwayTimer() {
-      if (toastShown) return; clearTimeout(awayTimer);
-      awayTimer = setTimeout(function() { if (!chatOpen) { showToast('💬 ¿Necesitas ayuda con tu proyecto IA?'); toastShown = true; } }, 30000);
+    function initQuote() {
+      document.getElementById('qf_submit').addEventListener('click', function() {
+        const name = document.getElementById('qf_name').value.trim();
+        const email = document.getElementById('qf_email').value.trim();
+        const desc = document.getElementById('qf_desc').value.trim();
+        if (!name || !email || !desc) { alert('Completa nombre, correo y descripci\u00f3n.'); return; }
+        const quote = { id: Date.now(), name, email, phone: document.getElementById('qf_phone').value.trim(), service: 'ia', desc, date: new Date().toISOString(), status: 'new' };
+        const existing = JSON.parse(localStorage.getItem('babe_quotes') || '[]');
+        existing.unshift(quote);
+        localStorage.setItem('babe_quotes', JSON.stringify(existing));
+        localStorage.setItem('babe_quotes_updated', Date.now().toString());
+        document.getElementById('qf_submit').style.display = 'none';
+        document.getElementById('qf_success').classList.add('show');
+      });
     }
-    document.addEventListener('mousemove', resetAwayTimer); document.addEventListener('keydown', resetAwayTimer); resetAwayTimer();
-    chatBtn.addEventListener('click', function() { toastShown = false; });
 
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
-      a.addEventListener('click', function(e) { const t = document.querySelector(this.getAttribute('href')); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
-    });
+    function initUI() {
+      document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+        a.addEventListener('click', function(e) { const t = document.querySelector(this.getAttribute('href')); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
+      });
+    }
+
+    render();
   </script>
 </body>
 </html>
