@@ -41,6 +41,17 @@
       font-weight: 500; transition: color 0.3s;
     }
     .nav-links a:hover { color: #fff; }
+    .hamburger {
+      display: none; flex-direction:column; gap:5px; cursor:pointer;
+      background:none; border:none; padding:4px; z-index:1001;
+    }
+    .hamburger span {
+      width:26px; height:2.5px; background:#f0f0f5; border-radius:2px;
+      transition:all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
 
     .hero {
       min-height: 100vh;
@@ -166,18 +177,42 @@
 
     @media (max-width: 768px) {
       nav { padding: 1rem 1.2rem; }
-      .nav-links { gap: 1rem; }
-      .nav-links a { font-size: 0.8rem; }
-      .axis-grid { grid-template-columns: 1fr; }
-      .axis-card { min-height: 380px; }
-      .stats-ribbon { grid-template-columns: repeat(2, 1fr); }
+      .hamburger { display:flex; }
+      .nav-links {
+        position:fixed; top:0; right:-100%; width:75%; max-width:320px;
+        height:100vh; background:rgba(12,12,20,0.98); backdrop-filter:blur(20px);
+        flex-direction:column; padding:5rem 2rem 2rem; gap:0.5rem;
+        border-left:1px solid rgba(255,255,255,0.06);
+        transition:right 0.35s ease; z-index:1000;
+      }
+      .nav-links.open { right:0; }
+      .nav-links a { font-size:1.05rem; padding:0.7rem 0; display:block; }
+      .axis-grid { grid-template-columns: 1fr; padding:0 1rem 4rem; }
+      .axis-card { min-height: 340px; }
+      .axis-card .card-content { padding:1.5rem; }
+      .axis-card h3 { font-size:1.5rem; }
+      .stats-ribbon { grid-template-columns: repeat(2, 1fr); margin:-1rem auto 2rem; padding:0 1rem; }
+      .stats-ribbon > div { padding:1.2rem 0.5rem; }
+      .stat-num { font-size:1.5rem; }
+      .hero h1 { font-size:clamp(2rem,7vw,3rem); }
+      .hero { padding:5rem 1.2rem 2rem; }
+      section { padding:3rem 1.2rem; }
+      .section-title { font-size:clamp(1.5rem,5vw,2rem); }
+    }
+    @media (max-width: 480px) {
+      .stats-ribbon { grid-template-columns: 1fr 1fr; gap:1px; }
+      .hero h1 { font-size:1.8rem; }
+      .axis-card { min-height: 280px; }
     }
   </style>
 </head>
 <body>
   <nav>
     <div class="logo">RINCON-Z</div>
-    <ul class="nav-links">
+    <button class="hamburger" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
       <li><a href="#ejes">Ejes</a></li>
       <li><a href="impresion-3d.html">Impresión 3D</a></li>
       <li><a href="agencia-ia.html">Agencia IA</a></li>
@@ -232,5 +267,23 @@
     &copy; 2026 Rincon-Z &mdash; Impresión 3D &amp; Agencia IA. Todos los derechos reservados.<br />
     <span style="font-size:0.7rem;opacity:0.3;"><a href="admin.html">⚙️</a></span>
   </footer>
+  <script>
+    const ham = document.getElementById('hamburger');
+    const navL = document.getElementById('navLinks');
+    if (ham && navL) {
+      ham.addEventListener('click', function() {
+        ham.classList.toggle('open');
+        navL.classList.toggle('open');
+        document.body.style.overflow = navL.classList.contains('open') ? 'hidden' : '';
+      });
+      navL.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() {
+          ham.classList.remove('open');
+          navL.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+  </script>
 </body>
 </html>
